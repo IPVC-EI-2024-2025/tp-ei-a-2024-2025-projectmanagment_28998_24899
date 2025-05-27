@@ -6,12 +6,17 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.auth.AuthRepository
+import com.baptistaz.taskwave.navigation.AppNavGraph
 import com.baptistaz.taskwave.ui.auth.AuthViewModel
 import com.baptistaz.taskwave.ui.auth.AuthViewModelFactory
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import androidx.navigation.compose.rememberNavController
+import com.baptistaz.taskwave.navigation.AppNavGraph
+
 
 class MainActivity : ComponentActivity() {
 
@@ -47,7 +52,14 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            // UI futura
+            val navController = rememberNavController()
+
+            AppNavGraph(
+                navController = navController,
+                authViewModel = authViewModel
+            )
         }
+
+
     }
 }
