@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.baptistaz.taskwave.data.remote.auth.AuthRepository
 import com.baptistaz.taskwave.data.remote.auth.AuthResponse
+import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -26,5 +27,14 @@ class AuthViewModel(private val repository: AuthRepository) : ViewModel() {
             val response = repository.login(email, password)
             _authResponse.value = response
         }
+    }
+
+    fun logout(context: android.content.Context) {
+        SessionManager.clearAccessToken(context)
+        _authResponse.value = null
+    }
+
+    fun clearAuthResponse() {
+        _authResponse.value = null
     }
 }
