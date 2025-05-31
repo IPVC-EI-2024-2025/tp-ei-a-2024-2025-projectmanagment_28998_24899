@@ -3,7 +3,6 @@ package com.baptistaz.taskwave.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.auth.AuthRepository
+import com.google.android.material.textfield.TextInputEditText
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var authViewModel: AuthViewModel
@@ -24,17 +24,22 @@ class SignupActivity : AppCompatActivity() {
 
         authViewModel.clearAuthResponse()
 
-        val editEmail = findViewById<EditText>(R.id.edit_email)
-        val editPassword = findViewById<EditText>(R.id.edit_password)
-        val editConfirmPassword = findViewById<EditText>(R.id.edit_confirm_password)
-        val buttonSignup = findViewById<Button>(R.id.button_signup)
-        val textLogin = findViewById<TextView>(R.id.text_login)
+        val editEmail = findViewById<TextInputEditText>(R.id.edit_email)
+        val editName = findViewById<TextInputEditText>(R.id.edit_name)
+        val editMobile = findViewById<TextInputEditText>(R.id.edit_mobile)
+        val editPassword = findViewById<TextInputEditText>(R.id.edit_password)
+        val editConfirmPassword = findViewById<TextInputEditText>(R.id.edit_confirm_password)
+        val buttonSignup = findViewById<Button>(R.id.registerButton)
+        val textLogin = findViewById<TextView>(R.id.signInLink)
 
         buttonSignup.setOnClickListener {
             val email = editEmail.text.toString()
+            val name = editName.text.toString()
+            val mobile = editMobile.text.toString()
             val password = editPassword.text.toString()
             val confirmPassword = editConfirmPassword.text.toString()
-            if (email.isNotBlank() && password.isNotBlank() && password == confirmPassword) {
+            if (email.isNotBlank() && name.isNotBlank() && mobile.isNotBlank() &&
+                password.isNotBlank() && password == confirmPassword) {
                 authViewModel.signup(email, password)
             } else {
                 Toast.makeText(this, "Verifique os campos", Toast.LENGTH_SHORT).show()

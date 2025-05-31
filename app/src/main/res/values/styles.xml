@@ -1,7 +1,39 @@
 <resources>
-    <style name="Theme.TaskWave" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/teal_200</item>
+    <!-- Tema principal da aplicação -->
+    <style name="Theme.TaskWave" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorPrimary">@color/button_orange</item>
+        <item name="colorPrimaryDark">@color/logo_blue</item>
+        <item name="colorAccent">@color/button_orange</item>
+        <item name="android:windowBackground">@color/background_white</item>
+
+        <!-- Atributos de TextAppearance obrigatórios -->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.TaskWave.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.TaskWave.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.TaskWave.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.TaskWave.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.TaskWave.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.TaskWave.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.TaskWave.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.TaskWave.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.TaskWave.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.TaskWave.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.TaskWave.Button</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.TaskWave.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.TaskWave.Overline</item>
     </style>
+
+    <!-- Definições dos estilos de TextAppearance -->
+    <style name="TextAppearance.TaskWave.Headline1" parent="TextAppearance.MaterialComponents.Headline1" />
+    <style name="TextAppearance.TaskWave.Headline2" parent="TextAppearance.MaterialComponents.Headline2" />
+    <style name="TextAppearance.TaskWave.Headline3" parent="TextAppearance.MaterialComponents.Headline3" />
+    <style name="TextAppearance.TaskWave.Headline4" parent="TextAppearance.MaterialComponents.Headline4" />
+    <style name="TextAppearance.TaskWave.Headline5" parent="TextAppearance.MaterialComponents.Headline5" />
+    <style name="TextAppearance.TaskWave.Headline6" parent="TextAppearance.MaterialComponents.Headline6" />
+    <style name="TextAppearance.TaskWave.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1" />
+    <style name="TextAppearance.TaskWave.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2" />
+    <style name="TextAppearance.TaskWave.Body1" parent="TextAppearance.MaterialComponents.Body1" />
+    <style name="TextAppearance.TaskWave.Body2" parent="TextAppearance.MaterialComponents.Body2" />
+    <style name="TextAppearance.TaskWave.Button" parent="TextAppearance.MaterialComponents.Button" />
+    <style name="TextAppearance.TaskWave.Caption" parent="TextAppearance.MaterialComponents.Caption" />
+    <style name="TextAppearance.TaskWave.Overline" parent="TextAppearance.MaterialComponents.Overline" />
 </resources>

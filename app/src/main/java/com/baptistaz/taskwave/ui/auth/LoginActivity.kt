@@ -3,7 +3,6 @@ package com.baptistaz.taskwave.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +12,7 @@ import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.auth.AuthRepository
 import com.baptistaz.taskwave.ui.home.HomeActivity
 import com.baptistaz.taskwave.utils.SessionManager
+import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var authViewModel: AuthViewModel
@@ -26,10 +26,11 @@ class LoginActivity : AppCompatActivity() {
 
         authViewModel.clearAuthResponse()
 
-        val editEmail = findViewById<EditText>(R.id.edit_email)
-        val editPassword = findViewById<EditText>(R.id.edit_password)
-        val buttonLogin = findViewById<Button>(R.id.button_login)
-        val textSignup = findViewById<TextView>(R.id.text_signup)
+        val editEmail = findViewById<TextInputEditText>(R.id.edit_email)
+        val editPassword = findViewById<TextInputEditText>(R.id.edit_password)
+        val buttonLogin = findViewById<Button>(R.id.signInButton)
+        val textSignup = findViewById<TextView>(R.id.signUpLink)
+        val textForgotPassword = findViewById<TextView>(R.id.forgotPasswordText)
 
         buttonLogin.setOnClickListener {
             val email = editEmail.text.toString()
@@ -43,6 +44,10 @@ class LoginActivity : AppCompatActivity() {
 
         textSignup.setOnClickListener {
             startActivity(Intent(this, SignupActivity::class.java))
+        }
+
+        textForgotPassword.setOnClickListener {
+            Toast.makeText(this, "Funcionalidade de recuperar palavra-passe em breve!", Toast.LENGTH_SHORT).show()
         }
 
         authViewModel.authResponse.observe(this) { response ->

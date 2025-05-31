@@ -5,7 +5,6 @@ import android.content.Context
 object SessionManager {
     private const val PREFS_NAME = "app_prefs"
     private const val KEY_ACCESS_TOKEN = "access_token"
-    private const val KEY_LANGUAGE = "language"
 
     fun saveAccessToken(context: Context, token: String) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
@@ -20,15 +19,5 @@ object SessionManager {
     fun clearAccessToken(context: Context) {
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         prefs.edit().remove(KEY_ACCESS_TOKEN).apply()
-    }
-
-    fun saveLanguage(context: Context, language: String) {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        prefs.edit().putString(KEY_LANGUAGE, language).apply()
-    }
-
-    fun getLanguage(context: Context): String? {
-        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-        return prefs.getString(KEY_LANGUAGE, null)
     }
 }

@@ -14,6 +14,9 @@
     <string name="password_hint">Senha</string>
     <string name="login_button">Entrar</string>
     <string name="no_account_signup">Não tem conta? Registe-se</string>
+    <string name="forgot_password">Esqueceu-se da palavra-passe?</string>
+    <string name="sign_in_prompt">Por favor, preencha as credenciais</string>
+    <string name="login_with_google">Entrar com Google</string>
 
     <!-- activity_signup.xml -->
     <string name="signup">Registar</string>
