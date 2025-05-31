@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#F8E5A0">
+
+    <ImageView
+        android:id="@+id/image_logo"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/taskwave_logo"
+        android:contentDescription="TaskWave Logo" />
+
+    <ImageView
+        android:id="@+id/image_illustration"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/woman_laptop"
+        android:contentDescription="Ilustração de gestão eficiente de tarefas" />
+
+    <TextView
+        android:id="@+id/text_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Efficient Task Management"
+        android:textSize="24sp"
+        android:textColor="#1A3C5E" />
+
+    <TextView
+        android:id="@+id/text_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stay organized and productive"
+        android:textSize="16sp"
+        android:textColor="#1A3C5E" />
+</LinearLayout>

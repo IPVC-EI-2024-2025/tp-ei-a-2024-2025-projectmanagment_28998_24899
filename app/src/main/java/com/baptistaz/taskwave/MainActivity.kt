@@ -1,65 +1,23 @@
 package com.baptistaz.taskwave
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.rememberNavController
-import com.baptistaz.taskwave.data.remote.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.auth.AuthRepository
-import com.baptistaz.taskwave.navigation.AppNavGraph
-import com.baptistaz.taskwave.ui.auth.AuthViewModel
-import com.baptistaz.taskwave.ui.auth.AuthViewModelFactory
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
-import androidx.navigation.compose.rememberNavController
-import com.baptistaz.taskwave.navigation.AppNavGraph
-
+import com.baptistaz.taskwave.ui.auth.LoginActivity
+import com.baptistaz.taskwave.ui.home.HomeActivity
+import com.baptistaz.taskwave.utils.SessionManager
 
 class MainActivity : ComponentActivity() {
-
-    private val authViewModel: AuthViewModel by viewModels {
-        val service = RetrofitInstance.auth
-        val repository = AuthRepository(service)
-        AuthViewModelFactory(repository)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d("SUPABASE", "AuthViewModel inicializado: $authViewModel")
-
-        lifecycleScope.launch {
-            authViewModel.authResponse.collectLatest { response ->
-                response?.let {
-                    if (it.isSuccessful) {
-                        val token = it.body()?.access_token
-                        if (!token.isNullOrEmpty()) {
-                            Log.d("AUTH", "✅ Login OK! Token: $token")
-                        } else {
-                            Log.w("AUTH", "⚠️ Registo OK, mas sem token (faz login em seguida)")
-                        }
-                    }
-                }
-            }
+        val token = SessionManager.getAccessToken(this)
+        if (!token.isNullOrEmpty()) {
+            startActivity(Intent(this, HomeActivity::class.java))
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
-
-        lifecycleScope.launch {
-            authViewModel.signup("teste@teste.com", "12345678")
-            // login será feito manualmente depois, quando criarmos a UI
-        }
-
-        setContent {
-            val navController = rememberNavController()
-
-            AppNavGraph(
-                navController = navController,
-                authViewModel = authViewModel
-            )
-        }
-
-
+        finish()
     }
 }
