@@ -1,25 +1,34 @@
 package com.baptistaz.taskwave.utils
 
 import android.content.Context
-import android.content.SharedPreferences
 
 object SessionManager {
-    private const val PREFS_NAME = "auth_prefs"
+    private const val PREFS_NAME = "app_prefs"
     private const val KEY_ACCESS_TOKEN = "access_token"
-
-    private fun getPrefs(context: Context): SharedPreferences {
-        return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-    }
+    private const val KEY_LANGUAGE = "language"
 
     fun saveAccessToken(context: Context, token: String) {
-        getPrefs(context).edit().putString(KEY_ACCESS_TOKEN, token).apply()
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putString(KEY_ACCESS_TOKEN, token).apply()
     }
 
     fun getAccessToken(context: Context): String? {
-        return getPrefs(context).getString(KEY_ACCESS_TOKEN, null)
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(KEY_ACCESS_TOKEN, null)
     }
 
     fun clearAccessToken(context: Context) {
-        getPrefs(context).edit().remove(KEY_ACCESS_TOKEN).apply()
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().remove(KEY_ACCESS_TOKEN).apply()
+    }
+
+    fun saveLanguage(context: Context, language: String) {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        prefs.edit().putString(KEY_LANGUAGE, language).apply()
+    }
+
+    fun getLanguage(context: Context): String? {
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getString(KEY_LANGUAGE, null)
     }
 }

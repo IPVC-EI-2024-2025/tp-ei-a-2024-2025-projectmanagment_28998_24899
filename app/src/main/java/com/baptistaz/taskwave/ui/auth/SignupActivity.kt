@@ -22,6 +22,8 @@ class SignupActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this, AuthViewModelFactory(AuthRepository(RetrofitInstance.auth)))
             .get(AuthViewModel::class.java)
 
+        authViewModel.clearAuthResponse()
+
         val editEmail = findViewById<EditText>(R.id.edit_email)
         val editPassword = findViewById<EditText>(R.id.edit_password)
         val editConfirmPassword = findViewById<EditText>(R.id.edit_confirm_password)
@@ -44,12 +46,14 @@ class SignupActivity : AppCompatActivity() {
         }
 
         authViewModel.authResponse.observe(this) { response ->
-            if (response?.isSuccessful == true) {
-                Toast.makeText(this, "Registo bem-sucedido", Toast.LENGTH_SHORT).show()
-                startActivity(Intent(this, LoginActivity::class.java))
-                finish()
-            } else {
-                Toast.makeText(this, "Erro no registo", Toast.LENGTH_SHORT).show()
+            if (response != null) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this, "Registo bem-sucedido", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this, "Erro no registo", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

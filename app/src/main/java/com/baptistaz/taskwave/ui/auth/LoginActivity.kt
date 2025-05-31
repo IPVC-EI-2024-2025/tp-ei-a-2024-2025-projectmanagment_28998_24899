@@ -24,6 +24,8 @@ class LoginActivity : AppCompatActivity() {
         authViewModel = ViewModelProvider(this, AuthViewModelFactory(AuthRepository(RetrofitInstance.auth)))
             .get(AuthViewModel::class.java)
 
+        authViewModel.clearAuthResponse()
+
         val editEmail = findViewById<EditText>(R.id.edit_email)
         val editPassword = findViewById<EditText>(R.id.edit_password)
         val buttonLogin = findViewById<Button>(R.id.button_login)
@@ -44,15 +46,17 @@ class LoginActivity : AppCompatActivity() {
         }
 
         authViewModel.authResponse.observe(this) { response ->
-            if (response?.isSuccessful == true) {
-                val token = response.body()?.access_token
-                if (!token.isNullOrEmpty()) {
-                    SessionManager.saveAccessToken(this, token)
-                    startActivity(Intent(this, HomeActivity::class.java))
-                    finish()
+            if (response != null) {
+                if (response.isSuccessful) {
+                    val token = response.body()?.access_token
+                    if (!token.isNullOrEmpty()) {
+                        SessionManager.saveAccessToken(this, token)
+                        startActivity(Intent(this, HomeActivity::class.java))
+                        finish()
+                    }
+                } else {
+                    Toast.makeText(this, "Erro no login", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Toast.makeText(this, "Erro no login", Toast.LENGTH_SHORT).show()
             }
         }
     }

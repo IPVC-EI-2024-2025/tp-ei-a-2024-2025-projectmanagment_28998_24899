@@ -1,3 +1,35 @@
 <resources>
+    <!-- activity_home.xml -->
     <string name="app_name">TaskWave</string>
+    <string name="welcome_to_taskwave">Welcome to TaskWave!</string>
+    <string name="logout">Logout</string>
+    <string name="change_language">Change Language</string>
+
+    <!-- activity_intro.xml -->
+    <string name="next">Next</string>
+
+    <!-- activity_login.xml -->
+    <string name="login">Login</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="login_button">Login</string>
+    <string name="no_account_signup">Don\'t have an account? Sign up</string>
+
+    <!-- activity_signup.xml -->
+    <string name="signup">Sign Up</string>
+    <string name="confirm_password_hint">Confirm Password</string>
+    <string name="signup_button">Sign Up</string>
+    <string name="have_account_login">Already have an account? Login</string>
+
+    <!-- fragment_intro_slider1.xml -->
+    <string name="intro_title_1">Efficient Task Management</string>
+    <string name="intro_description_1">Stay organized and productive</string>
+
+    <!-- fragment_intro_slider2.xml -->
+    <string name="intro_title_2">Simplified Collaboration</string>
+    <string name="intro_description_2">Works as a team with ease</string>
+
+    <!-- fragment_intro_slider3.xml -->
+    <string name="intro_title_3">Track Deadlines</string>
+    <string name="intro_description_3">Keep up with your work</string>
 </resources>

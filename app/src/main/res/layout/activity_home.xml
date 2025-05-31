@@ -9,12 +9,18 @@
         android:id="@+id/text_welcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Bem-vindo ao TaskWave!"
+        android:text="@string/welcome_to_taskwave"
         android:textSize="24sp" />
 
     <Button
         android:id="@+id/button_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sair" />
+        android:text="Logout" />
+
+    <Button
+        android:id="@+id/button_change_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Change Language" />
 </LinearLayout>
