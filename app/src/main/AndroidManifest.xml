@@ -37,9 +37,10 @@
             android:name=".ui.auth.SignupActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.home.HomeActivity"
-            android:exported="false" />
+        <activity android:name=".ui.home.admin.AdminHomeActivity" android:exported="false" />
+        <activity android:name=".ui.home.manager.ManagerHomeActivity" android:exported="false" />
+        <activity android:name=".ui.home.user.UserHomeActivity" android:exported="false" />
+
     </application>
 
 </manifest>

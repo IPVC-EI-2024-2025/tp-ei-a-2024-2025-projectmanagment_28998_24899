@@ -3,19 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="@color/background_white">
 
     <TextView
-        android:id="@+id/text_welcome"
+        android:id="@+id/text_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/welcome_to_taskwave"
-        android:textSize="24sp" />
+        android:text="Página de Tarefas do Utilizador"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textColor="@color/black" />
 
     <Button
         android:id="@+id/button_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout" />
-
+        android:text="Logout"
+        android:layout_marginTop="20dp"/>
 </LinearLayout>

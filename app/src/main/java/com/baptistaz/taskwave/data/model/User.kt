@@ -1,12 +1,13 @@
-package com.baptistaz.taskwave.data.model
+import com.google.gson.annotations.SerializedName
 
 data class User(
-    val id_User: String = "",
-    val name: String = "",
-    val username: String = "",
-    val email: String = "",
-    val password: String = "",
-    val profileType: String = "",
-    val photo: String = "",
-    val phoneNumber: String = ""
+    @SerializedName("id_user") val id_User: String = "",
+    @SerializedName("name") val name: String = "",
+    @SerializedName("username") val username: String = "",
+    @SerializedName("email") val email: String = "",
+    @SerializedName("password") val password: String = "",
+    @SerializedName("profiletype") val profileType: String = "",
+    @SerializedName("photo") val photo: String = "",
+    @SerializedName("phonenumber") val phoneNumber: String = "",
+    @SerializedName("auth_id") val authId: String = ""
 )

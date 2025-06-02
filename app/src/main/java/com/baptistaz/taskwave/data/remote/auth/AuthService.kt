@@ -29,9 +29,9 @@ data class SupabaseUser(
 
 interface AuthService {
 
-    @POST("auth/v1/signup")
+    @POST("signup")
     suspend fun signup(@Body request: SignupRequest): Response<AuthResponse>
 
-    @POST("auth/v1/token?grant_type=password")
+    @POST("token?grant_type=password")
     suspend fun login(@Body request: LoginRequest): Response<AuthResponse>
 }

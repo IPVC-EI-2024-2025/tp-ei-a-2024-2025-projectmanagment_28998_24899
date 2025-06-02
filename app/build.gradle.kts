@@ -62,6 +62,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    implementation(libs.play.services.cast.framework)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -74,4 +75,6 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("com.google.android.material:material:1.9.0")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
 }

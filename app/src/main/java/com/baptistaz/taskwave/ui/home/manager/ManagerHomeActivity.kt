@@ -1,4 +1,4 @@
-package com.baptistaz.taskwave.ui.home
+package com.baptistaz.taskwave.ui.home.manager
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,12 +8,13 @@ import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.ui.auth.LoginActivity
 import com.baptistaz.taskwave.utils.SessionManager
 
-class HomeActivity : AppCompatActivity() {
+class ManagerHomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_home)
+        setContentView(R.layout.activity_manager_home)
 
-        findViewById<Button>(R.id.button_logout).setOnClickListener {
+        val logoutButton = findViewById<Button>(R.id.button_logout)
+        logoutButton.setOnClickListener {
             SessionManager.clearAccessToken(this)
             startActivity(Intent(this, LoginActivity::class.java))
             finish()

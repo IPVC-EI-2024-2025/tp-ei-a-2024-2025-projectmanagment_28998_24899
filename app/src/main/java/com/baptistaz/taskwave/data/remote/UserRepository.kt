@@ -1,15 +1,28 @@
 package com.baptistaz.taskwave.data.remote
 
-import com.baptistaz.taskwave.BuildConfig
-import com.baptistaz.taskwave.data.model.User
-import retrofit2.Response
+import User
+import android.util.Log
 
 class UserRepository {
 
-    suspend fun getAllUsers(): Response<List<User>> {
-        return RetrofitInstance.api.getAllUsers(
-            apiKey = BuildConfig.SUPABASE_KEY,
-            auth = "Bearer ${BuildConfig.SUPABASE_KEY}"
-        )
+    suspend fun getAllUsers(token: String): List<User>? {
+        val apiService = RetrofitInstance.getApiService(token)
+        val response = apiService.getAllUsers()
+        return if (response.isSuccessful) response.body() else null
+    }
+
+    suspend fun getUserByAuthId(authId: String, token: String): User? {
+        val apiService = RetrofitInstance.getApiService(token)
+        val response = apiService.getUserByAuthId("eq.$authId")
+        Log.d("DEBUG", "response code: ${response.code()}")
+        Log.d("DEBUG", "response body: ${response.body()}")
+        Log.d("DEBUG", "response error: ${response.errorBody()?.string()}")
+        return if (response.isSuccessful) response.body()?.firstOrNull() else null
+    }
+
+    suspend fun createUser(user: User, token: String): Boolean {
+        val apiService = RetrofitInstance.getApiService(token)
+        val response = apiService.createUser(user)
+        return response.isSuccessful
     }
 }
