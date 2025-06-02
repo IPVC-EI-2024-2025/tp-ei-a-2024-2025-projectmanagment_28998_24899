@@ -27,9 +27,14 @@ class ProjectViewModel(private val repository: ProjectRepository) : ViewModel() 
         }
     }
 
+    suspend fun deleteProject(projectId: String) {
+        repository.deleteProject(projectId)
+    }
+
     fun getTotalCount(): Int = _projects.value.size
 
     fun getActiveCount(): Int = _projects.value.count { it.status.equals("active", true) }
 
     fun getCompletedCount(): Int = _projects.value.count { it.status.equals("completed", true) }
+
 }

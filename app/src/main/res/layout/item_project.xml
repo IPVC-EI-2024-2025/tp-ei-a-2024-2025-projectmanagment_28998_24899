@@ -38,5 +38,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"/>
+
+        <!-- Ícones de ação -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:id="@+id/icon_edit"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_edit"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="Editar projeto"/>
+
+            <ImageView
+                android:id="@+id/icon_delete"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@android:drawable/ic_menu_delete"
+                android:contentDescription="Eliminar projeto"/>
+        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

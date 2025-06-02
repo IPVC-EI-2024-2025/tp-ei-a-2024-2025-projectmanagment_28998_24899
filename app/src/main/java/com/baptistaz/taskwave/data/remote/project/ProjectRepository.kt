@@ -36,7 +36,11 @@ class ProjectRepository(private val service: ProjectService) {
     }
 
     suspend fun deleteProject(id: String) {
-        val response = service.deleteProject(id)
+        val url = "project?id_project=eq.$id"
+        Log.d("DELETE_PROJECT", "A eliminar projeto com URL: $url")
+        val response = service.deleteProject(url)
+        Log.d("DELETE_PROJECT", "Código resposta: ${response.code()}")
+        Log.d("DELETE_PROJECT", "Corpo resposta: ${response.errorBody()?.string()}")
         if (!response.isSuccessful) {
             throw Exception("Erro ao eliminar projeto: ${response.code()}")
         }

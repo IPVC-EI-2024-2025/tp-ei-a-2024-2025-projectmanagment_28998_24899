@@ -3,10 +3,16 @@ package com.baptistaz.taskwave.ui.home.admin.manageprojects
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
@@ -29,6 +35,7 @@ class ManageProjectsActivity : AppCompatActivity() {
     private lateinit var adapter: ProjectAdapter
     private lateinit var inputSearch: EditText
     private var fullProjectList: List<Project> = emptyList()
+    private lateinit var spinnerFilter: Spinner
 
     private val token: String by lazy {
         SessionManager.getAccessToken(this) ?: ""
@@ -59,19 +66,37 @@ class ManageProjectsActivity : AppCompatActivity() {
         textCompleted = cardCompleted.findViewById(R.id.text_stat_value)
 
         inputSearch = findViewById(R.id.input_search)
+        spinnerFilter = findViewById(R.id.spinner_filter)
+
         recyclerView = findViewById(R.id.recycler_projects)
-        adapter = ProjectAdapter(emptyList())
+        adapter = ProjectAdapter(
+            emptyList(),
+            onEdit = { project -> editarProjeto(project) },
+            onDelete = { project -> eliminarProjeto(project) }
+        )
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val options = listOf("Todos", "Ativos", "Completos")
+        spinnerFilter.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
+
+        spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                applyFilters()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
         inputSearch.addTextChangedListener {
-            updateFilteredList(it.toString())
+            applyFilters()
         }
 
         lifecycleScope.launch {
             viewModel.projects.collectLatest {
                 fullProjectList = it
-                updateFilteredList(inputSearch.text.toString())
+                applyFilters()
                 textTotal.text = viewModel.getTotalCount().toString()
                 textActive.text = viewModel.getActiveCount().toString()
                 textCompleted.text = viewModel.getCompletedCount().toString()
@@ -92,14 +117,47 @@ class ManageProjectsActivity : AppCompatActivity() {
         viewModel.loadProjects()
     }
 
-    private fun updateFilteredList(query: String) {
-        val filtered = if (query.isBlank()) {
-            fullProjectList
-        } else {
-            fullProjectList.filter { it.name.contains(query, ignoreCase = true) }
+    private fun applyFilters() {
+        val query = inputSearch.text.toString()
+        val selectedStatus = spinnerFilter.selectedItem.toString()
+
+        val filtered = fullProjectList.filter { project ->
+            val matchesSearch = project.name.contains(query, ignoreCase = true)
+            val matchesStatus = when (selectedStatus.lowercase()) {
+                "ativos" -> project.status.equals("active", true)
+                "completos" -> project.status.equals("completed", true)
+                else -> true // "Todos"
+            }
+            matchesSearch && matchesStatus
         }
+
         adapter.updateData(filtered)
     }
+
+    private fun editarProjeto(project: Project) {
+        Toast.makeText(this, "Editar: ${project.name}", Toast.LENGTH_SHORT).show()
+        // TODO: abre o ecrã de edição
+    }
+
+    private fun eliminarProjeto(project: Project) {
+        AlertDialog.Builder(this)
+            .setTitle("Eliminar Projeto")
+            .setMessage("Tens a certeza que queres eliminar '${project.name}'?")
+            .setPositiveButton("Sim") { _, _ ->
+                lifecycleScope.launch {
+                    try {
+                        viewModel.deleteProject(project.id_project)
+                        viewModel.loadProjects()
+                        Toast.makeText(this@ManageProjectsActivity, "Projeto eliminado!", Toast.LENGTH_SHORT).show()
+                    } catch (e: Exception) {
+                        Toast.makeText(this@ManageProjectsActivity, "Erro ao eliminar: ${e.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+            .setNegativeButton("Cancelar", null)
+            .show()
+    }
+
 
     override fun onSupportNavigateUp(): Boolean {
         finish()

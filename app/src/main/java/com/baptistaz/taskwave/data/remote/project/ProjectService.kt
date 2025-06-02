@@ -9,6 +9,7 @@ import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.Url
 
 interface ProjectService {
 
@@ -28,8 +29,9 @@ interface ProjectService {
         @Body updatedProject: Project
     ): Response<Project>
 
-    @DELETE("project")
+    @DELETE
+    @Headers("Prefer: return=representation")
     suspend fun deleteProject(
-        @Query("id_project") id: String
-    ): Response<Unit>
+        @Url url: String
+    ): Response<List<Project>>
 }
