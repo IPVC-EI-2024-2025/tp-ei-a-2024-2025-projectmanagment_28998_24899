@@ -3,6 +3,7 @@ package com.baptistaz.taskwave.ui.auth
 import User
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -63,38 +64,51 @@ class SignupActivity : AppCompatActivity() {
         }
 
         authViewModel.authResponse.observe(this) { response ->
-            if (response != null && response.isSuccessful) {
-                val token = response.body()?.access_token
-                val authId = response.body()?.user?.id
-                if (!token.isNullOrEmpty() && !authId.isNullOrEmpty()) {
-                    SessionManager.saveAccessToken(this, token)
-                    SessionManager.saveAuthId(this, authId)
+            if (response != null) {
+                if (response.isSuccessful) {
+                    val token = response.body()?.access_token
+                    val authId = response.body()?.user?.id
+                    if (!token.isNullOrEmpty() && !authId.isNullOrEmpty()) {
+                        SessionManager.saveAccessToken(this, token)
+                        SessionManager.saveAuthId(this, authId)
 
-                    lifecycleScope.launch {
-                        val user = User(
-                            id_User = "",
-                            name = editName.text.toString(),
-                            username = editEmail.text.toString().split("@")[0],
-                            email = editEmail.text.toString(),
-                            password = "",
-                            profileType = "USER",
-                            photo = "",
-                            phoneNumber = editMobile.text.toString(),
-                            authId = authId
-                        )
-                        val userRepository = UserRepository()
-                        val success = userRepository.createUser(user, token)
-                        if (success) {
-                            Toast.makeText(this@SignupActivity, "Registo concluído!", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
-                            finish()
-                        } else {
-                            Toast.makeText(this@SignupActivity, "Erro ao criar perfil", Toast.LENGTH_SHORT).show()
+                        lifecycleScope.launch {
+                            val user = User(
+                                name = editName.text.toString(),
+                                username = editEmail.text.toString().split("@")[0],
+                                email = editEmail.text.toString(),
+                                password = "", // Não guardar senha aqui
+                                profileType = "USER",
+                                photo = "",
+                                phoneNumber = editMobile.text.toString(),
+                                authId = authId
+                            )
+                            Log.d("SIGNUP_DEBUG", "Tentando criar utilizador: $user")
+                            val userRepository = UserRepository()
+                            val success = userRepository.createUser(user, token)
+                            if (success) {
+                                Log.d("SIGNUP_DEBUG", "Perfil criado com sucesso")
+                                Toast.makeText(this@SignupActivity, "Registo concluído!", Toast.LENGTH_SHORT).show()
+                                startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
+                                finish()
+                            } else {
+                                Log.e("SIGNUP_ERROR", "Erro ao criar perfil, mas utilizador registado no Auth")
+                                Toast.makeText(this@SignupActivity, "Erro ao criar perfil, mas pode fazer login", Toast.LENGTH_LONG).show()
+                                startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
+                                finish()
+                            }
                         }
+                    } else {
+                        Log.e("SIGNUP_ERROR", "Token ou authId nulos: token=$token, authId=$authId")
+                        Toast.makeText(this, "Erro no registo: token ou authId inválidos", Toast.LENGTH_SHORT).show()
                     }
+                } else {
+                    Log.e("SIGNUP_ERROR", "Erro no registo: ${response.errorBody()?.string()}")
+                    Toast.makeText(this, "Erro no registo", Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Erro no registo", Toast.LENGTH_SHORT).show()
+                Log.e("SIGNUP_ERROR", "Resposta nula ao tentar registar")
+                Toast.makeText(this, "Erro no registo: resposta nula", Toast.LENGTH_SHORT).show()
             }
         }
     }

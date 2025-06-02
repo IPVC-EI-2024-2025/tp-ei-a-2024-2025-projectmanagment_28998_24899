@@ -62,6 +62,7 @@ class LoginActivity : AppCompatActivity() {
                     val token = response.body()?.access_token
                     val authId = response.body()?.user?.id
                     if (!token.isNullOrEmpty() && !authId.isNullOrEmpty()) {
+                        Log.d("LOGIN_DEBUG", "Login bem-sucedido - token: $token, authId: $authId")
                         SessionManager.saveAccessToken(this, token)
                         SessionManager.saveAuthId(this, authId)
 
@@ -70,8 +71,7 @@ class LoginActivity : AppCompatActivity() {
                             val user = userRepository.getUserByAuthId(authId, token)
 
                             if (user != null) {
-                                Log.d("DEBUG", "authId: $authId")
-                                Log.d("DEBUG", "user: $user")
+                                Log.d("LOGIN_DEBUG", "Perfil carregado: $user")
                                 Toast.makeText(this@LoginActivity, "Perfil: ${user.profileType}", Toast.LENGTH_SHORT).show()
 
                                 when (user.profileType.uppercase()) {
@@ -79,22 +79,29 @@ class LoginActivity : AppCompatActivity() {
                                     "GESTOR" -> startActivity(Intent(this@LoginActivity, ManagerHomeActivity::class.java))
                                     "USER" -> startActivity(Intent(this@LoginActivity, UserHomeActivity::class.java))
                                     else -> {
+                                        Log.e("LOGIN_ERROR", "Perfil inválido: ${user.profileType}")
                                         Toast.makeText(this@LoginActivity, "Perfil inválido!", Toast.LENGTH_SHORT).show()
                                         SessionManager.clearAccessToken(this@LoginActivity)
                                     }
                                 }
                                 finish()
                             } else {
-                                Log.e("API_ERROR", "Erro ao obter utilizador: resposta nula ou falha na API")
-                                Toast.makeText(this@LoginActivity, "Erro ao carregar perfil", Toast.LENGTH_SHORT).show()
+                                Log.e("LOGIN_ERROR", "Erro ao carregar perfil para authId: $authId")
+                                Toast.makeText(this@LoginActivity, "Erro ao carregar perfil. Pode ser necessário recriar o perfil.", Toast.LENGTH_LONG).show()
                                 SessionManager.clearAccessToken(this@LoginActivity)
                             }
                         }
+                    } else {
+                        Log.e("LOGIN_ERROR", "Token ou authId nulos: token=$token, authId=$authId")
+                        Toast.makeText(this, "Erro no login: token ou authId inválidos", Toast.LENGTH_SHORT).show()
                     }
                 } else {
-                    Log.e("API_ERROR", response.errorBody()?.string() ?: "Erro desconhecido")
+                    Log.e("LOGIN_ERROR", "Erro no login: ${response.errorBody()?.string()}")
                     Toast.makeText(this, "Erro no login", Toast.LENGTH_SHORT).show()
                 }
+            } else {
+                Log.e("LOGIN_ERROR", "Resposta nula ao tentar login")
+                Toast.makeText(this, "Erro no login: resposta nula", Toast.LENGTH_SHORT).show()
             }
         }
     }
