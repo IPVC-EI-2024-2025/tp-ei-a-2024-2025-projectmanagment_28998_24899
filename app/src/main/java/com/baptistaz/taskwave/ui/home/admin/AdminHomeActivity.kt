@@ -8,6 +8,10 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.ui.auth.LoginActivity
+import com.baptistaz.taskwave.ui.home.admin.assignmanager.AssignManagerActivity
+import com.baptistaz.taskwave.ui.home.admin.exportstatistics.ExportStatisticsActivity
+import com.baptistaz.taskwave.ui.home.admin.manageprojects.ManageProjectsActivity
+import com.baptistaz.taskwave.ui.home.admin.manageusers.ManageUsersActivity
 import com.baptistaz.taskwave.utils.SessionManager
 
 class AdminHomeActivity : AppCompatActivity() {
@@ -26,19 +30,19 @@ class AdminHomeActivity : AppCompatActivity() {
 
         // Botões personalizados (todos são LinearLayout)
         findViewById<LinearLayout>(R.id.button_manage_projects).setOnClickListener {
-            // startActivity(Intent(this, ManageProjectsActivity::class.java))
+            startActivity(Intent(this, ManageProjectsActivity::class.java))
         }
 
         findViewById<LinearLayout>(R.id.button_manage_users).setOnClickListener {
-            // startActivity(Intent(this, ManageUsersActivity::class.java))
+            startActivity(Intent(this, ManageUsersActivity::class.java))
         }
 
         findViewById<LinearLayout>(R.id.button_assign_manager).setOnClickListener {
-            // startActivity(Intent(this, AssignManagerActivity::class.java))
+            startActivity(Intent(this, AssignManagerActivity::class.java))
         }
 
         findViewById<LinearLayout>(R.id.button_export_statistics).setOnClickListener {
-            // startActivity(Intent(this, ExportStatisticsActivity::class.java))
+            startActivity(Intent(this, ExportStatisticsActivity::class.java))
         }
 
         // Logout (ainda é Button, por isso mantemos como está)
