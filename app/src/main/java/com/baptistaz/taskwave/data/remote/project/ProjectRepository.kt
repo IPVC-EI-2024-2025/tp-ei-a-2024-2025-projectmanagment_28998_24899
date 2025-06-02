@@ -1,11 +1,13 @@
 package com.baptistaz.taskwave.data.remote.project
 
+import android.util.Log
 import com.baptistaz.taskwave.data.model.Project
 
 class ProjectRepository(private val service: ProjectService) {
 
     suspend fun getAllProjects(): List<Project> {
         val response = service.getAllProjects()
+        Log.d("GET_PROJECTS", "Status: ${response.code()}, Body: ${response.body()}")
         if (response.isSuccessful) {
             return response.body() ?: emptyList()
         } else {
