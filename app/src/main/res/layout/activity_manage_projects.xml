@@ -33,6 +33,19 @@
         <include layout="@layout/project_card_stat" android:id="@+id/card_completed" />
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/input_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search Projects"
+        android:padding="12dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/text_input_background"
+        android:inputType="text"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        />
+
     <Button
         android:id="@+id/button_new_project"
         android:layout_width="match_parent"
