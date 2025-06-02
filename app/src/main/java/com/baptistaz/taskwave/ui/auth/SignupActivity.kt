@@ -106,9 +106,6 @@ class SignupActivity : AppCompatActivity() {
                     Log.e("SIGNUP_ERROR", "Erro no registo: ${response.errorBody()?.string()}")
                     Toast.makeText(this, "Erro no registo", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Log.e("SIGNUP_ERROR", "Resposta nula ao tentar registar")
-                Toast.makeText(this, "Erro no registo: resposta nula", Toast.LENGTH_SHORT).show()
             }
         }
     }

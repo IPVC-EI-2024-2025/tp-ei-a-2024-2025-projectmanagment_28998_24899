@@ -99,9 +99,6 @@ class LoginActivity : AppCompatActivity() {
                     Log.e("LOGIN_ERROR", "Erro no login: ${response.errorBody()?.string()}")
                     Toast.makeText(this, "Erro no login", Toast.LENGTH_SHORT).show()
                 }
-            } else {
-                Log.e("LOGIN_ERROR", "Resposta nula ao tentar login")
-                Toast.makeText(this, "Erro no login: resposta nula", Toast.LENGTH_SHORT).show()
             }
         }
     }
