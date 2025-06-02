@@ -2,6 +2,7 @@ package com.baptistaz.taskwave.data.remote
 
 import com.baptistaz.taskwave.BuildConfig
 import com.baptistaz.taskwave.data.remote.auth.AuthService
+import com.baptistaz.taskwave.data.remote.project.ProjectService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -48,6 +49,15 @@ object RetrofitInstance {
             .create(AuthService::class.java)
     }
 
+    val projectService: ProjectService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.SUPABASE_URL + "/rest/v1/")
+            .client(createRestClient(BuildConfig.SUPABASE_KEY))
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ProjectService::class.java)
+    }
+
     fun getApiService(token: String): ApiService {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.SUPABASE_URL + "/rest/v1/")
@@ -56,4 +66,14 @@ object RetrofitInstance {
             .build()
             .create(ApiService::class.java)
     }
+
+    fun getProjectService(token: String): ProjectService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.SUPABASE_URL + "/rest/v1/")
+            .client(createRestClient(token))
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ProjectService::class.java)
+    }
+
 }

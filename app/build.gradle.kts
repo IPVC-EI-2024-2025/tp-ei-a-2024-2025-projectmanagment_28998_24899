@@ -76,5 +76,5 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
-
+    implementation ("androidx.cardview:cardview:1.0.0'")
 }
