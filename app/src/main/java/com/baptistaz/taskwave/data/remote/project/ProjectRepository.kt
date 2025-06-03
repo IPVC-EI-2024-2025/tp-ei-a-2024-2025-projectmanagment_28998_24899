@@ -2,6 +2,7 @@ package com.baptistaz.taskwave.data.remote.project
 
 import android.util.Log
 import com.baptistaz.taskwave.data.model.Project
+import com.baptistaz.taskwave.data.model.ProjectUpdate
 
 class ProjectRepository(private val service: ProjectService) {
 
@@ -26,12 +27,15 @@ class ProjectRepository(private val service: ProjectService) {
 
     }
 
-    suspend fun updateProject(id: String, updatedProject: Project): Project {
-        val response = service.updateProject(id, updatedProject)
+    suspend fun updateProject(id: String, updatedProject: ProjectUpdate): Project {
+        val url = "project?id_project=eq.$id"
+        val response = service.updateProject(url, updatedProject)
         if (response.isSuccessful) {
-            return response.body() ?: throw Exception("Erro: resposta vazia ao atualizar projeto")
+            return response.body()?.firstOrNull() ?: throw Exception("Erro: resposta vazia ao atualizar projeto")
         } else {
-            throw Exception("Erro ao atualizar projeto: ${response.code()}")
+            val errorBody = response.errorBody()?.string()
+            Log.e("UPDATE_ERROR", "Erro: $errorBody")
+            throw Exception("Erro ao atualizar projeto: ${response.code()} - $errorBody")
         }
     }
 

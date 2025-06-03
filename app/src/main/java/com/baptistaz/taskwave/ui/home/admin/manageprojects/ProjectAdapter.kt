@@ -1,5 +1,7 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +13,7 @@ import com.baptistaz.taskwave.data.model.Project
 
 class ProjectAdapter(
     private var projectList: List<Project>,
-    private val onEdit: (Project) -> Unit,
+    private val context: Context,
     private val onDelete: (Project) -> Unit
 ) : RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>() {
 
@@ -42,10 +44,12 @@ class ProjectAdapter(
         }
         holder.statusText.setTextColor(holder.itemView.context.getColor(statusColor))
 
-        // Ações nos ícones
         holder.editIcon.setOnClickListener {
-            onEdit(project)
+            val intent = Intent(context, EditProjectActivity::class.java)
+            intent.putExtra("project", project)
+            context.startActivity(intent)
         }
+
         holder.deleteIcon.setOnClickListener {
             onDelete(project)
         }
@@ -58,5 +62,3 @@ class ProjectAdapter(
         notifyDataSetChanged()
     }
 }
-
-

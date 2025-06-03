@@ -71,7 +71,7 @@ class ManageProjectsActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recycler_projects)
         adapter = ProjectAdapter(
             emptyList(),
-            onEdit = { project -> editarProjeto(project) },
+            context = this,
             onDelete = { project -> eliminarProjeto(project) }
         )
 
@@ -136,7 +136,6 @@ class ManageProjectsActivity : AppCompatActivity() {
 
     private fun editarProjeto(project: Project) {
         Toast.makeText(this, "Editar: ${project.name}", Toast.LENGTH_SHORT).show()
-        // TODO: abre o ecrã de edição
     }
 
     private fun eliminarProjeto(project: Project) {

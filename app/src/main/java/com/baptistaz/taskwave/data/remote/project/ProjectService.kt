@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.data.remote.project
 
 import com.baptistaz.taskwave.data.model.Project
+import com.baptistaz.taskwave.data.model.ProjectUpdate
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -8,7 +9,6 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
-import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface ProjectService {
@@ -23,11 +23,12 @@ interface ProjectService {
     ): Response<List<Project>>
 
 
-    @PATCH("project")
+    @PATCH
+    @Headers("Prefer: return=representation")
     suspend fun updateProject(
-        @Query("id_project") id: String,
-        @Body updatedProject: Project
-    ): Response<Project>
+        @Url url: String,
+        @Body updatedProject: ProjectUpdate
+    ): Response<List<Project>>
 
     @DELETE
     @Headers("Prefer: return=representation")

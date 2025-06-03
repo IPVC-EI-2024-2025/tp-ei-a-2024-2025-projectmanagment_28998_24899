@@ -50,6 +50,8 @@
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.admin.manageprojects.CreateProjectActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.admin.manageprojects.EditProjectActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
 
     </application>
 
