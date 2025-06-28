@@ -3,6 +3,7 @@ package com.baptistaz.taskwave.data.remote
 import com.baptistaz.taskwave.BuildConfig
 import com.baptistaz.taskwave.data.remote.auth.AuthService
 import com.baptistaz.taskwave.data.remote.project.ProjectService
+import com.baptistaz.taskwave.data.remote.project.TaskService
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonSerializer
@@ -48,6 +49,7 @@ object RetrofitInstance {
                     .addHeader("apikey", BuildConfig.SUPABASE_KEY)
                     .addHeader("Authorization", "Bearer $token")
                     .addHeader("Content-Type", "application/json")
+                    .addHeader("Prefer", "return=representation")
                     .build()
                 chain.proceed(request)
             }
@@ -72,6 +74,16 @@ object RetrofitInstance {
             .create(ProjectService::class.java)
     }
 
+    // NOVO: Service para tarefas, idêntico ao projectService!
+    val taskService: TaskService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.SUPABASE_URL + "/rest/v1/")
+            .client(createRestClient(BuildConfig.SUPABASE_KEY))
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(TaskService::class.java)
+    }
+
     fun getApiService(token: String): ApiService {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.SUPABASE_URL + "/rest/v1/")
@@ -88,5 +100,15 @@ object RetrofitInstance {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ProjectService::class.java)
+    }
+
+    // (Se precisares de getTaskService(token: String) para usar um token dinâmico, podes adicionar esta função)
+    fun getTaskService(token: String): TaskService {
+        return Retrofit.Builder()
+            .baseUrl(BuildConfig.SUPABASE_URL + "/rest/v1/")
+            .client(createRestClient(token))
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(TaskService::class.java)
     }
 }

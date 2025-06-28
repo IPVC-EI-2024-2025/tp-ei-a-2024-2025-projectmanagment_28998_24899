@@ -40,18 +40,36 @@
         <activity android:name=".ui.home.admin.AdminHomeActivity" android:exported="false" />
         <activity android:name=".ui.home.manager.ManagerHomeActivity" android:exported="false" />
         <activity android:name=".ui.home.user.UserHomeActivity" android:exported="false" />
+
+
+
         <activity android:name=".ui.home.admin.manageprojects.ManageProjectsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageusers.ManageUsersActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.assignmanager.AssignManagerActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.exportstatistics.ExportStatisticsActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.admin.manageprojects.CreateProjectActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.admin.manageprojects.EditProjectActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.admin.manageprojects.ProjectDetailsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.admin.manageprojects.ProjectTasksActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.admin.manageprojects.CreateTaskActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+
+
+        <activity android:name=".ui.home.admin.manageusers.ManageUsersActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+
+
+
+        <activity android:name=".ui.home.admin.assignmanager.AssignManagerActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+
+
+
+        <activity android:name=".ui.home.admin.exportstatistics.ExportStatisticsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+
 
     </application>
 

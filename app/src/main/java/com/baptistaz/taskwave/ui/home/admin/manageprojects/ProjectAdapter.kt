@@ -53,6 +53,12 @@ class ProjectAdapter(
         holder.deleteIcon.setOnClickListener {
             onDelete(project)
         }
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, ProjectDetailsActivity::class.java)
+            intent.putExtra("project", project)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int = projectList.size

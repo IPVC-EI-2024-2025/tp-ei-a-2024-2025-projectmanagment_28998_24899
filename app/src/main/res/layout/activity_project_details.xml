@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp" />
+
+        <TextView
+            android:id="@+id/text_project_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Project Name"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:paddingTop="16dp" />
+
+        <TextView
+            android:id="@+id/text_project_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Project Description"
+            android:textSize="16sp"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/text_project_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:paddingTop="8dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/text_project_start"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Start Date" />
+
+            <TextView
+                android:id="@+id/text_project_end"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="End Date"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_view_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Tasks"
+            android:layout_marginTop="24dp" />
+
+        <Button
+            android:id="@+id/button_manage_manager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Manage Manager"
+            android:layout_marginTop="12dp" />
+
+        <Button
+            android:id="@+id/button_mark_complete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mark as Complete"
+            android:layout_marginTop="12dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
