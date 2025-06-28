@@ -5,10 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Task
+import com.baptistaz.taskwave.data.remote.RetrofitInstance
+import com.baptistaz.taskwave.data.remote.UserRepository
+import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.utils.SessionManager
+import kotlinx.coroutines.launch
 
 class TaskDetailActivity : AppCompatActivity() {
 
@@ -23,6 +30,7 @@ class TaskDetailActivity : AppCompatActivity() {
             updatedTask?.let {
                 task = it
                 updateUI()
+                loadAssignedUser() // <-- Atualiza o responsável depois de editar!
             }
         }
     }
@@ -41,6 +49,7 @@ class TaskDetailActivity : AppCompatActivity() {
 
         // Mostra info
         updateUI()
+        loadAssignedUser()
 
         // Clique do botão editar
         findViewById<Button>(R.id.button_edit_task).setOnClickListener {
@@ -58,6 +67,40 @@ class TaskDetailActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.text_creation_date).text = task.creation_date
         findViewById<TextView>(R.id.text_conclusion_date).text = task.conclusion_date ?: ""
         findViewById<TextView>(R.id.text_priority).text = task.priority ?: ""
+    }
+
+    // Busca e mostra o nome do responsável
+    private fun loadAssignedUser() {
+        val assignedUserTv = findViewById<TextView>(R.id.text_assigned_user)
+        assignedUserTv.text = "Responsável: (a carregar...)"
+
+        lifecycleScope.launch {
+            try {
+                // 1. Buscar o UserTask (associação tarefa-user)
+                val userTaskRepo = UserTaskRepository(RetrofitInstance.userTaskService)
+                val userTasks = userTaskRepo.getUserTasksByTask(task.id_task)
+                val firstUserTask = userTasks.firstOrNull()
+
+                if (firstUserTask != null) {
+                    // 2. Buscar o User associado
+                    val token = SessionManager.getAccessToken(this@TaskDetailActivity) ?: ""
+                    val userRepo = UserRepository()
+                    val users = userRepo.getAllUsers(token) ?: emptyList()
+                    val user = users.find { it.id_user == firstUserTask.id_user }
+
+                    if (user != null) {
+                        assignedUserTv.text = "Responsável: ${user.name}"
+                    } else {
+                        assignedUserTv.text = "Responsável: [Utilizador não encontrado]"
+                    }
+                } else {
+                    assignedUserTv.text = "Responsável: Não atribuído"
+                }
+            } catch (e: Exception) {
+                assignedUserTv.text = "Responsável: Erro ao buscar"
+                Toast.makeText(this@TaskDetailActivity, "Erro ao carregar responsável", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

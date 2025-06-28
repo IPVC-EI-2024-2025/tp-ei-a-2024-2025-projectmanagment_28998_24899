@@ -16,6 +16,16 @@
     <TextView android:id="@+id/text_creation_date" android:layout_width="match_parent" android:layout_height="wrap_content"/>
     <TextView android:id="@+id/text_conclusion_date" android:layout_width="match_parent" android:layout_height="wrap_content"/>
     <TextView android:id="@+id/text_priority" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+
+    <!-- Novo: nome do responsável -->
+    <TextView
+        android:id="@+id/text_assigned_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Responsável: "
+        android:textStyle="bold"
+        android:layout_marginTop="16dp"/>
+
     <Button android:id="@+id/button_edit_task" android:text="Editar Tarefa"
         android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp"/>
 </LinearLayout>

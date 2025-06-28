@@ -4,6 +4,7 @@ import com.baptistaz.taskwave.BuildConfig
 import com.baptistaz.taskwave.data.remote.auth.AuthService
 import com.baptistaz.taskwave.data.remote.project.ProjectService
 import com.baptistaz.taskwave.data.remote.project.TaskService
+import com.baptistaz.taskwave.data.remote.project.UserTaskService
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonSerializer
@@ -82,6 +83,15 @@ object RetrofitInstance {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(TaskService::class.java)
+    }
+
+    val userTaskService: UserTaskService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BuildConfig.SUPABASE_URL + "/rest/v1/")
+            .client(createRestClient(BuildConfig.SUPABASE_KEY))
+            .addConverterFactory(GsonConverterFactory.create(gson))
+            .build()
+            .create(UserTaskService::class.java)
     }
 
     fun getApiService(token: String): ApiService {
