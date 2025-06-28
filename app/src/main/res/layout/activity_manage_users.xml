@@ -9,6 +9,8 @@
 
     <include layout="@layout/toolbar_back" />
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_users"
         android:layout_width="match_parent"
@@ -16,6 +18,14 @@
         android:layout_weight="1"
         android:paddingTop="24dp"/>
 
-
-
+    <Button
+        android:id="@+id/btn_new_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="+ New User"
+        android:textAllCaps="false"
+        android:background="@color/button_orange"
+        android:textColor="@color/background_white"
+        android:layout_marginBottom="16dp"/>
+    
 </LinearLayout>

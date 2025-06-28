@@ -9,5 +9,5 @@ data class User(
     @SerializedName("profiletype") val profileType: String = "",
     @SerializedName("photo") val photo: String = "",
     @SerializedName("phonenumber") val phoneNumber: String = "",
-    @SerializedName("auth_id") val authId: String = ""
+    @SerializedName("auth_id") val authId: String? = null
 )

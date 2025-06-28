@@ -134,10 +134,6 @@ class ManageProjectsActivity : AppCompatActivity() {
         adapter.updateData(filtered)
     }
 
-    private fun editarProjeto(project: Project) {
-        Toast.makeText(this, "Editar: ${project.name}", Toast.LENGTH_SHORT).show()
-    }
-
     private fun eliminarProjeto(project: Project) {
         AlertDialog.Builder(this)
             .setTitle("Eliminar Projeto")

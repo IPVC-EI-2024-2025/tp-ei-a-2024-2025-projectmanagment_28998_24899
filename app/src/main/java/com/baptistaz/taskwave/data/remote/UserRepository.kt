@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.data.remote
 
 import User
+import UserUpdate
 import android.util.Log
 
 class UserRepository {
@@ -36,6 +37,30 @@ class UserRepository {
         if (!response.isSuccessful) {
             val errorBody = response.errorBody()?.string()
             Log.e("USER_REPO_ERROR", "createUser - Error: ${response.code()} - $errorBody")
+        }
+        return response.isSuccessful
+    }
+
+    suspend fun getUserById(id: String, token: String): User? {
+        val apiService = RetrofitInstance.getApiService(token)
+        val response = apiService.getUserById("eq.$id")
+        return if (response.isSuccessful) response.body()?.firstOrNull() else null
+    }
+
+    suspend fun updateUser(userId: String, userUpdate: UserUpdate, token: String): Boolean {
+        val apiService = RetrofitInstance.getApiService(token)
+        val response = apiService.updateUser("eq.$userId", userUpdate)
+        if (!response.isSuccessful) {
+            Log.e("EDIT_USER", "Erro ao atualizar user: ${response.code()} - ${response.errorBody()?.string()}")
+        }
+        return response.isSuccessful
+    }
+
+    suspend fun deleteUser(userId: String, token: String): Boolean {
+        val apiService = RetrofitInstance.getApiService(token)
+        val response = apiService.deleteUser("eq.$userId")
+        if (!response.isSuccessful) {
+            Log.e("EDIT_USER", "Erro ao eliminar user: ${response.code()} - ${response.errorBody()?.string()}")
         }
         return response.isSuccessful
     }
