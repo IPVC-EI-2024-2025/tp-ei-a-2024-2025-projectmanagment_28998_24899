@@ -13,6 +13,7 @@ import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import kotlinx.coroutines.launch
+import androidx.appcompat.app.AlertDialog
 
 class ProjectTasksActivity : AppCompatActivity() {
     private lateinit var adapter: TaskAdapter
@@ -35,7 +36,36 @@ class ProjectTasksActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recycler_tasks)
         buttonCreateTask = findViewById(R.id.button_create_task)
-        adapter = TaskAdapter(emptyList())
+
+        adapter = TaskAdapter(
+            emptyList(),
+            onClick = { selectedTask ->
+                val intent = Intent(this, TaskDetailActivity::class.java)
+                intent.putExtra("task", selectedTask)
+                startActivity(intent)
+            },
+            onDelete = { selectedTask ->
+                AlertDialog.Builder(this)
+                    .setTitle("Eliminar Tarefa")
+                    .setMessage("Tens a certeza que queres eliminar '${selectedTask.title}'?")
+                    .setPositiveButton("Sim") { _, _ ->
+                        lifecycleScope.launch {
+                            try {
+                                repository.deleteTask(selectedTask.id_task)
+                                Toast.makeText(this@ProjectTasksActivity, "Tarefa eliminada!", Toast.LENGTH_SHORT).show()
+                                // Atualiza a lista
+                                val tasks = repository.getTasksByProject("eq.$projectId")
+                                adapter.updateData(tasks)
+                            } catch (e: Exception) {
+                                Toast.makeText(this@ProjectTasksActivity, "Erro ao eliminar: ${e.message}", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                    .setNegativeButton("Cancelar", null)
+                    .show()
+            }
+        )
+
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 

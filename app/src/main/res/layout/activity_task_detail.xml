@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:padding="24dp">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    <TextView android:id="@+id/text_title" android:textSize="20sp" android:textStyle="bold"
+        android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView android:id="@+id/text_description" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView android:id="@+id/text_status" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView android:id="@+id/text_creation_date" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView android:id="@+id/text_conclusion_date" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView android:id="@+id/text_priority" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <Button android:id="@+id/button_edit_task" android:text="Editar Tarefa"
+        android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp"/>
+</LinearLayout>
