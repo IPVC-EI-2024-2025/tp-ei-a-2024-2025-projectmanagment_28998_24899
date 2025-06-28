@@ -3,29 +3,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
-    android:padding="24dp"
     android:background="@color/background_white">
 
     <include layout="@layout/toolbar_back" />
 
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_users"
+    <!-- Título -->
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:paddingTop="24dp"/>
+        android:layout_height="wrap_content"
+        android:text="Manage Users"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"/>
 
+    <!-- Cards estatísticos -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:weightSum="4"
+        android:orientation="horizontal">
+
+        <include layout="@layout/user_card_stat" android:id="@+id/card_total"/>
+        <include layout="@layout/user_card_stat" android:id="@+id/card_admins"/>
+        <include layout="@layout/user_card_stat" android:id="@+id/card_managers"/>
+        <include layout="@layout/user_card_stat" android:id="@+id/card_users"/>
+    </LinearLayout>
+
+    <!-- Filtro e pesquisa -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="12dp">
+
+        <Spinner
+            android:id="@+id/spinner_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"/>
+
+        <EditText
+            android:id="@+id/input_search"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:hint="Search User"
+            android:background="@drawable/text_input_background"
+            android:padding="12dp"
+            android:drawableStart="@android:drawable/ic_menu_search"/>
+    </LinearLayout>
+
+    <!-- Botão criar -->
     <Button
         android:id="@+id/btn_new_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="+ New User"
-        android:textAllCaps="false"
         android:background="@color/button_orange"
         android:textColor="@color/background_white"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="12dp"/>
+
+    <!-- Lista -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_users"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingTop="8dp"
         android:layout_marginBottom="16dp"/>
-    
+
 </LinearLayout>
