@@ -56,12 +56,12 @@ class CreateProjectActivity : AppCompatActivity() {
             val endDate = inputEndDate.text.toString()
 
             val project = Project(
-                id_project = UUID.randomUUID().toString(),
+                idProject = UUID.randomUUID().toString(),
                 name = name,
                 description = description,
                 status = status,
-                start_date = startDate,
-                end_date = endDate
+                startDate = startDate,
+                endDate = endDate
             )
 
             // Enviar para Supabase

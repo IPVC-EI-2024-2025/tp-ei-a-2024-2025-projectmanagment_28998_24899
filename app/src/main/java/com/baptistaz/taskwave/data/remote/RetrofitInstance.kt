@@ -112,13 +112,12 @@ object RetrofitInstance {
             .create(ProjectService::class.java)
     }
 
-    // (Se precisares de getTaskService(token: String) para usar um token dinâmico, podes adicionar esta função)
-    fun getTaskService(token: String): TaskService {
+    fun getUserTaskService(token: String): UserTaskService {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.SUPABASE_URL + "/rest/v1/")
             .client(createRestClient(token))
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
-            .create(TaskService::class.java)
+            .create(UserTaskService::class.java)
     }
 }

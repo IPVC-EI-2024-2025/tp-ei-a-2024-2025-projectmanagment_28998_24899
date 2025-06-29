@@ -99,13 +99,13 @@ class CreateTaskActivity : AppCompatActivity() {
 
             val newTaskId = UUID.randomUUID().toString()
             val newTask = Task(
-                id_task = newTaskId,
-                id_project = projectId,
+                idTask = newTaskId,
+                idProject = projectId,
                 title = title,
                 description = description,
                 state = state,
-                creation_date = creationDate,
-                conclusion_date = conclusionDate,
+                creationDate = creationDate,
+                conclusionDate = conclusionDate,
                 priority = priority
             )
 
@@ -117,10 +117,10 @@ class CreateTaskActivity : AppCompatActivity() {
             }
 
             val userTask = UserTask(
-                id_usertask = UUID.randomUUID().toString(),
-                id_user = userId,
-                id_task = newTaskId,
-                registration_date = null,
+                idUserTask = UUID.randomUUID().toString(),
+                idUser = userId,
+                idTask = newTaskId,
+                registrationDate = null,
                 status = "ASSIGNED"
             )
 

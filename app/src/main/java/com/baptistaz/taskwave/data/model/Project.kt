@@ -1,13 +1,13 @@
 package com.baptistaz.taskwave.data.model
 
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class Project(
-    val id_project: String,
-    val name: String,
-    val description: String,
-    val status: String,
-    val start_date: String,
-    val end_date: String
+    @SerializedName("id_project")  val idProject: String,
+    @SerializedName("name")       val name: String,
+    @SerializedName("description")val description: String,
+    @SerializedName("status")     val status: String,
+    @SerializedName("start_date") val startDate: String,
+    @SerializedName("end_date")   val endDate: String?
 ) : Serializable
-

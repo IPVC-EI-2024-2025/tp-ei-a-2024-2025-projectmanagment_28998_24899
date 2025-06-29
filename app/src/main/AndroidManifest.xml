@@ -68,6 +68,8 @@
         <activity android:name=".ui.home.admin.manageusers.CreateUserActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"
                   android:exported="false" />
+        <activity android:name=".ui.home.admin.manageusers.UserDetailsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar" />
 
 
 

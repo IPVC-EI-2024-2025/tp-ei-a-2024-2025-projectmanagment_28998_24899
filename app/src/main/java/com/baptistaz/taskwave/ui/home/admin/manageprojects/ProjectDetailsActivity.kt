@@ -43,14 +43,14 @@ class ProjectDetailsActivity : AppCompatActivity() {
             textName.text = it.name
             textDescription.text = it.description
             textStatus.text = it.status
-            textStartDate.text = it.start_date
-            textEndDate.text = it.end_date
+            textStartDate.text = it.startDate
+            textEndDate.text = it.endDate
         }
 
         buttonViewTasks.setOnClickListener {
             // Lógica: abrir página de tarefas do projeto
             val intent = Intent(this, ProjectTasksActivity::class.java)
-            intent.putExtra("project_id", project?.id_project)
+            intent.putExtra("project_id", project?.idProject)
             startActivity(intent)
         }
 

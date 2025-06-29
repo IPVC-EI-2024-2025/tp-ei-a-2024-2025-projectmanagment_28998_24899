@@ -34,7 +34,7 @@ class TaskAdapter(
         holder.title.text = task.title
         holder.description.text = task.description
         holder.status.text = task.state
-        holder.dueDate.text = task.conclusion_date ?: ""
+        holder.dueDate.text = task.conclusionDate ?: ""
         holder.responsible.text = "Responsible: ${item.responsavel ?: "N/A"}"
 
         holder.itemView.setOnClickListener { onClick(task) }

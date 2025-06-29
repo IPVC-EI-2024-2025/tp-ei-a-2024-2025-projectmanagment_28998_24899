@@ -141,7 +141,7 @@ class ManageProjectsActivity : AppCompatActivity() {
             .setPositiveButton("Sim") { _, _ ->
                 lifecycleScope.launch {
                     try {
-                        viewModel.deleteProject(project.id_project)
+                        viewModel.deleteProject(project.idProject)
                         viewModel.loadProjects()
                         Toast.makeText(this@ManageProjectsActivity, "Projeto eliminado!", Toast.LENGTH_SHORT).show()
                     } catch (e: Exception) {

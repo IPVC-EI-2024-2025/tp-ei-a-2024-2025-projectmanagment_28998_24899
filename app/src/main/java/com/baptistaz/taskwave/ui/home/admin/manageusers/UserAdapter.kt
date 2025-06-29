@@ -12,7 +12,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
 
-class UserAdapter(private val users: List<User>, private val onDeleteClick: ((String) -> Unit)? = null) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+class UserAdapter(
+    private val users: List<User>,
+    private val onDeleteClick: ((String) -> Unit)? = null,
+    private val onItemClick: ((User) -> Unit)? = null
+) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name = view.findViewById<TextView>(R.id.text_name)
@@ -79,6 +83,11 @@ class UserAdapter(private val users: List<User>, private val onDeleteClick: ((St
                 holder.role.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.background_white))
             }
         }
+
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(user)
+        }
+
     }
 
 }

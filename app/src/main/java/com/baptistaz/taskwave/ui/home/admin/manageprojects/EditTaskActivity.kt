@@ -58,8 +58,8 @@ class EditTaskActivity : AppCompatActivity() {
         // Preenche os campos
         inputTitle.setText(task.title)
         inputDescription.setText(task.description)
-        inputCreationDate.setText(task.creation_date)
-        inputConclusionDate.setText(task.conclusion_date ?: "")
+        inputCreationDate.setText(task.creationDate)
+        inputConclusionDate.setText(task.conclusionDate ?: "")
 
         val stateOptions = listOf("PENDING", "IN_PROGRESS", "COMPLETED")
         spinnerState.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, stateOptions)
@@ -83,9 +83,9 @@ class EditTaskActivity : AppCompatActivity() {
 
             // Pré-seleciona user atual se quiseres (extra)
             val userTaskRepo = UserTaskRepository(RetrofitInstance.userTaskService)
-            val currentUserTask = userTaskRepo.getUserTasksByTask(task.id_task).firstOrNull()
+            val currentUserTask = userTaskRepo.getUserTasksByTask(task.idTask).firstOrNull()
             currentUserTask?.let { ut ->
-                val pos = userList.indexOfFirst { it.id_user == ut.id_user }
+                val pos = userList.indexOfFirst { it.id_user == ut.idUser }
                 if (pos >= 0) spinnerAssignUser.setSelection(pos)
             }
         }
@@ -95,8 +95,8 @@ class EditTaskActivity : AppCompatActivity() {
                 title = inputTitle.text.toString(),
                 description = inputDescription.text.toString(),
                 state = spinnerState.selectedItem.toString(),
-                creation_date = inputCreationDate.text.toString(),
-                conclusion_date = inputConclusionDate.text.toString().takeIf { it.isNotBlank() },
+                creationDate = inputCreationDate.text.toString(),
+                conclusionDate = inputConclusionDate.text.toString().takeIf { it.isNotBlank() },
                 priority = spinnerPriority.selectedItem.toString()
             )
 
@@ -105,11 +105,11 @@ class EditTaskActivity : AppCompatActivity() {
 
             lifecycleScope.launch {
                 try {
-                    repository.updateTask(updatedTask.id_task, updatedTask)
+                    repository.updateTask(updatedTask.idTask, updatedTask)
 
                     // Remove associações antigas (se garantires só 1 user por tarefa)
-                    val userTasks = userTaskRepo.getUserTasksByTask(updatedTask.id_task)
-                    userTasks.forEach { userTaskRepo.deleteUserTask(it.id_usertask) }
+                    val userTasks = userTaskRepo.getUserTasksByTask(updatedTask.idTask)
+                    userTasks.forEach { userTaskRepo.deleteUserTask(it.idUserTask) }
 
                     val selectedUser = userList[spinnerAssignUser.selectedItemPosition]
                     val userId = selectedUser.id_user
@@ -119,10 +119,10 @@ class EditTaskActivity : AppCompatActivity() {
                     }
 
                     val newUserTask = UserTask(
-                        id_usertask = UUID.randomUUID().toString(),
-                        id_user = userId,
-                        id_task = updatedTask.id_task,
-                        registration_date = null,
+                        idUserTask = UUID.randomUUID().toString(),
+                        idUser = userId,
+                        idTask = updatedTask.idTask,
+                        registrationDate = null,
                         status = "ASSIGNED"
                     )
 

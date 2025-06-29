@@ -64,8 +64,8 @@ class TaskDetailActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.text_title).text = task.title
         findViewById<TextView>(R.id.text_description).text = task.description
         findViewById<TextView>(R.id.text_status).text = task.state
-        findViewById<TextView>(R.id.text_creation_date).text = task.creation_date
-        findViewById<TextView>(R.id.text_conclusion_date).text = task.conclusion_date ?: ""
+        findViewById<TextView>(R.id.text_creation_date).text = task.creationDate
+        findViewById<TextView>(R.id.text_conclusion_date).text = task.conclusionDate ?: ""
         findViewById<TextView>(R.id.text_priority).text = task.priority ?: ""
     }
 
@@ -78,7 +78,7 @@ class TaskDetailActivity : AppCompatActivity() {
             try {
                 // 1. Buscar o UserTask (associação tarefa-user)
                 val userTaskRepo = UserTaskRepository(RetrofitInstance.userTaskService)
-                val userTasks = userTaskRepo.getUserTasksByTask(task.id_task)
+                val userTasks = userTaskRepo.getUserTasksByTask(task.idTask)
                 val firstUserTask = userTasks.firstOrNull()
 
                 if (firstUserTask != null) {
@@ -86,7 +86,7 @@ class TaskDetailActivity : AppCompatActivity() {
                     val token = SessionManager.getAccessToken(this@TaskDetailActivity) ?: ""
                     val userRepo = UserRepository()
                     val users = userRepo.getAllUsers(token) ?: emptyList()
-                    val user = users.find { it.id_user == firstUserTask.id_user }
+                    val user = users.find { it.id_user == firstUserTask.idUser }
 
                     if (user != null) {
                         assignedUserTv.text = "Responsável: ${user.name}"

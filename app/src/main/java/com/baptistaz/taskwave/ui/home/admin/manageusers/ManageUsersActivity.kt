@@ -76,8 +76,10 @@ class ManageUsersActivity : AppCompatActivity() {
         cardManagers.findViewById<TextView>(R.id.text_stat_label).text = "Managers"
         cardUsers.findViewById<TextView>(R.id.text_stat_label).text = "Users"
 
-        adapter = UserAdapter(filteredUsers) { userId ->
-            deleteUser(userId)
+        adapter = UserAdapter(filteredUsers, { userId -> deleteUser(userId) }) { user ->
+            val intent = Intent(this, UserDetailsActivity::class.java)
+            intent.putExtra("userId", user.id_user)
+            startActivity(intent)
         }
 
         recyclerView.layoutManager = LinearLayoutManager(this)

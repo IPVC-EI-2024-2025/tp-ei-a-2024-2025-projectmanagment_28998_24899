@@ -56,8 +56,8 @@ class EditProjectActivity : AppCompatActivity() {
         // Preenche os dados
         inputName.setText(project.name)
         inputDescription.setText(project.description)
-        inputStartDate.setText(project.start_date)
-        inputEndDate.setText(project.end_date)
+        inputStartDate.setText(project.startDate)
+        inputEndDate.setText(project.endDate)
         spinnerStatus.setSelection(statusOptions.indexOf(project.status))
 
         // Botão de guardar alterações
@@ -74,7 +74,7 @@ class EditProjectActivity : AppCompatActivity() {
                     val statusCapitalized = statusFromSpinner.replaceFirstChar { it.uppercase() }
 
                     val updatedProject = ProjectUpdate(
-                        id_project = project.id_project,
+                        id_project = project.idProject,
                         name = inputName.text.toString(),
                         description = inputDescription.text.toString(),
                         status = statusCapitalized,
@@ -86,7 +86,7 @@ class EditProjectActivity : AppCompatActivity() {
                     val jsonBody = gson.toJson(updatedProject)
                     Log.d("PATCH_DEBUG", "JSON enviado: $jsonBody")
 
-                    repo.updateProject(project.id_project, updatedProject)
+                    repo.updateProject(project.idProject, updatedProject)
 
                     Toast.makeText(this@EditProjectActivity, "Projeto atualizado!", Toast.LENGTH_SHORT).show()
                     finish()

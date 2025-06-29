@@ -55,7 +55,7 @@ class ProjectTasksActivity : AppCompatActivity() {
                     .setPositiveButton("Yes") { _, _ ->
                         lifecycleScope.launch {
                             try {
-                                repository.deleteTask(selectedTask.id_task)
+                                repository.deleteTask(selectedTask.idTask)
                                 Toast.makeText(this@ProjectTasksActivity, "Task deleted!", Toast.LENGTH_SHORT).show()
                                 loadTasksWithResponsible()
                             } catch (e: Exception) {
@@ -94,7 +94,7 @@ class ProjectTasksActivity : AppCompatActivity() {
                 val userTaskRepo = UserTaskRepository(RetrofitInstance.userTaskService)
                 val allUserTasks = mutableListOf<com.baptistaz.taskwave.data.model.UserTask>()
                 for (task in tasks) {
-                    allUserTasks.addAll(userTaskRepo.getUserTasksByTask(task.id_task))
+                    allUserTasks.addAll(userTaskRepo.getUserTasksByTask(task.idTask))
                 }
 
                 // 2. Get all users
@@ -107,12 +107,12 @@ class ProjectTasksActivity : AppCompatActivity() {
 
                 // 4. Map task id to responsible name (first found user)
                 val mapTaskIdToUserName = allUserTasks.associate { ut ->
-                    ut.id_task to (mapUserIdToName[ut.id_user] ?: "N/A")
+                    ut.idTask to (mapUserIdToName[ut.idUser] ?: "N/A")
                 }
 
                 // 5. Create list TaskWithUser
                 val tasksWithUsers = tasks.map { task ->
-                    TaskWithUser(task, mapTaskIdToUserName[task.id_task] ?: "Not assigned")
+                    TaskWithUser(task, mapTaskIdToUserName[task.idTask] ?: "Not assigned")
                 }
 
                 adapter.updateData(tasksWithUsers)

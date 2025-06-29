@@ -2,6 +2,7 @@ package com.baptistaz.taskwave.data.remote
 
 import User
 import UserUpdate
+import com.baptistaz.taskwave.data.model.UserTask
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -40,5 +41,13 @@ interface ApiService {
     suspend fun deleteUser(
         @Query("id_user") id: String
     ): Response<Unit>
+
+    @GET("usertask")
+    suspend fun getUserTasksForUser(
+        @Query("id_user") idFilter: String,
+        @Query("select")
+        select: String = "*,task(*,project(*))"
+    ): Response<List<UserTask>>
+
 
 }
