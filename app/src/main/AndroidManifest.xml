@@ -39,7 +39,13 @@
 
         <activity android:name=".ui.home.admin.AdminHomeActivity" android:exported="false" />
         <activity android:name=".ui.home.manager.ManagerHomeActivity" android:exported="false" />
+
+
         <activity android:name=".ui.home.user.UserHomeActivity" android:exported="false" />
+        <activity android:name=".ui.home.user.UserProfileActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.user.UserSettingsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
 
 
 
