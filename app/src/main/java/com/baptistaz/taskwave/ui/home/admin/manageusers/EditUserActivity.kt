@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.UserRepository
+import com.baptistaz.taskwave.utils.ProfileType
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +49,7 @@ class EditUserActivity : AppCompatActivity() {
         saveBtn = findViewById(R.id.btn_save)
 
         // Preenche spinner com opções de role
-        val roles = arrayOf("Manager", "User")
+        val roles = arrayOf("Gestor", "User")
         spinnerRole.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
 
         // Recebe o userId via intent
@@ -68,7 +69,7 @@ class EditUserActivity : AppCompatActivity() {
                     emailEdit.setText(userData.email)
                     usernameEdit.setText(userData.username)
                     phoneEdit.setText(userData.phoneNumber ?: "")
-                    spinnerRole.setSelection(roles.indexOfFirst { role -> role.equals(userData.profileType, ignoreCase = true) })
+                    spinnerRole.setSelection(roles.indexOfFirst { it.equals(userData.profileType, true) })
                 } ?: run {
                     Log.e("EDIT_USER", "User não encontrado no repo para o id: $id")
                 }
@@ -85,7 +86,7 @@ class EditUserActivity : AppCompatActivity() {
                 email = emailEdit.text.toString(),
                 username = usernameEdit.text.toString(),
                 phonenumber = phoneEdit.text.toString(),
-                profiletype = spinnerRole.selectedItem.toString().uppercase()
+                profiletype = ProfileType.fromLabel(spinnerRole.selectedItem.toString()).db
             )
             Log.d("EDIT_USER", "Vai enviar update PATCH: $updatedUser para id: $userId")
             CoroutineScope(Dispatchers.Main).launch {

@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
+import User
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.baptistaz.taskwave.data.model.Project
 
 class ProjectAdapter(
     private var projectList: List<Project>,
+    private val managers: List<User>,
     private val context: Context,
     private val onDelete: (Project) -> Unit
 ) : RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>() {
@@ -34,7 +36,11 @@ class ProjectAdapter(
         val project = projectList[position]
 
         holder.nameText.text = project.name
-        holder.managerText.text = "Manager: Em breve"
+
+        // Correção aqui!
+        val managerName = managers.firstOrNull { it.id_user == project.idManager }?.name ?: "No manager"
+        holder.managerText.text = "Manager: $managerName"
+
         holder.statusText.text = project.status
 
         val statusColor = when (project.status.lowercase()) {

@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
+import User
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -13,7 +14,9 @@ import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.model.ProjectUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
+import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -26,7 +29,9 @@ class EditProjectActivity : AppCompatActivity() {
     private lateinit var inputEndDate: EditText
     private lateinit var spinnerStatus: Spinner
     private lateinit var buttonEdit: Button
+    private lateinit var spinnerManager: Spinner
 
+    private var managers: List<User> = emptyList()
     private lateinit var project: Project
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +51,7 @@ class EditProjectActivity : AppCompatActivity() {
         inputEndDate = findViewById(R.id.input_end_date)
         spinnerStatus = findViewById(R.id.spinner_status)
         buttonEdit = findViewById(R.id.button_edit)
+        spinnerManager = findViewById(R.id.spinner_manager)
 
         val statusOptions = listOf("active", "completed")
         spinnerStatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, statusOptions)
@@ -60,10 +66,25 @@ class EditProjectActivity : AppCompatActivity() {
         inputEndDate.setText(project.endDate)
         spinnerStatus.setSelection(statusOptions.indexOf(project.status))
 
+        // Carregar managers e selecionar o atual
+        val token = SessionManager.getAccessToken(this) ?: return
+        lifecycleScope.launch {
+            managers = UserRepository().getAllManagers(token) ?: emptyList()
+            val names = managers.map { it.name }
+            spinnerManager.adapter = ArrayAdapter(this@EditProjectActivity, android.R.layout.simple_spinner_dropdown_item, names)
+
+            // Seleciona o gestor atual
+            val index = managers.indexOfFirst { it.id_user == project.idManager }
+            if (index >= 0) spinnerManager.setSelection(index)
+        }
+
         // Botão de guardar alterações
         buttonEdit.setOnClickListener {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val repo = ProjectRepository(RetrofitInstance.projectService)
+
+            val selectedManager = managers.getOrNull(spinnerManager.selectedItemPosition)
+            val idManager = selectedManager?.id_user
 
             lifecycleScope.launch {
                 try {
@@ -79,7 +100,8 @@ class EditProjectActivity : AppCompatActivity() {
                         description = inputDescription.text.toString(),
                         status = statusCapitalized,
                         start_date = inputStartDate.text.toString(),
-                        end_date = inputEndDate.text.toString()
+                        end_date = inputEndDate.text.toString(),
+                        id_manager = idManager // <--- NOVO!
                     )
 
                     val gson = com.google.gson.Gson()

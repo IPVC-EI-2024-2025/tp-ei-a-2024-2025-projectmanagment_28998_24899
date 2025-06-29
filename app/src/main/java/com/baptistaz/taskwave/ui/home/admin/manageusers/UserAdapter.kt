@@ -72,8 +72,8 @@ class UserAdapter(
                 holder.role.setBackgroundResource(R.drawable.role_badge_admin)
                 holder.role.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.background_white))
             }
-            "manager" -> {
-                holder.role.text = "Manager"
+            "gestor" -> {
+                holder.role.text = "GESTOR"
                 holder.role.setBackgroundResource(R.drawable.role_badge_manager)
                 holder.role.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.background_white))
             }

@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.UserRepository
+import com.baptistaz.taskwave.utils.ProfileType
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -49,7 +50,7 @@ class CreateUserActivity : AppCompatActivity() {
         createBtn = findViewById(R.id.btn_create)
 
         // Preenche spinner sem opção Admin
-        val roles = arrayOf("Manager", "User")
+        val roles = arrayOf("Gestor", "User")
         spinnerRole.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
 
         createBtn.setOnClickListener {
@@ -58,7 +59,7 @@ class CreateUserActivity : AppCompatActivity() {
             val username = usernameEdit.text.toString().trim()
             val password = passwordEdit.text.toString()
             val phone = phoneEdit.text.toString().trim()
-            val profileType = spinnerRole.selectedItem.toString().uppercase()
+            val profileType = ProfileType.fromLabel(spinnerRole.selectedItem.toString()).db
 
             // Validação simples
             if (name.isEmpty() || email.isEmpty() || username.isEmpty() || password.isEmpty()) {

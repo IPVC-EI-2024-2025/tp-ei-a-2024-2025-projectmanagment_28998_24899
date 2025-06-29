@@ -6,5 +6,6 @@ data class ProjectUpdate(
     val description: String,
     val status: String,
     val start_date: String,
-    val end_date: String
+    val end_date: String?,
+    val id_manager: String?
 )

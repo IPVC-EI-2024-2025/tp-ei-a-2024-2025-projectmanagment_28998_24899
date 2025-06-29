@@ -64,4 +64,16 @@ class UserRepository {
         }
         return response.isSuccessful
     }
+
+    suspend fun getAllManagers(token: String): List<User>? {
+        val apiService = RetrofitInstance.getApiService(token)
+        val response = apiService.getUsersByProfileType("eq.GESTOR")
+        Log.d("USER_REPO", "getAllManagers - Response code: ${response.code()}")
+        Log.d("USER_REPO", "getAllManagers - Response body: ${response.body()}")
+        if (!response.isSuccessful) {
+            Log.e("USER_REPO_ERROR", "getAllManagers - Error: ${response.errorBody()?.string()}")
+        }
+        return if (response.isSuccessful) response.body() else null
+    }
+
 }

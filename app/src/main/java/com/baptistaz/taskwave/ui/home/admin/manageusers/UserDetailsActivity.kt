@@ -8,7 +8,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.model.UserTask
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
@@ -17,7 +16,6 @@ import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-
 
 
 class UserDetailsActivity : AppCompatActivity() {
@@ -81,13 +79,31 @@ class UserDetailsActivity : AppCompatActivity() {
     private fun populateHeader(user: User) {
         tvName.text  = user.name
         tvEmail.text = user.email
-        tvRole.text  = user.profileType.replaceFirstChar { it.uppercase() }
+
+        // Atualiza a cor/background do badge consoante o role!
+        when (user.profileType.uppercase()) {
+            "ADMIN" -> {
+                tvRole.setBackgroundResource(R.drawable.role_badge_admin)
+                tvRole.text = "ADMIN"
+            }
+            "GESTOR" -> {
+                tvRole.setBackgroundResource(R.drawable.role_badge_manager) // <--- azul!
+                tvRole.text = "GESTOR"
+            }
+            else -> {
+                tvRole.setBackgroundResource(R.drawable.role_badge_user)
+                tvRole.text = "USER"
+            }
+        }
 
         supportActionBar?.title = user.name
 
         if (user.profileType.equals("ADMIN", true)) {
             tvDesc.text = "Has full permissions within the system.\nCan manage projects, users, tasks and export statistics."
             tvDescContent.text = "Descrição detalhada do utilizador/admin."
+        } else if (user.profileType.equals("GESTOR", true)) {
+            tvDesc.text = "Description"
+            tvDescContent.text = "Manages assigned projects. Responsible for creating tasks, distributing work among users, and tracking project progress. Has permissions to evaluate team performance and export relevant statistics."
         } else {
             tvDesc.text = "This user actively participates in projects by completing assigned tasks..."
             tvDescContent.text = "Descrição detalhada do utilizador/admin."
@@ -104,19 +120,25 @@ class UserDetailsActivity : AppCompatActivity() {
         sectionProjects.visibility = View.VISIBLE
 
         val tasks: List<UserTask> = userTaskRepo.getTasksOfUser(userId, token) ?: emptyList()
+        val taskProjects = tasks.mapNotNull { it.task?.project }.distinctBy { it.idProject }.toMutableList()
 
-        // Estatísticas tarefas
-        val total = tasks.size
-        val completed = tasks.count { it.status.equals("COMPLETED", true) }
-        tvTasksAssigned.text = "Assigned tasks: $total"
-        tvTasksCompleted.text = "Completed tasks: $completed"
-        progressTasks.max = if (total == 0) 1 else total
-        progressTasks.progress = completed
+        // Busca todos os projetos onde este user é manager!
+        val projectsRepo = com.baptistaz.taskwave.data.remote.project.ProjectRepository(
+            com.baptistaz.taskwave.data.remote.RetrofitInstance.getProjectService(token)
+        )
+        val allProjects = projectsRepo.getAllProjects()
+        val managedProjects = allProjects.filter { it.idManager == userId }
 
-        // Projetos associados (elimina duplicados)
+        // Junta (sem duplicar)
+        for (proj in managedProjects) {
+            if (taskProjects.none { it.idProject == proj.idProject }) {
+                taskProjects.add(proj)
+            }
+        }
+
+        // Limpa e adiciona no UI
         listUserProjects.removeAllViews()
-        val projects: List<Project> = tasks.mapNotNull { it.task?.project }.distinctBy { it.idProject }
-        for (proj in projects) {
+        for (proj in taskProjects) {
             val text = TextView(this).apply {
                 text = proj.name
                 textSize = 15f
@@ -126,6 +148,7 @@ class UserDetailsActivity : AppCompatActivity() {
             listUserProjects.addView(text)
         }
     }
+
 
     override fun onSupportNavigateUp(): Boolean { finish(); return true }
 }

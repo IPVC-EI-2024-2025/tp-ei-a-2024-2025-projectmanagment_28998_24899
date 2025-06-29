@@ -49,4 +49,22 @@ class ProjectRepository(private val service: ProjectService) {
             throw Exception("Erro ao eliminar projeto: ${response.code()}")
         }
     }
+
+    suspend fun getProjectsByManager(managerId: String, token: String): List<Project> {
+        val url = "project?id_manager=eq.$managerId"
+        val response = service.getProjectsByManager(url, token)   // <-- token aqui!
+        if (response.isSuccessful) {
+            return response.body() ?: emptyList()
+        } else {
+            throw Exception("Erro ao obter projetos do gestor: ${response.code()}")
+        }
+    }
+
+    suspend fun getProjectById(id: String): Project? {
+        val url = "project?id_project=eq.$id"
+        val response = service.getProjectById(url)
+        return if (response.isSuccessful) response.body()?.firstOrNull() else null
+    }
+
+
 }

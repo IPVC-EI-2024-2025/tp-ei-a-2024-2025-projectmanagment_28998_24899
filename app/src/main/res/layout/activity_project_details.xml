@@ -47,6 +47,14 @@
             android:paddingTop="8dp">
 
             <TextView
+                android:id="@+id/text_manager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manager: "
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"/>
+
+            <TextView
                 android:id="@+id/text_project_start"
                 android:layout_width="0dp"
                 android:layout_weight="1"

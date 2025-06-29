@@ -49,5 +49,9 @@ interface ApiService {
         select: String = "*,task(*,project(*))"
     ): Response<List<UserTask>>
 
+    @GET("utilizador")
+    suspend fun getUsersByProfileType(
+        @Query("profiletype") profileType: String // ex: "GESTOR"
+    ): Response<List<User>>
 
 }

@@ -9,5 +9,6 @@ data class Project(
     @SerializedName("description")val description: String,
     @SerializedName("status")     val status: String,
     @SerializedName("start_date") val startDate: String,
-    @SerializedName("end_date")   val endDate: String?
+    @SerializedName("end_date")   val endDate: String?,
+    @SerializedName("id_manager") val idManager: String?
 ) : Serializable

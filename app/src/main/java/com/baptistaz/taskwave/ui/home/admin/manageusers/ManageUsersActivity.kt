@@ -86,7 +86,7 @@ class ManageUsersActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         // Filtro
-        val roles = listOf("All", "Admin", "Manager", "User")
+        val roles = listOf("All", "Admin", "Gestor", "User")
         spinnerFilter.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
 
         spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -117,7 +117,16 @@ class ManageUsersActivity : AppCompatActivity() {
             val result = userRepository.getAllUsers(token)
             if (result != null) {
                 allUsers.clear()
-                allUsers.addAll(result.sortedWith(compareByDescending<User> { it.profileType.equals("ADMIN", true) }.thenBy { it.name }))
+                // Ordena: Admins primeiro, depois Gestores, depois Users
+                allUsers.addAll(result.sortedWith(
+                    compareBy<User> {
+                        when (it.profileType.uppercase()) {
+                            "ADMIN" -> 0
+                            "GESTOR" -> 1
+                            else -> 2
+                        }
+                    }.thenBy { it.name }
+                ))
                 updateStats()
                 applyFilters()
             }
@@ -132,7 +141,7 @@ class ManageUsersActivity : AppCompatActivity() {
             val matchesSearch = user.name.lowercase().contains(query) || user.email.lowercase().contains(query)
             val matchesFilter = when (selectedFilter) {
                 "admin" -> user.profileType.equals("ADMIN", true)
-                "manager" -> user.profileType.equals("MANAGER", true)
+                "gestor" -> user.profileType.equals("GESTOR", true)
                 "user" -> user.profileType.equals("USER", true)
                 else -> true
             }
@@ -147,7 +156,7 @@ class ManageUsersActivity : AppCompatActivity() {
     private fun updateStats() {
         statTotal.text = allUsers.size.toString()
         statAdmins.text = allUsers.count { it.profileType.equals("ADMIN", true) }.toString()
-        statManagers.text = allUsers.count { it.profileType.equals("MANAGER", true) }.toString()
+        statManagers.text = allUsers.count { it.profileType.equals("GESTOR", true) }.toString()
         statUsers.text = allUsers.count { it.profileType.equals("USER", true) }.toString()
     }
 

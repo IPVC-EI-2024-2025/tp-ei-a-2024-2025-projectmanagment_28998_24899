@@ -35,4 +35,16 @@ interface ProjectService {
     suspend fun deleteProject(
         @Url url: String
     ): Response<List<Project>>
+
+    @GET
+    suspend fun getProjectsByManager(
+        @Url url: String,
+        @retrofit2.http.Header("Authorization") token: String
+    ): Response<List<Project>>
+
+    @GET
+    suspend fun getProjectById(
+        @Url url: String
+    ): Response<List<Project>>
+
 }

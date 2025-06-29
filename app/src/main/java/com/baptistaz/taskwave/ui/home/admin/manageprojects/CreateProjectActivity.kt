@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
+import User
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -12,7 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
+import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.util.UUID
 
@@ -24,6 +27,9 @@ class CreateProjectActivity : AppCompatActivity() {
     private lateinit var inputEndDate: EditText
     private lateinit var spinnerStatus: Spinner
     private lateinit var buttonCreate: Button
+    private lateinit var spinnerManager: Spinner
+
+    private var managers: List<User> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,10 +48,20 @@ class CreateProjectActivity : AppCompatActivity() {
         inputEndDate = findViewById(R.id.input_end_date)
         spinnerStatus = findViewById(R.id.spinner_status)
         buttonCreate = findViewById(R.id.button_create_project)
+        spinnerManager = findViewById(R.id.spinner_manager)
 
-        // Setup do spinner
+        // Setup do spinner de status
         val statusOptions = listOf("active", "completed")
         spinnerStatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, statusOptions)
+
+        // Popular spinner de managers
+        val token = SessionManager.getAccessToken(this) ?: return
+        lifecycleScope.launch {
+            managers = UserRepository().getAllManagers(token) ?: emptyList()
+            Log.d("CREATE_PROJECT", "Gestores recebidos: ${managers.size} - $managers")
+            val names = managers.map { it.name }
+            spinnerManager.adapter = ArrayAdapter(this@CreateProjectActivity, android.R.layout.simple_spinner_dropdown_item, names)
+        }
 
         // Clique no botão
         buttonCreate.setOnClickListener {
@@ -54,6 +70,8 @@ class CreateProjectActivity : AppCompatActivity() {
             val status = spinnerStatus.selectedItem.toString().replaceFirstChar { it.uppercase() }
             val startDate = inputStartDate.text.toString()
             val endDate = inputEndDate.text.toString()
+            val selectedManager = managers.getOrNull(spinnerManager.selectedItemPosition)
+            val idManager = selectedManager?.id_user
 
             val project = Project(
                 idProject = UUID.randomUUID().toString(),
@@ -61,7 +79,8 @@ class CreateProjectActivity : AppCompatActivity() {
                 description = description,
                 status = status,
                 startDate = startDate,
-                endDate = endDate
+                endDate = endDate,
+                idManager = idManager
             )
 
             // Enviar para Supabase
@@ -69,11 +88,8 @@ class CreateProjectActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     Log.d("CREATE_PROJECT", "Enviando projeto: $project")
-
                     val result = repository.createProject(project)
-
                     Log.d("CREATE_PROJECT", "Projeto criado com sucesso: $result")
-
                     Toast.makeText(this@CreateProjectActivity, "Projeto criado com sucesso!", Toast.LENGTH_SHORT).show()
                     finish() // Voltar atrás
                 } catch (e: Exception) {
@@ -81,7 +97,6 @@ class CreateProjectActivity : AppCompatActivity() {
                     Toast.makeText(this@CreateProjectActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
-
         }
     }
 

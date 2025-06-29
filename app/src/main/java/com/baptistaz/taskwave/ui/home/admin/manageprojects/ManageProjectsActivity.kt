@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
+import User
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
+import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.flow.collectLatest
@@ -36,6 +38,8 @@ class ManageProjectsActivity : AppCompatActivity() {
     private lateinit var inputSearch: EditText
     private var fullProjectList: List<Project> = emptyList()
     private lateinit var spinnerFilter: Spinner
+
+    private var managers: List<User> = emptyList()
 
     private val token: String by lazy {
         SessionManager.getAccessToken(this) ?: ""
@@ -69,46 +73,51 @@ class ManageProjectsActivity : AppCompatActivity() {
         spinnerFilter = findViewById(R.id.spinner_filter)
 
         recyclerView = findViewById(R.id.recycler_projects)
-        adapter = ProjectAdapter(
-            emptyList(),
-            context = this,
-            onDelete = { project -> eliminarProjeto(project) }
-        )
 
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
-        val options = listOf("Todos", "Ativos", "Completos")
-        spinnerFilter.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
-
-        spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                applyFilters()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {}
-        }
-
-        inputSearch.addTextChangedListener {
-            applyFilters()
-        }
-
+        // Carrega managers antes de criar o adapter!
+        val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
-            viewModel.projects.collectLatest {
-                fullProjectList = it
-                applyFilters()
-                textTotal.text = viewModel.getTotalCount().toString()
-                textActive.text = viewModel.getActiveCount().toString()
-                textCompleted.text = viewModel.getCompletedCount().toString()
-                Log.d("DEBUG_VIEW", "Lista atualizada: $it")
+            managers = UserRepository().getAllManagers(token) ?: emptyList()
+            adapter = ProjectAdapter(
+                emptyList(),
+                managers,
+                context = this@ManageProjectsActivity,
+                onDelete = { project -> eliminarProjeto(project) }
+            )
+            recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(this@ManageProjectsActivity)
+
+            val options = listOf("Todos", "Ativos", "Completos")
+            spinnerFilter.adapter = ArrayAdapter(this@ManageProjectsActivity, android.R.layout.simple_spinner_dropdown_item, options)
+
+            spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                    applyFilters()
+                }
+                override fun onNothingSelected(parent: AdapterView<*>) {}
             }
-        }
 
-        viewModel.loadProjects()
+            inputSearch.addTextChangedListener {
+                applyFilters()
+            }
 
-        findViewById<Button>(R.id.button_new_project).setOnClickListener {
-            val intent = Intent(this, CreateProjectActivity::class.java)
-            startActivity(intent)
+            lifecycleScope.launch {
+                viewModel.projects.collectLatest {
+                    fullProjectList = it
+                    applyFilters()
+                    textTotal.text = viewModel.getTotalCount().toString()
+                    textActive.text = viewModel.getActiveCount().toString()
+                    textCompleted.text = viewModel.getCompletedCount().toString()
+                    Log.d("DEBUG_VIEW", "Lista atualizada: $it")
+                }
+            }
+
+            viewModel.loadProjects()
+
+            findViewById<Button>(R.id.button_new_project).setOnClickListener {
+                val intent = Intent(this@ManageProjectsActivity, CreateProjectActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -152,7 +161,6 @@ class ManageProjectsActivity : AppCompatActivity() {
             .setNegativeButton("Cancelar", null)
             .show()
     }
-
 
     override fun onSupportNavigateUp(): Boolean {
         finish()
