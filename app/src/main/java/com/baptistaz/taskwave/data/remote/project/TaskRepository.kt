@@ -1,12 +1,29 @@
 package com.baptistaz.taskwave.data.remote.project
 
 import com.baptistaz.taskwave.data.model.Task
+import com.baptistaz.taskwave.data.model.TaskPatch
 
 class TaskRepository(private val service: TaskService) {
-    suspend fun getTasksByProject(projectId: String) = service.getTasksByProject(projectId)
-    suspend fun createTask(task: Task) = service.createTask(task)
-    suspend fun updateTask(idTask: String, task: Task) =
-        service.updateTask("eq.$idTask", task)
-    suspend fun deleteTask(idTask: String) =
-        service.deleteTask("eq.$idTask")
+
+    /* ---------- CRUD ---------- */
+    suspend fun getTasksByProject(projectId: String) =
+        service.getTasksByProject("eq.$projectId")
+
+    suspend fun getTaskById(id: String): Task? =
+        service.getTaskById("eq.$id").firstOrNull()
+
+    suspend fun createTask(task: Task) =
+        service.createTask(task)
+
+    /** Actualização total (todos os campos) */
+    suspend fun updateTask(id: String, task: Task) =
+        service.putTask("eq.$id", task)          // <-- agora chama putTask
+
+    suspend fun deleteTask(id: String) =
+        service.deleteTask("eq.$id")
+
+    /* ---------- Helpers ---------- */
+    /** Altera apenas o estado para COMPLETED */
+    suspend fun markCompleted(id: String) =
+        service.patchTask("eq.$id", TaskPatch(state = "COMPLETED"))
 }

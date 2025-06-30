@@ -28,4 +28,15 @@
 
     <Button android:id="@+id/button_edit_task" android:text="Editar Tarefa"
         android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp"/>
+
+    <!-- imediatamente depois do botão Editar -->
+    <Button
+        android:id="@+id/button_mark_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btn_mark_completed"
+        android:backgroundTint="@color/button_orange"
+        android:visibility="gone" />
+
+
 </LinearLayout>

@@ -33,12 +33,12 @@
             android:minHeight="48dp"
             android:layout_marginTop="12dp"/>
 
-        <Spinner
-            android:id="@+id/spinner_state"
+        <TextView
+            android:id="@+id/text_state"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="48dp"
-            android:layout_marginTop="12dp"/>
+            android:textStyle="bold"
+            android:paddingTop="8dp"/>
 
         <EditText
             android:id="@+id/input_creation_date"

@@ -1,12 +1,14 @@
 package com.baptistaz.taskwave.ui.home.user
 
-import TaskAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.Task
 import com.baptistaz.taskwave.data.model.TaskWithUser
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
@@ -22,57 +24,75 @@ class UserProjectTasksActivity : AppCompatActivity() {
 
     private lateinit var recyclerTasks: RecyclerView
     private lateinit var textProjectName: TextView
-    private lateinit var adapter: TaskAdapter // ou outro adapter simples só para visualização
+    private lateinit var adapter: TaskAdapter
+
+    private lateinit var projectId: String
+    private lateinit var token: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_project_tasks)
 
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
+        /* toolbar */
+        findViewById<Toolbar>(R.id.toolbar).also {
+            setSupportActionBar(it)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            supportActionBar?.title = getString(R.string.tasks)
+        }
 
-        recyclerTasks = findViewById(R.id.recycler_tasks)
+        /* ids vindos do intent / sessão */
+        projectId = intent.getStringExtra("PROJECT_ID") ?: return finish()
+        token     = SessionManager.getAccessToken(this) ?: return finish()
+
+        /* UI refs */
+        recyclerTasks   = findViewById(R.id.recycler_tasks)
         textProjectName = findViewById(R.id.text_project_name)
 
+        /* adapter: onClick devolve um Task */
+        adapter = TaskAdapter(
+            emptyList(),
+            onClick = { task: Task ->
+                val i = Intent(
+                    this@UserProjectTasksActivity,
+                    UserTaskDetailsActivity::class.java
+                ).apply { putExtra("TASK_ID", task.idTask) }
+                startActivity(i)
+            },
+            onDelete = null            // utilizador não pode apagar
+        )
         recyclerTasks.layoutManager = LinearLayoutManager(this)
-        adapter = TaskAdapter(emptyList(), onClick = {}, onDelete = null)
-        recyclerTasks.adapter = adapter
+        recyclerTasks.adapter       = adapter
 
-        val projectId = intent.getStringExtra("PROJECT_ID") ?: return
-        val token = SessionManager.getAccessToken(this) ?: return
+        carregarDados()
+    }
 
-        CoroutineScope(Dispatchers.Main).launch {
-            // Opcional: mostra nome do projeto no topo
-            val projectRepo = ProjectRepository(RetrofitInstance.getProjectService(token))
-            val project = projectRepo.getProjectById(projectId)
-            textProjectName.text = project?.name ?: ""
+    /* --------- network + binding --------- */
+    private fun carregarDados() = CoroutineScope(Dispatchers.Main).launch {
+        /* nome do projecto */
+        val projRepo   = ProjectRepository(RetrofitInstance.getProjectService(token))
+        val project    = projRepo.getProjectById(projectId)
+        textProjectName.text = project?.name ?: ""
 
-            // Busca tasks do projeto
-            val repo = TaskRepository(RetrofitInstance.taskService)
-            val tasks = repo.getTasksByProject("eq.$projectId")
-            // Faz o mapping para TaskWithUser se quiseres mostrar o responsável
-            val userTaskRepo = UserTaskRepository(RetrofitInstance.userTaskService)
-            val allUserTasks = tasks.flatMap { userTaskRepo.getUserTasksByTask(it.idTask) }
+        /* tarefas do projecto */
+        val taskRepo   = TaskRepository(RetrofitInstance.taskService)
+        val tasks      = taskRepo.getTasksByProject(projectId)          // já só «projectId»
+        val utRepo     = UserTaskRepository(RetrofitInstance.userTaskService)
+        val allUT      = tasks.flatMap { utRepo.getUserTasksByTask(it.idTask) }
 
-            val userRepo = UserRepository()
-            val allUsers = userRepo.getAllUsers(token) ?: emptyList()
-            val mapUserIdToName = allUsers.associate { it.id_user to it.name }
-            val mapTaskIdToUserName = allUserTasks.associate { ut ->
-                ut.idTask to (mapUserIdToName[ut.idUser] ?: "N/A")
-            }
-            val tasksWithUsers = tasks.map { task ->
-                TaskWithUser(task, mapTaskIdToUserName[task.idTask] ?: "Not assigned")
-            }
+        /* mapa userId → nome */
+        val users      = UserRepository().getAllUsers(token) ?: emptyList()
+        val mapIdName  = users.associate { it.id_user to it.name }
 
-            adapter.updateData(tasksWithUsers)
+        /* lista final */
+        val listTwu = tasks.map { t ->
+            val respName = allUT.firstOrNull { it.idTask == t.idTask }?.let {
+                mapIdName[it.idUser]
+            } ?: getString(R.string.not_assigned)
+            TaskWithUser(t, respName)
         }
+
+        adapter.updateData(listTwu)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
-    }
-
+    override fun onSupportNavigateUp(): Boolean = finish().let { true }
 }

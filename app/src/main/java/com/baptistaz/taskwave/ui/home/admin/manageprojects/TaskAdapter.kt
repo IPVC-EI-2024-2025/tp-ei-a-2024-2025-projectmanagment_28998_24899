@@ -1,3 +1,5 @@
+package com.baptistaz.taskwave.ui.home.user     // ou o teu package real
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,48 +11,49 @@ import com.baptistaz.taskwave.data.model.Task
 import com.baptistaz.taskwave.data.model.TaskWithUser
 
 class TaskAdapter(
-    private var tasksWithUsers: List<TaskWithUser>,
+    private var data: List<TaskWithUser>,
     private val onClick: (Task) -> Unit,
     private val onDelete: ((Task) -> Unit)? = null
-) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
+) : RecyclerView.Adapter<TaskAdapter.Holder>() {
 
-    class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val title: TextView = view.findViewById(R.id.text_task_title)
-        val description: TextView = view.findViewById(R.id.text_task_description)
-        val status: TextView = view.findViewById(R.id.text_task_status)
-        val dueDate: TextView = view.findViewById(R.id.text_task_due_date)
-        val responsible: TextView = view.findViewById(R.id.text_task_responsavel)
-        val buttonDelete: Button = view.findViewById(R.id.button_delete_task)
+    class Holder(v: View) : RecyclerView.ViewHolder(v) {
+        val title       : TextView = v.findViewById(R.id.text_task_title)
+        val description : TextView = v.findViewById(R.id.text_task_description)
+        val status      : TextView = v.findViewById(R.id.text_task_status)
+        val dueDate     : TextView = v.findViewById(R.id.text_task_due_date)
+        val responsible : TextView = v.findViewById(R.id.text_task_responsavel)
+        val btnDelete   : Button   = v.findViewById(R.id.button_delete_task)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TaskViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false)
-        return TaskViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
+        Holder(LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_task, parent, false))
 
-    override fun onBindViewHolder(holder: TaskViewHolder, position: Int) {
-        val item = tasksWithUsers[position]
-        val task = item.task
-        holder.title.text = task.title
-        holder.description.text = task.description
-        holder.status.text = task.state
-        holder.dueDate.text = task.conclusionDate ?: ""
-        holder.responsible.text = "Responsible: ${item.responsavel ?: "N/A"}"
+    override fun onBindViewHolder(h: Holder, pos: Int) {
+        val twu  = data[pos]
+        val task = twu.task
 
-        holder.itemView.setOnClickListener { onClick(task) }
+        h.title.text       = task.title
+        h.description.text = task.description
+        h.status.text      = task.state
+        h.dueDate.text     = task.conclusionDate ?: ""
+        h.responsible.text = "Responsible: ${twu.responsavel}"
+
+        h.itemView.setOnClickListener { onClick(task) }
+
         if (onDelete != null) {
-            holder.buttonDelete.visibility = View.VISIBLE
-            holder.buttonDelete.setOnClickListener { onDelete.invoke(task) }
+            h.btnDelete.visibility = View.VISIBLE
+            h.btnDelete.setOnClickListener { onDelete.invoke(task) }
         } else {
-            holder.buttonDelete.visibility = View.GONE
-            holder.buttonDelete.setOnClickListener(null)
+            h.btnDelete.visibility = View.GONE
+            h.btnDelete.setOnClickListener(null)
         }
     }
 
-    override fun getItemCount(): Int = tasksWithUsers.size
+    override fun getItemCount(): Int = data.size
 
-    fun updateData(newTasksWithUsers: List<TaskWithUser>) {
-        tasksWithUsers = newTasksWithUsers
+    fun updateData(newData: List<TaskWithUser>) {
+        data = newData
         notifyDataSetChanged()
     }
 }
