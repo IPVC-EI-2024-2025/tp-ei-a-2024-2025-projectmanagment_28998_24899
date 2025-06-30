@@ -86,6 +86,17 @@ class UserHomeActivity : BaseBottomNavActivity() {
                     orientation = LinearLayout.VERTICAL
                     setBackgroundResource(R.drawable.card_bg)
                     setPadding(20, 16, 20, 16)
+
+                    /* ← NOVO: deixa o card reagir ao clique */
+                    isClickable = true
+                    isFocusable = true
+                    setOnClickListener {
+                        val intent = Intent(this@UserHomeActivity,
+                            UserTaskDetailsActivity::class.java).apply {
+                            putExtra("TASK_ID", task.idTask)      // <- passa o id
+                        }
+                        startActivity(intent)
+                    }
                 }
                 val title = TextView(this).apply {
                     text = task.title

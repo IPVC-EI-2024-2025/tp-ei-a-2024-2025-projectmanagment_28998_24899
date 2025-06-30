@@ -10,4 +10,6 @@
     <color name="gray">#9E9E9E</color>
     <color name="red">#EA4335</color>
     <color name="gray_dark">#616161</color>
+    <color name="button_orange_light">#FFF4E3</color>
+
 </resources>
