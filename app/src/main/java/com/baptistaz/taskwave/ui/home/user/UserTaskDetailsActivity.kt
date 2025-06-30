@@ -9,33 +9,30 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.TaskUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.TaskUpdateRepository
 import com.baptistaz.taskwave.utils.SessionManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
 class UserTaskDetailsActivity : AppCompatActivity() {
 
-    private lateinit var adapter: UpdateAdapter
+    private lateinit var adapter : UpdateAdapter
     private lateinit var repoUpd : TaskUpdateRepository
     private lateinit var repoTask: TaskRepository
     private lateinit var taskId  : String
 
-    /* ---------- ActivityResult para voltar a recarregar depois de criar update ---------- */
+    /* volta do Add/Edit para refrescar a lista */
     private val addUpdLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
-    ) { res ->
-        if (res.resultCode == RESULT_OK) carregarUpdates()
-    }
-    /* ----------------------------------------------------------------------------------- */
+    ) { if (it.resultCode == RESULT_OK) carregarUpdates() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_task_details)
 
-        /* toolbar com seta back */
+        /* Toolbar ← */
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -45,36 +42,56 @@ class UserTaskDetailsActivity : AppCompatActivity() {
         repoUpd  = TaskUpdateRepository(RetrofitInstance.getTaskUpdateService(token))
         repoTask = TaskRepository       (RetrofitInstance.taskService)
 
-        adapter = UpdateAdapter(emptyList()) { /* long-click  (editar / apagar) */ }
+        adapter = UpdateAdapter(
+            mutableListOf(),
+            onFooterClick = { openAddUpdate() },
+            onItemClick   = { upd ->
+                val it = Intent(this, UpdateDetailsActivity::class.java)
+                it.putExtra("UPDATE", upd)
+                it.putExtra("TASK_ID", taskId)
+                startActivity(it)
+            }
+        )
 
         findViewById<RecyclerView>(R.id.recycler_updates).apply {
             layoutManager = LinearLayoutManager(this@UserTaskDetailsActivity)
             adapter       = this@UserTaskDetailsActivity.adapter
         }
 
-        /* ---------- FAB “+” para adicionar update ---------- */
-        findViewById<FloatingActionButton>(R.id.fab_add).setOnClickListener {
-            openAddUpdate()
-        }
-        /* --------------------------------------------------- */
-
         carregarUpdates()
     }
 
+    /* ---------- abrir formulário de criação ---------- */
     private fun openAddUpdate() {
-        val it = Intent(this, AddUpdateActivity::class.java)
-        it.putExtra("TASK_ID", taskId)
-        addUpdLauncher.launch(it)
+        val i = Intent(this, AddUpdateActivity::class.java).apply {
+            putExtra("TASK_ID", taskId)
+        }
+        addUpdLauncher.launch(i)
     }
 
+    /* ---------- abrir ecrã de detalhes ---------- */
+    private fun openDetails(upd: TaskUpdate) {
+        val i = Intent(this, UpdateDetailsActivity::class.java).apply {
+            putExtra("UPDATE",   upd)
+            putExtra("TASK_ID", taskId)
+        }
+        startActivity(i)
+    }
+
+    /* ---------- carregar / refrescar lista ---------- */
     private fun carregarUpdates() = lifecycleScope.launch {
         try {
             val updates = repoUpd.list(taskId).sortedBy { it.date }
-            adapter.update(updates)
+            adapter.setData(updates)
         } catch (e: Exception) {
             Toast.makeText(this@UserTaskDetailsActivity,
                 "Erro ao carregar updates: ${e.message}", Toast.LENGTH_LONG).show()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        carregarUpdates()
     }
 
     override fun onSupportNavigateUp(): Boolean { finish(); return true }

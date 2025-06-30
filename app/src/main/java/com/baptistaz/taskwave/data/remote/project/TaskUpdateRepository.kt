@@ -14,4 +14,7 @@ class TaskUpdateRepository(private val service: TaskUpdateService) {
 
     suspend fun delete(id: String) =
         service.deleteUpdate("eq.$id")
+
+    suspend fun getById(id: String): TaskUpdate =
+        service.getById("eq.$id").first()
 }

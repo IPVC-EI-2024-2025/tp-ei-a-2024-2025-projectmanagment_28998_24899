@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="12dp">
+
+    <!-- COLUNA DA TIMELINE (24 dp) -->
+    <View
+        android:id="@+id/line_top"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="@color/button_orange"
+        app:layout_constraintBottom_toTopOf="@+id/marker"
+        app:layout_constraintEnd_toEndOf="@+id/marker"
+        app:layout_constraintStart_toStartOf="@+id/marker"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/marker"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_timeline_arrow"
+        android:background="@drawable/bg_circle_orange2"
+        android:padding="4dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/button_orange" />
+
+    <View
+        android:id="@+id/line_bottom"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:background="@color/button_orange"
+        app:layout_constraintTop_toBottomOf="@+id/marker"
+        app:layout_constraintEnd_toEndOf="@+id/marker"
+        app:layout_constraintStart_toStartOf="@+id/marker"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- CARTÃO DE CONTEÚDO -->
+    <LinearLayout
+        android:id="@+id/content_box"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toEndOf="@id/marker"
+        app:layout_constraintTop_toTopOf="@id/marker"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_notes"
+            android:textColor="@color/gray_dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_meta"
+            android:textSize="12sp"
+            android:textColor="@color/gray"
+            android:layout_marginTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

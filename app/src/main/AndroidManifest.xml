@@ -55,6 +55,11 @@
                   android:exported="false"/>
         <activity android:name=".ui.home.user.AddUpdateActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.user.UpdateDetailsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.user.EditUpdateActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+
 
 
 

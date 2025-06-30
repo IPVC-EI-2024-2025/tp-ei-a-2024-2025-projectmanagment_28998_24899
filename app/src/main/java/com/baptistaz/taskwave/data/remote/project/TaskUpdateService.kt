@@ -32,4 +32,10 @@ interface TaskUpdateService {
     suspend fun deleteUpdate(
         @Query("id_update") updId: String
     ): Response<Unit>
+
+    @GET("taskupdate")
+    suspend fun getById(
+        @Query("id_update") idFilter: String,           // "eq.<uuid>"
+        @Query("select")    sel: String = "*"           // devolve tudo
+    ): List<TaskUpdate>
 }
