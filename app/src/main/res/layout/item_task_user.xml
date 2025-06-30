@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@drawable/card_bg"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp">
+
+    <TextView
+        android:id="@+id/text_task_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Task Title"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/black"/>
+
+    <TextView
+        android:id="@+id/text_task_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:textSize="14sp"
+        android:layout_marginBottom="4dp"/>
+
+    <TextView
+        android:id="@+id/text_task_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="IN_PROGRESS"
+        android:textSize="13sp"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:id="@+id/text_task_due_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2025-03-03"
+        android:textSize="13sp"
+        android:layout_marginBottom="2dp"/>
+
+    <TextView
+        android:id="@+id/text_task_responsavel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Responsible: ..."
+        android:textSize="13sp"
+        android:textStyle="italic"/>
+</LinearLayout>

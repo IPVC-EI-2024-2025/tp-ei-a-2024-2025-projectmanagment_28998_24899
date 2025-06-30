@@ -46,6 +46,10 @@
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.user.UserSettingsActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.user.UserProjectDetailsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.user.UserProjectTasksActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
 
 
 

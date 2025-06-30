@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.user
 
 import User
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
@@ -68,7 +69,9 @@ class UserHomeActivity : BaseBottomNavActivity() {
                 setBackgroundResource(R.drawable.card_bg)
                 setTextColor(getColor(R.color.button_orange))
                 setOnClickListener {
-                    // Detalhes do projeto
+                    val intent = Intent(this@UserHomeActivity, UserProjectDetailsActivity::class.java)
+                    intent.putExtra("PROJECT_ID", proj.idProject)
+                    startActivity(intent)
                 }
             }
             layoutProjects.addView(btn)

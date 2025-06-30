@@ -11,7 +11,7 @@ import com.baptistaz.taskwave.data.model.TaskWithUser
 class TaskAdapter(
     private var tasksWithUsers: List<TaskWithUser>,
     private val onClick: (Task) -> Unit,
-    private val onDelete: (Task) -> Unit
+    private val onDelete: ((Task) -> Unit)? = null
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -38,7 +38,13 @@ class TaskAdapter(
         holder.responsible.text = "Responsible: ${item.responsavel ?: "N/A"}"
 
         holder.itemView.setOnClickListener { onClick(task) }
-        holder.buttonDelete.setOnClickListener { onDelete(task) }
+        if (onDelete != null) {
+            holder.buttonDelete.visibility = View.VISIBLE
+            holder.buttonDelete.setOnClickListener { onDelete.invoke(task) }
+        } else {
+            holder.buttonDelete.visibility = View.GONE
+            holder.buttonDelete.setOnClickListener(null)
+        }
     }
 
     override fun getItemCount(): Int = tasksWithUsers.size
