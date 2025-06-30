@@ -72,6 +72,7 @@ class LoginActivity : AppCompatActivity() {
 
                             if (user != null) {
                                 Log.d("LOGIN_DEBUG", "Perfil carregado: $user")
+                                SessionManager.saveUserId(this@LoginActivity, user.id_user ?: "")
                                 Toast.makeText(this@LoginActivity, "Perfil: ${user.profileType}", Toast.LENGTH_SHORT).show()
 
                                 when (user.profileType.uppercase()) {

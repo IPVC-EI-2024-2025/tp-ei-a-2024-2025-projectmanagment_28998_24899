@@ -43,13 +43,22 @@
     <string name="btn_mark_completed">Marcar concluída</string>
     <string name="msg_task_completed">Tarefa marcada como concluída!</string>
 
-    <string name="mark_completed">Marcar Concluída</string>
     <string name="toast_task_completed">Tarefa concluída!</string>
 
     <string name="project_tasks">Tasks</string>
     <string name="not_assigned">Not assigned</string>
 
     <string name="tasks">Tasks</string>
+
+    <string name="greeting_user">Hi, %1$s 👋</string>
+    <string name="history">History</string>
+    <string name="no_updates_yet">No updates yet</string>
+    <string name="mark_completed">Mark Completed</string>
+    <string name="no_date">No Date</string>
+
+    <string name="btn_history">History</string>
+
+
 
 
 

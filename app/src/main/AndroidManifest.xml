@@ -61,6 +61,9 @@
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
 
 
+        <activity android:name=".ui.home.user.TaskHistoryActivity"
+                  android:exported="false"
+                  android:theme="@style/Theme.TaskWave.NoActionBar" />
 
 
         <activity android:name=".ui.home.admin.manageprojects.ManageProjectsActivity"

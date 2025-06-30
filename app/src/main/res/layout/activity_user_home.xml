@@ -68,6 +68,15 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginBottom="8dp"/>
 
+            <Button
+                android:id="@+id/button_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_history"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@color/background_white"
+                android:layout_marginTop="8dp"/>
+
             <LinearLayout
                 android:id="@+id/layout_tasks"
                 android:layout_width="match_parent"
