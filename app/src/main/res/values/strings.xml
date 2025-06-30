@@ -58,6 +58,19 @@
 
     <string name="btn_history">History</string>
 
+    <string name="label_active_tasks">Active Tasks</string>
+    <string name="label_completed_tasks">Completed Tasks</string>
+    <string name="btn_create_task">Create Task</string>
+
+    <string name="responsible_fmt">Responsible: %1$s</string>
+
+    <string name="del_task_title">Delete Task</string>
+    <string name="del_task_msg">Are you sure you want to delete “%1$s”?</string>
+    <string name="yes">Yes</string>
+    <string name="cancel">Cancel</string>
+    <string name="toast_task_deleted">Task deleted!</string>
+
+
 
 
 

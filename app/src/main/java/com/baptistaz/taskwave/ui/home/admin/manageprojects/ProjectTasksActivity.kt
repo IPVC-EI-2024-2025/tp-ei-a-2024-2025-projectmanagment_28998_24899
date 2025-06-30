@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
+import TaskAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -15,14 +16,15 @@ import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
-import com.baptistaz.taskwave.ui.home.user.TaskAdapter
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
 class ProjectTasksActivity : AppCompatActivity() {
 
-    private lateinit var adapter: TaskAdapter
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapterActive: TaskAdapter
+    private lateinit var adapterCompleted: TaskAdapter
+    private lateinit var recyclerActive: RecyclerView
+    private lateinit var recyclerCompleted: RecyclerView
     private lateinit var buttonCreateTask: Button
     private lateinit var repository: TaskRepository
     private lateinit var projectId: String
@@ -31,27 +33,21 @@ class ProjectTasksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project_tasks)
 
-        /* toolbar */
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Project Tasks"
+        supportActionBar?.title = getString(R.string.tasks)
 
-        /* id do projecto vindo do intent */
         projectId = intent.getStringExtra("project_id") ?: return
         repository = TaskRepository(RetrofitInstance.taskService)
 
-        /* views */
-        recyclerView     = findViewById(R.id.recycler_tasks)
+        recyclerActive = findViewById(R.id.recycler_active)
+        recyclerCompleted = findViewById(R.id.recycler_completed)
         buttonCreateTask = findViewById(R.id.button_create_task)
 
-        /* adapter */
-        adapter = TaskAdapter(
+        // Adapter para tarefas em progresso (com editar/remover)
+        adapterActive = TaskAdapter(
             emptyList(),
-            onClick = { task ->
-                startActivity(
-                    Intent(this, TaskDetailActivity::class.java).putExtra("task", task)
-                )
-            },
+            onClick = { task -> startActivity(Intent(this, TaskDetailActivity::class.java).putExtra("task", task)) },
             onDelete = { task ->
                 AlertDialog.Builder(this)
                     .setTitle("Delete Task")
@@ -63,28 +59,35 @@ class ProjectTasksActivity : AppCompatActivity() {
                                 Toast.makeText(this@ProjectTasksActivity, "Task deleted!", Toast.LENGTH_SHORT).show()
                                 loadTasksWithResponsible()
                             } catch (e: Exception) {
-                                Toast.makeText(this@ProjectTasksActivity,
-                                    "Error deleting: ${e.message}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@ProjectTasksActivity, "Error deleting: ${e.message}", Toast.LENGTH_LONG).show()
                             }
                         }
                     }
                     .setNegativeButton("Cancel", null)
                     .show()
-            }
+            },
+            canEdit = true
         )
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter       = adapter
+        // Adapter para concluídas (apenas visualizar)
+        adapterCompleted = TaskAdapter(
+            emptyList(),
+            onClick = { /* Só detalhes, ou nada */ },
+            onDelete = null,
+            canEdit = false
+        )
 
-        /* primeira carga */
-        loadTasksWithResponsible()
+        recyclerActive.layoutManager = LinearLayoutManager(this)
+        recyclerActive.adapter = adapterActive
+
+        recyclerCompleted.layoutManager = LinearLayoutManager(this)
+        recyclerCompleted.adapter = adapterCompleted
 
         buttonCreateTask.setOnClickListener {
-            startActivity(
-                Intent(this, CreateTaskActivity::class.java)
-                    .putExtra("project_id", projectId)
-            )
+            startActivity(Intent(this, CreateTaskActivity::class.java).putExtra("project_id", projectId))
         }
+
+        loadTasksWithResponsible()
     }
 
     override fun onResume() {
@@ -95,29 +98,31 @@ class ProjectTasksActivity : AppCompatActivity() {
     private fun loadTasksWithResponsible() {
         lifecycleScope.launch {
             try {
-                /* 👇 AGORA enviamos a variável correcta */
                 val tasks = repository.getTasksByProject(projectId)
-
-                /* ---- obter responsáveis ---- */
                 val utRepo = UserTaskRepository(RetrofitInstance.userTaskService)
                 val allUserTasks = tasks.flatMap { utRepo.getUserTasksByTask(it.idTask) }
-
                 val token  = SessionManager.getAccessToken(this@ProjectTasksActivity) ?: ""
                 val users  = UserRepository().getAllUsers(token) ?: emptyList()
                 val mapId2Name = users.associate { it.id_user to it.name }
 
-                val list = tasks.map { t ->
-                    val responsible = allUserTasks
-                        .firstOrNull { it.idTask == t.idTask }
-                        ?.let { mapId2Name[it.idUser] } ?: "Not assigned"
+                // Separar tarefas por estado
+                val active = tasks.filter { it.state == "IN_PROGRESS" }
+                val completed = tasks.filter { it.state == "COMPLETED" }
+
+                val activeList = active.map { t ->
+                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }?.let { mapId2Name[it.idUser] } ?: "Not assigned"
+                    TaskWithUser(t, responsible)
+                }
+                val completedList = completed.map { t ->
+                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }?.let { mapId2Name[it.idUser] } ?: "Not assigned"
                     TaskWithUser(t, responsible)
                 }
 
-                adapter.updateData(list)
+                adapterActive.updateData(activeList)
+                adapterCompleted.updateData(completedList)
 
             } catch (e: Exception) {
-                Toast.makeText(this@ProjectTasksActivity,
-                    "Error loading tasks: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ProjectTasksActivity, "Error loading tasks: ${e.message}", Toast.LENGTH_SHORT).show()
             }
         }
     }

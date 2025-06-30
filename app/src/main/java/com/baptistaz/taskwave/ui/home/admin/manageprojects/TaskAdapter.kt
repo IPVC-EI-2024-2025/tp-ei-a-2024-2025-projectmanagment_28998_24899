@@ -1,5 +1,3 @@
-package com.baptistaz.taskwave.ui.home.user     // ou o teu package real
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +11,8 @@ import com.baptistaz.taskwave.data.model.TaskWithUser
 class TaskAdapter(
     private var data: List<TaskWithUser>,
     private val onClick: (Task) -> Unit,
-    private val onDelete: ((Task) -> Unit)? = null
+    private val onDelete: ((Task) -> Unit)? = null,
+    private val canEdit: Boolean = false
 ) : RecyclerView.Adapter<TaskAdapter.Holder>() {
 
     class Holder(v: View) : RecyclerView.ViewHolder(v) {
@@ -22,12 +21,11 @@ class TaskAdapter(
         val status      : TextView = v.findViewById(R.id.text_task_status)
         val dueDate     : TextView = v.findViewById(R.id.text_task_due_date)
         val responsible : TextView = v.findViewById(R.id.text_task_responsavel)
-        val btnDelete   : Button   = v.findViewById(R.id.button_delete_task)
+        val btnDelete   : Button = v.findViewById(R.id.button_delete_task)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder =
-        Holder(LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_task, parent, false))
+        Holder(LayoutInflater.from(parent.context).inflate(R.layout.item_task, parent, false))
 
     override fun onBindViewHolder(h: Holder, pos: Int) {
         val twu  = data[pos]
@@ -41,9 +39,9 @@ class TaskAdapter(
 
         h.itemView.setOnClickListener { onClick(task) }
 
-        if (onDelete != null) {
+        if (canEdit && onDelete != null) {
             h.btnDelete.visibility = View.VISIBLE
-            h.btnDelete.setOnClickListener { onDelete.invoke(task) }
+            h.btnDelete.setOnClickListener { onDelete?.invoke(task) }
         } else {
             h.btnDelete.visibility = View.GONE
             h.btnDelete.setOnClickListener(null)

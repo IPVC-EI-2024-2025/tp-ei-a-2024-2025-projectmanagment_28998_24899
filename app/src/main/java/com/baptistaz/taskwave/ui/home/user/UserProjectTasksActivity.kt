@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.user
 
+import TaskAdapter
 import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
