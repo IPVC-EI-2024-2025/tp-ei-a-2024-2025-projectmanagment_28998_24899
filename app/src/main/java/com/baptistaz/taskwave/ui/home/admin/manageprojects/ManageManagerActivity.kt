@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
 import User
+import android.content.Intent
 import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -21,88 +22,92 @@ import kotlinx.coroutines.launch
 
 class ManageManagerActivity : AppCompatActivity() {
 
-    private lateinit var textProjectTitle: TextView
-    private lateinit var textCurrentManager: TextView
-    private lateinit var spinnerNewManager: Spinner
-    private lateinit var buttonUpdateManager: Button
+    private lateinit var textProjectTitle : TextView
+    private lateinit var textCurrentMgr   : TextView
+    private lateinit var spinnerMgr       : Spinner
+    private lateinit var buttonUpdate     : Button
 
-    private var managers: List<User> = emptyList()
-    private var selectedManager: User? = null
-    private var project: Project? = null
+    private var managers : List<User> = emptyList()
+    private var selected : User?      = null
+    private lateinit var project      : Project        // agora non-null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_manager)
 
-        textProjectTitle = findViewById(R.id.text_project_title)
-        textCurrentManager = findViewById(R.id.text_current_manager)
-        spinnerNewManager = findViewById(R.id.spinner_new_manager)
-        buttonUpdateManager = findViewById(R.id.button_update_manager)
-
-        // Toolbar Back
+        /* toolbar back */
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        // Recebe o projeto
+        textProjectTitle = findViewById(R.id.text_project_title)
+        textCurrentMgr   = findViewById(R.id.text_current_manager)
+        spinnerMgr       = findViewById(R.id.spinner_new_manager)
+        buttonUpdate     = findViewById(R.id.button_update_manager)
+
+        /* ----- projecto recebido ----- */
         project = intent.getSerializableExtra("project") as? Project
+            ?: return finish()               // safety
+
+        textProjectTitle.text = project.name
+
+        /* ----- carrega gestores ----- */
         val token = SessionManager.getAccessToken(this) ?: return
+        lifecycleScope.launch {
+            managers = UserRepository().getAllManagers(token) ?: emptyList()
 
-        project?.let { proj ->
-            textProjectTitle.text = proj.name
+            val current = managers.firstOrNull { it.id_user == project.idManager }
+            textCurrentMgr.text = current?.name ?: "No manager"
 
-            lifecycleScope.launch {
-                managers = UserRepository().getAllManagers(token) ?: emptyList()
+            spinnerMgr.adapter = ArrayAdapter(
+                this@ManageManagerActivity,
+                android.R.layout.simple_spinner_dropdown_item,
+                managers.map { it.name }
+            )
+            /* pré-selecciona */
+            managers.indexOfFirst { it.id_user == project.idManager }
+                .takeIf { it >= 0 }?.let { spinnerMgr.setSelection(it) }
 
-                // Nome do manager atual
-                val currentManager = managers.firstOrNull { it.id_user == proj.idManager }
-                textCurrentManager.text = currentManager?.name ?: "No manager"
-
-                // Spinner com todos os managers
-                val managerNames = managers.map { it.name }
-                spinnerNewManager.adapter = ArrayAdapter(this@ManageManagerActivity, android.R.layout.simple_spinner_dropdown_item, managerNames)
-
-                // Se já existe manager, seleciona-o
-                val currentIdx = managers.indexOfFirst { it.id_user == proj.idManager }
-                if (currentIdx >= 0) spinnerNewManager.setSelection(currentIdx)
-
-                spinnerNewManager.setOnItemSelectedListener(object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
-                        selectedManager = managers.getOrNull(position)
-                    }
-                    override fun onNothingSelected(parent: AdapterView<*>?) {}
-                })
+            spinnerMgr.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(p: AdapterView<*>?, v: android.view.View?, pos: Int, id: Long) {
+                    selected = managers.getOrNull(pos)
+                }
+                override fun onNothingSelected(p: AdapterView<*>?) {}
             }
         }
 
-        buttonUpdateManager.setOnClickListener {
-            val proj = project ?: return@setOnClickListener
-            val manager = selectedManager ?: return@setOnClickListener
-            val token = SessionManager.getAccessToken(this) ?: return@setOnClickListener
+        /* ----- PATCH + devolver resultado ----- */
+        buttonUpdate.setOnClickListener {
+            val mgr = selected ?: return@setOnClickListener
+            if (mgr.id_user == project.idManager) {          // nada mudou
+                Toast.makeText(this, "Já está atribuído a esse gestor.", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             lifecycleScope.launch {
                 try {
                     val repo = ProjectRepository(RetrofitInstance.getProjectService(token))
-                    val update = ProjectUpdate(
-                        id_project = proj.idProject,
-                        name = proj.name,
-                        description = proj.description,
-                        status = proj.status,
-                        start_date = proj.startDate,
-                        end_date = proj.endDate,
-                        id_manager = manager.id_user
+                    val body = ProjectUpdate(
+                        id_project  = project.idProject,
+                        name        = project.name,
+                        description = project.description,
+                        status      = project.status,
+                        start_date  = project.startDate,
+                        end_date    = project.endDate,
+                        id_manager  = mgr.id_user
                     )
-                    repo.updateProject(proj.idProject, update)
-                    Toast.makeText(this@ManageManagerActivity, "Manager updated!", Toast.LENGTH_SHORT).show()
-                    finish() // Ou podes dar NavUtils.navigateUpFromSameTask(this@ManageManagerActivity)
+                    repo.updateProject(project.idProject, body)
+
+                    /* constrói versão actualizada para devolver */
+                    val updatedProj = project.copy(idManager = mgr.id_user)
+                    setResult(RESULT_OK, Intent().putExtra("project", updatedProj))
+                    Toast.makeText(this@ManageManagerActivity, "Manager actualizado!", Toast.LENGTH_SHORT).show()
+                    finish()
                 } catch (e: Exception) {
-                    Toast.makeText(this@ManageManagerActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ManageManagerActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
-    }
+    override fun onSupportNavigateUp(): Boolean = finish().let { true }
 }

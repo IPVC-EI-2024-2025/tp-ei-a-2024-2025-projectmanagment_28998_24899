@@ -21,116 +21,113 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 class EditTaskActivity : AppCompatActivity() {
-    private lateinit var inputTitle: EditText
-    private lateinit var inputDescription: EditText
-    private lateinit var spinnerState: Spinner
-    private lateinit var inputCreationDate: EditText
-    private lateinit var inputConclusionDate: EditText
-    private lateinit var spinnerPriority: Spinner
-    private lateinit var spinnerAssignUser: Spinner
-    private lateinit var buttonSave: Button
-    private lateinit var task: Task
 
-    private var userList: List<User> = emptyList()
+    private lateinit var inputTitle         : EditText
+    private lateinit var inputDescription   : EditText
+    private lateinit var spinnerState       : Spinner
+    private lateinit var inputCreationDate  : EditText
+    private lateinit var inputConclusionDate: EditText
+    private lateinit var spinnerPriority    : Spinner
+    private lateinit var spinnerAssignUser  : Spinner
+    private lateinit var buttonSave         : Button
+    private lateinit var task               : Task
+
+    private var users : List<User> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_task)
 
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Editar Tarefa"
 
-        // Recebe a tarefa via intent
-        task = intent.getSerializableExtra("task") as Task
+        task = intent.getSerializableExtra("task") as? Task ?: return finish()
 
-        // Liga componentes
-        inputTitle = findViewById(R.id.input_title)
-        inputDescription = findViewById(R.id.input_description)
-        spinnerState = findViewById(R.id.spinner_state)
-        inputCreationDate = findViewById(R.id.input_creation_date)
+        /* refs */
+        inputTitle          = findViewById(R.id.input_title)
+        inputDescription    = findViewById(R.id.input_description)
+        spinnerState        = findViewById(R.id.spinner_state)
+        inputCreationDate   = findViewById(R.id.input_creation_date)
         inputConclusionDate = findViewById(R.id.input_conclusion_date)
-        spinnerPriority = findViewById(R.id.spinner_priority)
-        spinnerAssignUser = findViewById(R.id.spinner_assign_user)
-        buttonSave = findViewById(R.id.button_save_edit)
+        spinnerPriority     = findViewById(R.id.spinner_priority)
+        spinnerAssignUser   = findViewById(R.id.spinner_assign_user)
+        buttonSave          = findViewById(R.id.button_save_edit)
 
-        // Preenche os campos
+        /* preencher */
         inputTitle.setText(task.title)
         inputDescription.setText(task.description)
         inputCreationDate.setText(task.creationDate)
         inputConclusionDate.setText(task.conclusionDate ?: "")
 
-        val stateOptions = listOf("PENDING", "IN_PROGRESS", "COMPLETED")
-        spinnerState.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, stateOptions)
-        spinnerState.setSelection(stateOptions.indexOf(task.state))
+        spinnerState.adapter    = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
+            listOf("PENDING", "IN_PROGRESS", "COMPLETED"))
+        spinnerPriority.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
+            listOf("LOW", "MEDIUM", "HIGH"))
+        spinnerState.setSelection((spinnerState.adapter as ArrayAdapter<String>).getPosition(task.state))
+        spinnerPriority.setSelection((spinnerPriority.adapter as ArrayAdapter<String>).getPosition(task.priority ?: "LOW"))
 
-        val priorityOptions = listOf("LOW", "MEDIUM", "HIGH")
-        spinnerPriority.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, priorityOptions)
-        spinnerPriority.setSelection(priorityOptions.indexOf(task.priority ?: "LOW"))
-
-        // Carrega users (coroutine)
+        /* carregar users sem Admin */
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
-            val repo = UserRepository()
-            userList = repo.getAllUsers(token) ?: emptyList()
-            val userNames = userList.map { it.name }
+            val all = UserRepository().getAllUsers(token) ?: emptyList()
+            users   = all.filter { !it.profileType.equals("ADMIN", true) }
+
             spinnerAssignUser.adapter = ArrayAdapter(
                 this@EditTaskActivity,
                 android.R.layout.simple_spinner_dropdown_item,
-                userNames
+                users.map { it.name }
             )
 
-            // Pré-seleciona user atual se quiseres (extra)
-            val userTaskRepo = UserTaskRepository(RetrofitInstance.userTaskService)
-            val currentUserTask = userTaskRepo.getUserTasksByTask(task.idTask).firstOrNull()
-            currentUserTask?.let { ut ->
-                val pos = userList.indexOfFirst { it.id_user == ut.idUser }
-                if (pos >= 0) spinnerAssignUser.setSelection(pos)
+            /* seleccionar responsável actual (se existir e não for Admin) */
+            val utRepo = UserTaskRepository(RetrofitInstance.userTaskService)
+            val currentUT = utRepo.getUserTasksByTask(task.idTask).firstOrNull()
+            currentUT?.let { ut ->
+                val idx = users.indexOfFirst { it.id_user == ut.idUser }
+                if (idx >= 0) spinnerAssignUser.setSelection(idx)
             }
         }
 
         buttonSave.setOnClickListener {
-            val updatedTask = task.copy(
-                title = inputTitle.text.toString(),
-                description = inputDescription.text.toString(),
-                state = spinnerState.selectedItem.toString(),
-                creationDate = inputCreationDate.text.toString(),
+            val updated = task.copy(
+                title          = inputTitle.text.toString(),
+                description    = inputDescription.text.toString(),
+                state          = spinnerState.selectedItem.toString(),
+                creationDate   = inputCreationDate.text.toString(),
                 conclusionDate = inputConclusionDate.text.toString().takeIf { it.isNotBlank() },
-                priority = spinnerPriority.selectedItem.toString()
+                priority       = spinnerPriority.selectedItem.toString()
             )
 
-            val repository = TaskRepository(RetrofitInstance.taskService)
-            val userTaskRepo = UserTaskRepository(RetrofitInstance.userTaskService)
+            val repoTask = TaskRepository(RetrofitInstance.taskService)
+            val repoUT   = UserTaskRepository(RetrofitInstance.userTaskService)
 
             lifecycleScope.launch {
                 try {
-                    repository.updateTask(updatedTask.idTask, updatedTask)
+                    /* update tarefa */
+                    repoTask.updateTask(updated.idTask, updated)
 
-                    // Remove associações antigas (se garantires só 1 user por tarefa)
-                    val userTasks = userTaskRepo.getUserTasksByTask(updatedTask.idTask)
-                    userTasks.forEach { userTaskRepo.deleteUserTask(it.idUserTask) }
-
-                    val selectedUser = userList[spinnerAssignUser.selectedItemPosition]
-                    val userId = selectedUser.id_user
-                    if (userId == null) {
-                        Toast.makeText(this@EditTaskActivity, "Erro: utilizador sem ID!", Toast.LENGTH_SHORT).show()
-                        return@launch
+                    /* remover associações antigas */
+                    repoUT.getUserTasksByTask(updated.idTask).forEach {
+                        repoUT.deleteUserTask(it.idUserTask)
                     }
 
-                    val newUserTask = UserTask(
+                    /* novo responsável */
+                    if (users.isEmpty()) {
+                        Toast.makeText(this@EditTaskActivity, "Sem utilizadores elegíveis!", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+                    val selUser = users[spinnerAssignUser.selectedItemPosition]
+                    val link = UserTask(
                         idUserTask = UUID.randomUUID().toString(),
-                        idUser = userId,
-                        idTask = updatedTask.idTask,
+                        idUser     = selUser.id_user ?: "",
+                        idTask     = updated.idTask,
                         registrationDate = null,
-                        status = "ASSIGNED"
+                        status     = "ASSIGNED"
                     )
+                    repoUT.assignUserToTask(link)
 
-                    userTaskRepo.assignUserToTask(newUserTask)
-                    Toast.makeText(this@EditTaskActivity, "Tarefa atualizada e utilizador atribuído!", Toast.LENGTH_SHORT).show()
-                    val resultIntent = intent
-                    resultIntent.putExtra("task", updatedTask)
-                    setResult(RESULT_OK, resultIntent)
+                    Toast.makeText(this@EditTaskActivity, "Tarefa atualizada!", Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK, intent.putExtra("task", updated))
                     finish()
                 } catch (e: Exception) {
                     Toast.makeText(this@EditTaskActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
@@ -139,8 +136,5 @@ class EditTaskActivity : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        finish()
-        return true
-    }
+    override fun onSupportNavigateUp(): Boolean = finish().let { true }
 }

@@ -22,115 +22,105 @@ import java.util.UUID
 
 class CreateTaskActivity : AppCompatActivity() {
 
-    private lateinit var inputTitle: EditText
-    private lateinit var inputDescription: EditText
-    private lateinit var spinnerState: Spinner
-    private lateinit var inputCreationDate: EditText
+    private lateinit var inputTitle         : EditText
+    private lateinit var inputDescription   : EditText
+    private lateinit var spinnerState       : Spinner
+    private lateinit var inputCreationDate  : EditText
     private lateinit var inputConclusionDate: EditText
-    private lateinit var spinnerPriority: Spinner
-    private lateinit var spinnerAssignUser: Spinner
-    private lateinit var buttonCreate: Button
+    private lateinit var spinnerPriority    : Spinner
+    private lateinit var spinnerAssignUser  : Spinner
+    private lateinit var buttonCreate       : Button
 
-    private lateinit var projectId: String
-    private var userList: List<User> = emptyList()
+    private lateinit var projectId : String
+    private var users : List<User> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_task)
 
-        // Toolbar setup
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
+        /* Toolbar */
+        setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Nova Tarefa"
 
-        // Obter o id do projeto
+        /* id do projecto */
         projectId = intent.getStringExtra("project_id") ?: run {
             Toast.makeText(this, "Projeto não encontrado!", Toast.LENGTH_SHORT).show()
             finish(); return
         }
 
-        // Liga componentes
-        inputTitle = findViewById(R.id.input_title)
-        inputDescription = findViewById(R.id.input_description)
-        spinnerState = findViewById(R.id.spinner_state)
-        inputCreationDate = findViewById(R.id.input_creation_date)
+        /* refs */
+        inputTitle          = findViewById(R.id.input_title)
+        inputDescription    = findViewById(R.id.input_description)
+        spinnerState        = findViewById(R.id.spinner_state)
+        inputCreationDate   = findViewById(R.id.input_creation_date)
         inputConclusionDate = findViewById(R.id.input_conclusion_date)
-        spinnerPriority = findViewById(R.id.spinner_priority)
-        spinnerAssignUser = findViewById(R.id.spinner_assign_user)
-        buttonCreate = findViewById(R.id.button_create_task)
+        spinnerPriority     = findViewById(R.id.spinner_priority)
+        spinnerAssignUser   = findViewById(R.id.spinner_assign_user)
+        buttonCreate        = findViewById(R.id.button_create_task)
 
-        // Setup spinners
-        val stateOptions = listOf("PENDING", "IN_PROGRESS", "COMPLETED")
-        spinnerState.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, stateOptions)
-        val priorityOptions = listOf("LOW", "MEDIUM", "HIGH")
-        spinnerPriority.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, priorityOptions)
+        /* spinners fixos */
+        spinnerState.adapter    = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
+            listOf("PENDING", "IN_PROGRESS", "COMPLETED"))
+        spinnerPriority.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item,
+            listOf("LOW", "MEDIUM", "HIGH"))
 
-        // Carregar utilizadores para o spinner
+        /* carrega utilizadores (exclui ADMIN) */
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
-            val repo = UserRepository()
-            userList = repo.getAllUsers(token) ?: emptyList()
-            val userNames = userList.map { it.name }
+            val allUsers   = UserRepository().getAllUsers(token) ?: emptyList()
+            users          = allUsers.filter { !it.profileType.equals("ADMIN", true) }
+            val names      = users.map { it.name }
             spinnerAssignUser.adapter = ArrayAdapter(
                 this@CreateTaskActivity,
                 android.R.layout.simple_spinner_dropdown_item,
-                userNames
+                names
             )
         }
 
-        // Criar tarefa e associar utilizador
+        /* criar tarefa */
         buttonCreate.setOnClickListener {
-            val title = inputTitle.text.toString().trim()
-            val description = inputDescription.text.toString().trim()
-            val state = spinnerState.selectedItem.toString()
-            val creationDate = inputCreationDate.text.toString().trim()
-            val conclusionDate = inputConclusionDate.text.toString().trim().takeIf { it.isNotBlank() }
-            val priority = spinnerPriority.selectedItem.toString()
+            val title   = inputTitle.text.toString().trim()
+            val created = inputCreationDate.text.toString().trim()
 
-            if (title.isEmpty() || creationDate.isEmpty()) {
-                Toast.makeText(this, "Preenche pelo menos o título e a data de criação!", Toast.LENGTH_SHORT).show()
+            if (title.isBlank() || created.isBlank()) {
+                Toast.makeText(this, "Título e data de criação são obrigatórios", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (userList.isEmpty() || spinnerAssignUser.selectedItemPosition == Spinner.INVALID_POSITION) {
-                Toast.makeText(this, "Seleciona um utilizador!", Toast.LENGTH_SHORT).show()
+            if (users.isEmpty() || spinnerAssignUser.selectedItemPosition == Spinner.INVALID_POSITION) {
+                Toast.makeText(this, "Nenhum utilizador elegível (Admins não contam).", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val newTaskId = UUID.randomUUID().toString()
-            val newTask = Task(
-                idTask = newTaskId,
-                idProject = projectId,
-                title = title,
-                description = description,
-                state = state,
-                creationDate = creationDate,
-                conclusionDate = conclusionDate,
-                priority = priority
+            val taskId = UUID.randomUUID().toString()
+            val task = Task(
+                idTask         = taskId,
+                idProject      = projectId,
+                title          = title,
+                description    = inputDescription.text.toString(),
+                state          = spinnerState.selectedItem.toString(),
+                creationDate   = created,
+                conclusionDate = inputConclusionDate.text.toString().takeIf { it.isNotBlank() },
+                priority       = spinnerPriority.selectedItem.toString()
             )
 
-            val selectedUser = userList[spinnerAssignUser.selectedItemPosition]
-            val userId = selectedUser.id_user
-            if (userId.isNullOrBlank()) {
-                Toast.makeText(this, "Erro: utilizador sem ID!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
+            val assignee = users[spinnerAssignUser.selectedItemPosition]
             val userTask = UserTask(
                 idUserTask = UUID.randomUUID().toString(),
-                idUser = userId,
-                idTask = newTaskId,
+                idUser     = assignee.id_user ?: "",
+                idTask     = taskId,
                 registrationDate = null,
-                status = "ASSIGNED"
+                status     = "ASSIGNED"
             )
 
-            val repository = TaskRepository(RetrofitInstance.taskService)
-            val userTaskRepo = UserTaskRepository(RetrofitInstance.userTaskService)
+            val repoTask = TaskRepository(RetrofitInstance.taskService)
+            val repoUT   = UserTaskRepository(RetrofitInstance.userTaskService)
+
             lifecycleScope.launch {
                 try {
-                    repository.createTask(newTask)
-                    userTaskRepo.assignUserToTask(userTask)
-                    Toast.makeText(this@CreateTaskActivity, "Tarefa criada e atribuída!", Toast.LENGTH_SHORT).show()
+                    repoTask.createTask(task)
+                    repoUT.assignUserToTask(userTask)
+                    Toast.makeText(this@CreateTaskActivity, "Tarefa criada!", Toast.LENGTH_SHORT).show()
                     finish()
                 } catch (e: Exception) {
                     Toast.makeText(this@CreateTaskActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
@@ -138,7 +128,6 @@ class CreateTaskActivity : AppCompatActivity() {
             }
         }
     }
-    override fun onSupportNavigateUp(): Boolean {
-        finish(); return true
-    }
+
+    override fun onSupportNavigateUp(): Boolean = finish().let { true }
 }

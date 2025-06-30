@@ -88,6 +88,7 @@
         </LinearLayout>
 
         <!-- Secção Tarefas (aparece só para USER/MANAGER) -->
+        <!-- Secção Tarefas (aparece só para USER/MANAGER) -->
         <LinearLayout
             android:id="@+id/section_tasks"
             android:layout_width="match_parent"
@@ -99,29 +100,38 @@
             android:layout_marginBottom="16dp">
 
             <TextView
+                android:id="@+id/text_tasks_assigned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Assigned tasks: 0"
-                android:id="@+id/text_tasks_assigned"
                 android:textStyle="bold"
-                android:textSize="15sp"/>
+                android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/text_tasks_completed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Completed tasks: 0"
-                android:id="@+id/text_tasks_completed"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp" />
 
             <ProgressBar
                 android:id="@+id/progress_tasks"
+                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:max="100"
-                style="?android:attr/progressBarStyleHorizontal"
                 android:progress="0"
-                android:progressTint="@color/button_orange"/>
+                android:progressTint="@color/button_orange" />
+
+            <!-- ⬇️ NOVO: lista de tarefas -->
+            <LinearLayout
+                android:id="@+id/list_user_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp" />
         </LinearLayout>
+
 
         <!-- Secção Projetos (aparece só para USER/MANAGER) -->
         <LinearLayout
