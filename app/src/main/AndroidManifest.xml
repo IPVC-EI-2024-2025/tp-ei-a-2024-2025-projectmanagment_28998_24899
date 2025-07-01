@@ -103,8 +103,6 @@
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.manager.ManagerSettingsActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerProjectsAreaActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.manager.ManagerTaskDetailsActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.manager.ManagerProjectDetailsActivity"
@@ -117,7 +115,10 @@
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.manager.ManagerEditProjectActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
-
+        <activity android:name=".ui.home.manager.ManagerProjectsAreaActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.ManagerProjectDetailsCompletedActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar" />
 
 
 

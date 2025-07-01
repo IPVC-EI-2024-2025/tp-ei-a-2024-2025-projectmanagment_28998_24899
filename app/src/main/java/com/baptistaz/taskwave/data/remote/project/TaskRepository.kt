@@ -6,24 +6,25 @@ import com.baptistaz.taskwave.data.model.TaskPatch
 class TaskRepository(private val service: TaskService) {
 
     /* ---------- CRUD ---------- */
-    suspend fun getTasksByProject(projectId: String) =
-        service.getTasksByProject("eq.$projectId")
+    suspend fun getTasksByProject(projectId: String): List<Task> {
+        return service.getTasksByProject("eq.$projectId") ?: emptyList()
+    }
 
     suspend fun getTaskById(id: String): Task? =
         service.getTaskById("eq.$id").firstOrNull()
 
-    suspend fun createTask(task: Task) =
+    suspend fun createTask(task: Task): List<Task> =
         service.createTask(task)
 
-    /** Actualização total (todos os campos) */
-    suspend fun updateTask(id: String, task: Task) =
-        service.putTask("eq.$id", task)          // <-- agora chama putTask
+    /** Atualização total (todos os campos) */
+    suspend fun updateTask(id: String, task: Task): List<Task> =
+        service.putTask("eq.$id", task)
 
     suspend fun deleteTask(id: String) =
         service.deleteTask("eq.$id")
 
     /* ---------- Helpers ---------- */
     /** Altera apenas o estado para COMPLETED */
-    suspend fun markCompleted(id: String) =
+    suspend fun markCompleted(id: String): List<Task> =
         service.patchTask("eq.$id", TaskPatch(state = "COMPLETED"))
 }

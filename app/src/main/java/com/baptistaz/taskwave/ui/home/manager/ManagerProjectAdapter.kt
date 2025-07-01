@@ -1,5 +1,7 @@
 package com.baptistaz.taskwave.ui.home.manager
 
+import android.app.Activity
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +11,7 @@ import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Project
 
 class ManagerProjectAdapter(
-    private val onClick: (Project) -> Unit
+    private val activity: Activity
 ) : RecyclerView.Adapter<ManagerProjectAdapter.Holder>() {
 
     private var data: List<Project> = emptyList()
@@ -27,7 +29,20 @@ class ManagerProjectAdapter(
     override fun onBindViewHolder(holder: Holder, position: Int) {
         val project = data[position]
         holder.tvName.text = project.name
-        holder.itemView.setOnClickListener { onClick(project) }
+
+        holder.itemView.setOnClickListener {
+            // Decide activity destino com base no status
+            val status = project.status?.lowercase() ?: ""
+            if (status == "completed" || status == "concluido") {
+                val intent = Intent(activity, ManagerProjectDetailsCompletedActivity::class.java)
+                intent.putExtra("PROJECT_ID", project.idProject)
+                activity.startActivity(intent)
+            } else {
+                val intent = Intent(activity, ManagerProjectDetailsActivity::class.java)
+                intent.putExtra("PROJECT_ID", project.idProject)
+                activity.startActivity(intent)
+            }
+        }
     }
 
     override fun getItemCount(): Int = data.size
