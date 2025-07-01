@@ -3,6 +3,7 @@ package com.baptistaz.taskwave.ui.home.admin.manageprojects
 import TaskAdapter
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -28,27 +29,43 @@ class ProjectTasksActivity : AppCompatActivity() {
     private lateinit var buttonCreateTask: Button
     private lateinit var repository: TaskRepository
     private lateinit var projectId: String
+    private lateinit var projectStatus: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project_tasks)
 
+        // Toolbar
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.tasks)
 
-        projectId = intent.getStringExtra("project_id") ?: return
+        // 1) Recupera o ID e o status do projeto vindos da Intent
+        projectId    = intent.getStringExtra("project_id") ?: return
+        projectStatus = intent.getStringExtra("project_status") ?: "Active"
+        val isComplete = projectStatus.equals("Completed", ignoreCase = true)
+
+        // 2) Instancia o repositório
         repository = TaskRepository(RetrofitInstance.taskService)
 
-        recyclerActive = findViewById(R.id.recycler_active)
-        recyclerCompleted = findViewById(R.id.recycler_completed)
-        buttonCreateTask = findViewById(R.id.button_create_task)
+        // 3) Liga as views
+        recyclerActive     = findViewById(R.id.recycler_active)
+        recyclerCompleted  = findViewById(R.id.recycler_completed)
+        buttonCreateTask   = findViewById(R.id.button_create_task)
 
-        // Adapter para tarefas em progresso (com editar/remover)
+        // 4) Se for projeto concluído, esconde o botão de criar
+        if (isComplete) buttonCreateTask.visibility = View.GONE
+
+        // 5) Configura os adapters já levando em conta o status
         adapterActive = TaskAdapter(
             emptyList(),
-            onClick = { task -> startActivity(Intent(this, TaskDetailActivity::class.java).putExtra("task", task)) },
-            onDelete = { task ->
+            onClick  = if (isComplete) ({ /* no-op */ }) else { task ->
+                startActivity(
+                    Intent(this, TaskDetailActivity::class.java)
+                        .putExtra("task", task)
+                )
+            },
+            onDelete = if (isComplete) null else { task ->
                 AlertDialog.Builder(this)
                     .setTitle("Delete Task")
                     .setMessage("Are you sure you want to delete '${task.title}'?")
@@ -56,37 +73,49 @@ class ProjectTasksActivity : AppCompatActivity() {
                         lifecycleScope.launch {
                             try {
                                 repository.deleteTask(task.idTask)
-                                Toast.makeText(this@ProjectTasksActivity, "Task deleted!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@ProjectTasksActivity,
+                                    "Task deleted!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 loadTasksWithResponsible()
                             } catch (e: Exception) {
-                                Toast.makeText(this@ProjectTasksActivity, "Error deleting: ${e.message}", Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    this@ProjectTasksActivity,
+                                    "Error deleting: ${e.message}",
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         }
                     }
                     .setNegativeButton("Cancel", null)
                     .show()
             },
-            canEdit = true
+            canEdit  = !isComplete
         )
 
-        // Adapter para concluídas (apenas visualizar)
         adapterCompleted = TaskAdapter(
             emptyList(),
-            onClick = { /* Só detalhes, ou nada */ },
+            onClick  = { /* leitura apenas, ou no-op */ },
             onDelete = null,
-            canEdit = false
+            canEdit  = false
         )
 
-        recyclerActive.layoutManager = LinearLayoutManager(this)
-        recyclerActive.adapter = adapterActive
-
+        // 6) Associa ao RecyclerView
+        recyclerActive.layoutManager    = LinearLayoutManager(this)
+        recyclerActive.adapter          = adapterActive
         recyclerCompleted.layoutManager = LinearLayoutManager(this)
-        recyclerCompleted.adapter = adapterCompleted
+        recyclerCompleted.adapter       = adapterCompleted
 
+        // 7) Botão de criar tarefa (só aparece se não estiver concluído)
         buttonCreateTask.setOnClickListener {
-            startActivity(Intent(this, CreateTaskActivity::class.java).putExtra("project_id", projectId))
+            startActivity(
+                Intent(this, CreateTaskActivity::class.java)
+                    .putExtra("project_id", projectId)
+            )
         }
 
+        // 8) Carrega as tarefas
         loadTasksWithResponsible()
     }
 

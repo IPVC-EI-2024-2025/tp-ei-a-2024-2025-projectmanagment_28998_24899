@@ -96,6 +96,7 @@ class TaskDetailActivity : AppCompatActivity() {
             Toast.makeText(this@TaskDetailActivity,
                 getString(R.string.msg_task_completed),
                 Toast.LENGTH_SHORT).show()
+            finish()
         } catch (e: Exception) {
             Toast.makeText(this@TaskDetailActivity,
                 "Erro: ${e.message}", Toast.LENGTH_LONG).show()

@@ -73,8 +73,11 @@ class ProjectDetailsActivity : AppCompatActivity() {
         }
 
         buttonTasks.setOnClickListener {
-            startActivity(Intent(this, ProjectTasksActivity::class.java)
-                .putExtra("project_id", project.idProject))
+            val intent = Intent(this, ProjectTasksActivity::class.java).apply {
+                putExtra("project_id", project.idProject)
+                putExtra("project_status", project.status)
+            }
+            startActivity(intent)
         }
 
         buttonMgr.setOnClickListener {

@@ -37,30 +37,42 @@ class ProjectAdapter(
 
         holder.nameText.text = project.name ?: "Projeto sem nome"
 
-        // Correção aqui!
+        // Manager
         val managerName = managers.firstOrNull { it.id_user == project.idManager }?.name ?: "No manager"
         holder.managerText.text = "Manager: $managerName"
 
+        // Status
         holder.statusText.text = project.status ?: "N/A"
-
         val statusColor = when (project.status?.lowercase() ?: "") {
-            "active" -> R.color.green
+            "active"    -> R.color.green
             "completed" -> R.color.gray
-            else -> R.color.black
+            else        -> R.color.black
         }
-
         holder.statusText.setTextColor(holder.itemView.context.getColor(statusColor))
 
+        // Só escondemos editar em completos
+        val isComplete = project.status.equals("Completed", ignoreCase = true)
+        holder.editIcon.visibility = if (isComplete) View.GONE else View.VISIBLE
+
+        // Delete sempre visível
+        holder.deleteIcon.visibility = View.VISIBLE
+
+        // Clique no ícone de editar (só se não for completo)
         holder.editIcon.setOnClickListener {
-            val intent = Intent(context, EditProjectActivity::class.java)
-            intent.putExtra("project", project)
-            context.startActivity(intent)
+            if (!isComplete) {
+                val intent = Intent(context, EditProjectActivity::class.java)
+                intent.putExtra("project", project)
+                context.startActivity(intent)
+            }
         }
 
+        // Delete sempre disponível
         holder.deleteIcon.setOnClickListener {
             onDelete(project)
         }
 
+        // ItemView sempre clicável para detalhes
+        holder.itemView.isClickable = true
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ProjectDetailsActivity::class.java)
             intent.putExtra("project", project)
