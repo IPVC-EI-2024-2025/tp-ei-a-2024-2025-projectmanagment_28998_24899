@@ -3,6 +3,7 @@ package com.baptistaz.taskwave.ui.home.admin.manageprojects
 import User
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Project
+import com.baptistaz.taskwave.data.model.ProjectUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
@@ -83,7 +85,40 @@ class ProjectDetailsActivity : AppCompatActivity() {
         }
 
         buttonDone.setOnClickListener {
-            Toast.makeText(this, "Em breve!", Toast.LENGTH_SHORT).show()
+            // 1) Cria o payload mudando só o status
+            val updated = ProjectUpdate(
+                id_project  = project.idProject,
+                name        = project.name ?: "",
+                description = project.description ?: "",
+                status      = "Completed",
+                start_date  = project.startDate ?: "",
+                end_date    = project.endDate ?: "",
+                id_manager  = project.idManager
+            )
+
+            // 2) Chama o PATCH
+            lifecycleScope.launch {
+                try {
+                    ProjectRepository(RetrofitInstance.projectService)
+                        .updateProject(project.idProject, updated)
+
+                    Toast.makeText(
+                        this@ProjectDetailsActivity,
+                        "Projeto marcado como concluído!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    // 3) Atualiza o objeto e a UI
+                    project = project.copy(status = "Completed")
+                    atualizarUI(project)
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        this@ProjectDetailsActivity,
+                        "Erro ao concluir: ${e.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
         }
     }
 
@@ -108,6 +143,22 @@ class ProjectDetailsActivity : AppCompatActivity() {
         textEndDate.text   = p.endDate
         val mgrName = managers.firstOrNull { it.id_user == p.idManager }?.name ?: "No manager"
         textManager.text = "Manager: $mgrName"
+
+        // <-- novo: mostrar só se NÃO estiver completed
+        buttonDone.visibility =
+            if (p.status.equals("Completed", ignoreCase = true)) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
+
+        // só mostra “Manage Manager” em projetos não-completos
+        buttonMgr.visibility =
+            if (p.status.equals("Completed", ignoreCase = true)) {
+                View.GONE
+            } else {
+                View.VISIBLE
+            }
     }
 
     override fun onSupportNavigateUp(): Boolean = finish().let { true }

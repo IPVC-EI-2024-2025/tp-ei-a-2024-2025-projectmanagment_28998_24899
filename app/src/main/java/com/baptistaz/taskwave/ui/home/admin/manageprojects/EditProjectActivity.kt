@@ -27,7 +27,6 @@ class EditProjectActivity : AppCompatActivity() {
     private lateinit var inputDescription: EditText
     private lateinit var inputStartDate: EditText
     private lateinit var inputEndDate: EditText
-    private lateinit var spinnerStatus: Spinner
     private lateinit var buttonEdit: Button
     private lateinit var spinnerManager: Spinner
 
@@ -49,12 +48,8 @@ class EditProjectActivity : AppCompatActivity() {
         inputDescription = findViewById(R.id.input_description)
         inputStartDate = findViewById(R.id.input_start_date)
         inputEndDate = findViewById(R.id.input_end_date)
-        spinnerStatus = findViewById(R.id.spinner_status)
         buttonEdit = findViewById(R.id.button_edit)
         spinnerManager = findViewById(R.id.spinner_manager)
-
-        val statusOptions = listOf("active", "completed")
-        spinnerStatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, statusOptions)
 
         // Recebe o projeto via intent
         project = intent.getSerializableExtra("project") as Project
@@ -64,7 +59,6 @@ class EditProjectActivity : AppCompatActivity() {
         inputDescription.setText(project.description)
         inputStartDate.setText(project.startDate)
         inputEndDate.setText(project.endDate)
-        spinnerStatus.setSelection(statusOptions.indexOf(project.status))
 
         // Carregar managers e selecionar o atual
         val token = SessionManager.getAccessToken(this) ?: return
@@ -91,8 +85,7 @@ class EditProjectActivity : AppCompatActivity() {
                     val start = LocalDate.parse(inputStartDate.text.toString(), formatter)
                     val end = LocalDate.parse(inputEndDate.text.toString(), formatter)
 
-                    val statusFromSpinner = spinnerStatus.selectedItem.toString()
-                    val statusCapitalized = statusFromSpinner.replaceFirstChar { it.uppercase() }
+                    val statusCapitalized = project.status ?: ""
 
                     val updatedProject = ProjectUpdate(
                         id_project = project.idProject,

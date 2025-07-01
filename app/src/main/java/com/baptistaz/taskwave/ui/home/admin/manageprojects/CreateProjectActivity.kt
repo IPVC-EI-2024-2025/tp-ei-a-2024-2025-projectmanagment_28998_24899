@@ -25,7 +25,6 @@ class CreateProjectActivity : AppCompatActivity() {
     private lateinit var inputDescription: EditText
     private lateinit var inputStartDate: EditText
     private lateinit var inputEndDate: EditText
-    private lateinit var spinnerStatus: Spinner
     private lateinit var buttonCreate: Button
     private lateinit var spinnerManager: Spinner
 
@@ -46,13 +45,8 @@ class CreateProjectActivity : AppCompatActivity() {
         inputDescription = findViewById(R.id.input_description)
         inputStartDate = findViewById(R.id.input_start_date)
         inputEndDate = findViewById(R.id.input_end_date)
-        spinnerStatus = findViewById(R.id.spinner_status)
         buttonCreate = findViewById(R.id.button_create_project)
         spinnerManager = findViewById(R.id.spinner_manager)
-
-        // Setup do spinner de status
-        val statusOptions = listOf("active", "completed")
-        spinnerStatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, statusOptions)
 
         // Popular spinner de managers
         val token = SessionManager.getAccessToken(this) ?: return
@@ -67,7 +61,7 @@ class CreateProjectActivity : AppCompatActivity() {
         buttonCreate.setOnClickListener {
             val name = inputName.text.toString()
             val description = inputDescription.text.toString()
-            val status = spinnerStatus.selectedItem.toString().replaceFirstChar { it.uppercase() }
+            val status = "Active"
             val startDate = inputStartDate.text.toString()
             val endDate = inputEndDate.text.toString()
             val selectedManager = managers.getOrNull(spinnerManager.selectedItemPosition)
