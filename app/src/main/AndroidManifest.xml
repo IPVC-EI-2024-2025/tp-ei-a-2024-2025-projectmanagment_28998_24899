@@ -98,6 +98,14 @@
 
 
 
+        <activity android:name=".ui.home.manager.ManagerProfileActivity" />
+        <activity android:name=".ui.home.manager.ManagerSettingsActivity" />
+        <activity android:name=".ui.home.manager.ManagerProjectsAreaActivity" />
+        <activity android:name=".ui.home.manager.ManagerTaskDetailsActivity" />
+        <activity android:name=".ui.home.manager.ManagerProjectDetailsActivity" />
+
+
+
         <activity android:name=".ui.home.admin.assignmanager.AssignManagerActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
 
