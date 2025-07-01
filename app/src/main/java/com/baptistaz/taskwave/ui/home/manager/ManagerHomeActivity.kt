@@ -36,7 +36,7 @@ class ManagerHomeActivity : BaseManagerBottomNavActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_manager_home) // Usa o layout equivalente ao do user
+        setContentView(R.layout.activity_manager_home)
 
         layoutProjects = findViewById(R.id.layout_projects)
         layoutTasks    = findViewById(R.id.layout_tasks)
@@ -79,7 +79,7 @@ class ManagerHomeActivity : BaseManagerBottomNavActivity() {
         val allUserTasks: List<UserTask> =
             utRepo.getTasksOfUser(userId, token) ?: emptyList()
 
-        // Projetos atribuídos (como membro)
+        // Projetos atribuídos (listar, mas NÃO clicar!)
         val projects: List<Project> =
             allUserTasks.mapNotNull { it.task?.project }
                 .distinctBy { it.idProject }
@@ -90,16 +90,12 @@ class ManagerHomeActivity : BaseManagerBottomNavActivity() {
                 text = proj.name
                 setBackgroundResource(R.drawable.card_bg)
                 setTextColor(ContextCompat.getColor(context, R.color.button_orange))
-                setOnClickListener {
-                    Intent(context, ManagerProjectDetailsActivity::class.java)
-                        .putExtra("PROJECT_ID", proj.idProject)
-                        .also { startActivity(it) }
-                }
+                isEnabled = false // não permite clicar nem ver detalhes!
             }
             layoutProjects.addView(btn)
         }
 
-        // Tarefas ativas
+        // Tarefas ativas (pode ver detalhes, mas SEM editar!)
         val activeTasks = allUserTasks
             .filter { it.task?.state == "IN_PROGRESS" }
             .sortedBy { it.task?.conclusionDate ?: "" }
@@ -116,6 +112,7 @@ class ManagerHomeActivity : BaseManagerBottomNavActivity() {
                 setOnClickListener {
                     Intent(context, ManagerTaskDetailsActivity::class.java)
                         .putExtra("TASK_ID", task.idTask)
+                        .putExtra("CAN_EDIT", false) // nunca editar!
                         .also { startActivity(it) }
                 }
             }

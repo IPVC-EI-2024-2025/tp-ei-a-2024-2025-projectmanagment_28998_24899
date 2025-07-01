@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_white">
+
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/button_orange"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    <!-- Secção de Tarefas Ativas -->
+    <TextView
+        android:id="@+id/label_active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tarefas Ativas"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:paddingTop="16dp"
+        android:paddingStart="24dp"
+        android:paddingBottom="8dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_active"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:nestedScrollingEnabled="false"/>
+
+    <!-- Secção de Tarefas Concluídas -->
+    <TextView
+        android:id="@+id/label_completed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tarefas Concluídas"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:paddingTop="24dp"
+        android:paddingStart="24dp"
+        android:paddingBottom="8dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_completed"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:nestedScrollingEnabled="false"/>
+
+    <Button
+        android:id="@+id/button_create_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CRIAR TAREFA"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/button_orange"
+        android:textColor="@color/background_white"/>
+
+</LinearLayout>

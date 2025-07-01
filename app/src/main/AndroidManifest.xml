@@ -38,7 +38,6 @@
             android:exported="false" />
 
         <activity android:name=".ui.home.admin.AdminHomeActivity" android:exported="false" />
-        <activity android:name=".ui.home.manager.ManagerHomeActivity" android:exported="false" />
 
 
         <activity android:name=".ui.home.user.UserHomeActivity" android:exported="false" />
@@ -98,11 +97,28 @@
 
 
 
-        <activity android:name=".ui.home.manager.ManagerProfileActivity" />
-        <activity android:name=".ui.home.manager.ManagerSettingsActivity" />
-        <activity android:name=".ui.home.manager.ManagerProjectsAreaActivity" />
-        <activity android:name=".ui.home.manager.ManagerTaskDetailsActivity" />
-        <activity android:name=".ui.home.manager.ManagerProjectDetailsActivity" />
+        <activity android:name=".ui.home.manager.ManagerHomeActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerProfileActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerSettingsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerProjectsAreaActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerTaskDetailsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerProjectDetailsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerProjectTasksActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerCreateTaskActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerEditTaskActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+
+
+
+
 
 
 

@@ -12,6 +12,92 @@
         android:background="@color/button_orange"
         android:elevation="4dp" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:text="Título"/>
+
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="@color/gray"
+            android:text="Descrição" />
+
+        <TextView
+            android:id="@+id/text_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IN_PROGRESS" />
+
+        <TextView
+            android:id="@+id/text_creation_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025-07-01" />
+
+        <TextView
+            android:id="@+id/text_conclusion_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2025-08-01" />
+
+        <TextView
+            android:id="@+id/text_priority"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HIGH" />
+
+        <TextView
+            android:id="@+id/text_responsible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Responsável: ..." />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_no_updates"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Esta tarefa ainda não tem updates."
+        android:visibility="gone"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        android:layout_marginTop="30dp"
+        android:textSize="15sp"/>
+
+    <Button
+        android:id="@+id/button_edit_task"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Editar Tarefa"
+        android:backgroundTint="@color/button_orange"
+        android:textColor="@android:color/white"
+        android:layout_margin="16dp"
+        android:layout_marginTop="0dp"/>
+
+    <Button
+        android:id="@+id/button_mark_done"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Marcar Concluída"
+        android:backgroundTint="@color/button_orange"
+        android:textColor="@android:color/white"
+        android:layout_margin="16dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_updates"
         android:layout_width="match_parent"
@@ -19,12 +105,4 @@
         android:layout_weight="1"
         android:padding="10dp"/>
 
-    <Button
-        android:id="@+id/button_mark_done"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Marcar como concluída"
-        android:backgroundTint="@color/button_orange"
-        android:textColor="@android:color/white"
-        android:layout_margin="16dp"/>
 </LinearLayout>

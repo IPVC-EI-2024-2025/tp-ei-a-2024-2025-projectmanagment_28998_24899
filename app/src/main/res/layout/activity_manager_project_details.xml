@@ -1,6 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background_white">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/button_orange"
+            android:elevation="4dp" />
+
+        <TextView
+            android:id="@+id/text_project_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Project Name"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:paddingTop="16dp" />
+
+        <TextView
+            android:id="@+id/text_project_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Project Description"
+            android:textSize="16sp"
+            android:paddingTop="8dp" />
+
+        <TextView
+            android:id="@+id/text_project_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Status"
+            android:paddingTop="8dp" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/text_manager"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manager: "
+                android:textStyle="bold"
+                android:layout_marginTop="12dp"/>
+
+            <TextView
+                android:id="@+id/text_project_start"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Start Date" />
+
+            <TextView
+                android:id="@+id/text_project_end"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="End Date"
+                android:gravity="end" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/button_view_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ver Tarefas"
+            android:layout_marginTop="24dp" />
+
+        <!-- (Opcional: mais botões para gestor) -->
+    </LinearLayout>
+</ScrollView>

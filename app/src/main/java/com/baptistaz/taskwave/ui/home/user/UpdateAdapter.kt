@@ -15,7 +15,8 @@ class UpdateAdapter(
     private val data            : MutableList<TaskUpdate>,
     private val onFooterClick   : () -> Unit,
     private val onItemClick     : (TaskUpdate) -> Unit,
-    private val onItemLongClick : (TaskUpdate) -> Unit = {}
+    private val onItemLongClick : (TaskUpdate) -> Unit = {},
+    private val showFooter      : Boolean = true // NOVO: por default mostra footer
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /* ───────── ITEM ───────── */
@@ -28,7 +29,6 @@ class UpdateAdapter(
 
         fun bind(pos: Int) {
             val u = data[pos]
-
             title.text = u.title
             notes.text = u.notes ?: ""
 
@@ -51,9 +51,8 @@ class UpdateAdapter(
         init { v.setOnClickListener { onFooterClick() } }
     }
 
-    /* ───────── Adapter ───────── */
     override fun getItemViewType(position: Int) =
-        if (position == data.size) TYPE_FOOTER else TYPE_ITEM
+        if (showFooter && position == data.size) TYPE_FOOTER else TYPE_ITEM
 
     override fun onCreateViewHolder(p: ViewGroup, type: Int): RecyclerView.ViewHolder {
         val inf = LayoutInflater.from(p.context)
@@ -63,9 +62,11 @@ class UpdateAdapter(
             FooterVH(inf.inflate(R.layout.item_update_footer, p, false))
     }
 
-    override fun getItemCount() = data.size + 1
+    override fun getItemCount() = data.size + if (showFooter) 1 else 0
+
     override fun onBindViewHolder(h: RecyclerView.ViewHolder, pos: Int) {
         if (h is ItemVH) h.bind(pos)
+        // Footer não precisa de bind extra
     }
 
     fun setData(newList: List<TaskUpdate>) {
@@ -74,4 +75,3 @@ class UpdateAdapter(
         notifyDataSetChanged()
     }
 }
-
