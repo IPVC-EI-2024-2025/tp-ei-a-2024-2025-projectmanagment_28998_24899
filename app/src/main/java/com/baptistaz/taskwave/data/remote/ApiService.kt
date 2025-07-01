@@ -1,7 +1,7 @@
 package com.baptistaz.taskwave.data.remote
 
 import User
-import UserUpdate
+import com.baptistaz.taskwave.data.model.UserUpdate
 import com.baptistaz.taskwave.data.model.UserTask
 import retrofit2.Response
 import retrofit2.http.Body

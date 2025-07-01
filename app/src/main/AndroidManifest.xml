@@ -38,6 +38,14 @@
             android:exported="false" />
 
         <activity android:name=".ui.home.admin.AdminHomeActivity" android:exported="false" />
+        <activity android:name=".ui.home.admin.AdminProfileActivity"
+            android:label="Meu Perfil"
+            android:parentActivityName=".ui.home.admin.AdminHomeActivity">
+            <!-- Permite o botão “up” voltar ao AdminHomeActivity -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.home.admin.AdminHomeActivity"/>
+        </activity>
 
 
         <activity android:name=".ui.home.user.UserHomeActivity" android:exported="false" />

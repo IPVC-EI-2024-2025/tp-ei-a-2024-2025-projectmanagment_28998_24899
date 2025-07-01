@@ -132,14 +132,14 @@
         <include layout="@layout/admin_button_assign_manager" />
         <include layout="@layout/admin_button_export_statistics" />
 
-        <!-- Logout -->
         <Button
-            android:id="@+id/button_logout"
-            android:layout_width="wrap_content"
+            android:id="@+id/button_view_profile"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:text="Logout" />
+            android:text="Ver meu perfil"
+            android:layout_margin="16dp"
+            android:background="@color/button_orange"
+            android:textColor="@android:color/white"/>
 
     </LinearLayout>
 </ScrollView>

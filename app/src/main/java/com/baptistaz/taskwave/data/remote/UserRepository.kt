@@ -1,7 +1,7 @@
 package com.baptistaz.taskwave.data.remote
 
 import User
-import UserUpdate
+import com.baptistaz.taskwave.data.model.UserUpdate
 import android.util.Log
 
 class UserRepository {

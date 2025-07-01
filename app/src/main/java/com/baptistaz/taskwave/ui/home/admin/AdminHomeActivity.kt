@@ -7,7 +7,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.ui.auth.LoginActivity
 import com.baptistaz.taskwave.ui.home.admin.assignmanager.AssignManagerActivity
 import com.baptistaz.taskwave.ui.home.admin.exportstatistics.ExportStatisticsActivity
 import com.baptistaz.taskwave.ui.home.admin.manageprojects.ManageProjectsActivity
@@ -45,11 +44,13 @@ class AdminHomeActivity : AppCompatActivity() {
             startActivity(Intent(this, ExportStatisticsActivity::class.java))
         }
 
-        // Logout (ainda é Button, por isso mantemos como está)
-        findViewById<Button>(R.id.button_logout)?.setOnClickListener {
-            SessionManager.clearAccessToken(this)
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
+        findViewById<Button>(R.id.button_view_profile).setOnClickListener {
+            val intent = Intent(this, AdminProfileActivity::class.java)
+            // opcional: passe o authId
+            SessionManager.getAuthId(this)?.let { authId ->
+                intent.putExtra("AUTH_ID", authId)
+            }
+            startActivity(intent)
         }
     }
 }
