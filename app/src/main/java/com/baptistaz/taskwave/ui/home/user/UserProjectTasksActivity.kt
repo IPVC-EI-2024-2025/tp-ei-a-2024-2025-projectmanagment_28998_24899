@@ -1,7 +1,6 @@
 package com.baptistaz.taskwave.ui.home.user
 
 import TaskAdapter
-import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +8,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.Task
 import com.baptistaz.taskwave.data.model.TaskWithUser
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
@@ -52,14 +50,8 @@ class UserProjectTasksActivity : AppCompatActivity() {
         /* adapter: onClick devolve um Task */
         adapter = TaskAdapter(
             emptyList(),
-            onClick = { task: Task ->
-                val i = Intent(
-                    this@UserProjectTasksActivity,
-                    UserTaskDetailsActivity::class.java
-                ).apply { putExtra("TASK_ID", task.idTask) }
-                startActivity(i)
-            },
-            onDelete = null            // utilizador não pode apagar
+            onClick  = { /* intencionalmente vazio: não abre detalhe */ },
+            onDelete = null           // utilizador não pode apagar
         )
         recyclerTasks.layoutManager = LinearLayoutManager(this)
         recyclerTasks.adapter       = adapter
