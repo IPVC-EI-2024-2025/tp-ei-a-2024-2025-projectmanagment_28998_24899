@@ -22,8 +22,10 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
     private lateinit var textStart: TextView
     private lateinit var textEnd: TextView
     private lateinit var buttonViewTasks: Button
+    private lateinit var buttonEditProject: Button
 
-    private var isReadOnly: Boolean = false
+    private lateinit var projectId: String
+    private var token: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +35,6 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        isReadOnly = intent.getBooleanExtra("READ_ONLY", false)
-
         textName = findViewById(R.id.text_project_name)
         textDesc = findViewById(R.id.text_project_description)
         textStatus = findViewById(R.id.text_project_status)
@@ -42,13 +42,23 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
         textStart = findViewById(R.id.text_project_start)
         textEnd = findViewById(R.id.text_project_end)
         buttonViewTasks = findViewById(R.id.button_view_tasks)
+        buttonEditProject = findViewById(R.id.button_edit_project)
 
-        // Recebe o ID do projeto pelo Intent
-        val projectId = intent.getStringExtra("PROJECT_ID") ?: return finish()
-        val token = SessionManager.getAccessToken(this) ?: return
+        projectId = intent.getStringExtra("PROJECT_ID") ?: return finish()
+        token = SessionManager.getAccessToken(this) ?: return
 
+        reloadProject()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        reloadProject()
+    }
+
+    private fun reloadProject() {
+        if (token == null) return
         lifecycleScope.launch {
-            val repo = ProjectRepository(RetrofitInstance.getProjectService(token))
+            val repo = ProjectRepository(RetrofitInstance.getProjectService(token!!))
             val project = repo.getProjectById(projectId)
             if (project != null) {
                 textName.text = project.name
@@ -60,14 +70,31 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
                 // Buscar manager associado
                 val managerId = project.idManager ?: ""
                 val manager = if (managerId.isNotEmpty()) {
-                    UserRepository().getUserById(managerId, token)
+                    UserRepository().getUserById(managerId, token!!)
                 } else null
                 val managerName = manager?.name ?: "No manager"
                 textManager.text = "Manager: $managerName"
 
+                // Apenas o gestor pode editar o projeto!
+                val myId = SessionManager.getUserId(this@ManagerProjectDetailsActivity)
+                val isManager = project.idManager == myId
+
+                buttonEditProject.isEnabled = isManager
+                buttonEditProject.alpha = if (isManager) 1.0f else 0.5f
+
+                buttonEditProject.setOnClickListener {
+                    if (isManager) {
+                        val intent = Intent(this@ManagerProjectDetailsActivity, ManagerEditProjectActivity::class.java)
+                        intent.putExtra("project", project)
+                        startActivity(intent)
+                    } else {
+                        Toast.makeText(this@ManagerProjectDetailsActivity, "Só o gestor deste projeto pode editar.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
                 buttonViewTasks.setOnClickListener {
                     lifecycleScope.launch {
-                        val repo = ProjectRepository(RetrofitInstance.getProjectService(token))
+                        val repo = ProjectRepository(RetrofitInstance.getProjectService(token!!))
                         val project = repo.getProjectById(projectId)
                         val myId = SessionManager.getUserId(this@ManagerProjectDetailsActivity)
                         val isManager = project?.idManager == myId

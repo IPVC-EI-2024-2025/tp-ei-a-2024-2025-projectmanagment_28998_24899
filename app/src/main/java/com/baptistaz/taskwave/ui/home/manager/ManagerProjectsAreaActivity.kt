@@ -39,6 +39,11 @@ class ManagerProjectsAreaActivity : BaseManagerBottomNavActivity() {
         // (opcional: botão de logout só nesta área, mas melhor por no perfil/definições)
     }
 
+    override fun onResume() {
+        super.onResume()
+        loadProjectsApi()
+    }
+
     private fun loadProjectsApi() {
         val token = SessionManager.getAccessToken(this) ?: ""
         val managerId = SessionManager.getUserId(this) ?: ""

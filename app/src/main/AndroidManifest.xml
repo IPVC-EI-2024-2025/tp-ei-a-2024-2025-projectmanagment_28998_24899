@@ -115,8 +115,8 @@
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.manager.ManagerEditTaskActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
-
-
+        <activity android:name=".ui.home.manager.ManagerEditProjectActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
 
 
 
