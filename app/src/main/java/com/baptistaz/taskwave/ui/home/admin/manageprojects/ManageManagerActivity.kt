@@ -89,9 +89,9 @@ class ManageManagerActivity : AppCompatActivity() {
                     val body = ProjectUpdate(
                         id_project  = project.idProject,
                         name        = project.name,
-                        description = project.description,
-                        status      = project.status,
-                        start_date  = project.startDate,
+                        description = project.description ?: "",
+                        status      = project.status ?: "",
+                        start_date  = project.startDate ?: "",
                         end_date    = project.endDate,
                         id_manager  = mgr.id_user
                     )

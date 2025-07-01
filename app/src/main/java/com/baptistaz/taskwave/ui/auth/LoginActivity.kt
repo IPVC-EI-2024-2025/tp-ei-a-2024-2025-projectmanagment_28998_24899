@@ -68,7 +68,10 @@ class LoginActivity : AppCompatActivity() {
 
                         lifecycleScope.launch {
                             val userRepository = UserRepository()
+                            Log.d("LOGIN_DEBUG", "A obter user pelo authId: $authId com token: $token")
                             val user = userRepository.getUserByAuthId(authId, token)
+
+                            Log.d("LOGIN_DEBUG", "Resultado de getUserByAuthId: $user")
 
                             if (user != null) {
                                 Log.d("LOGIN_DEBUG", "Perfil carregado: $user")

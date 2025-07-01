@@ -35,19 +35,20 @@ class ProjectAdapter(
     override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
         val project = projectList[position]
 
-        holder.nameText.text = project.name
+        holder.nameText.text = project.name ?: "Projeto sem nome"
 
         // Correção aqui!
         val managerName = managers.firstOrNull { it.id_user == project.idManager }?.name ?: "No manager"
         holder.managerText.text = "Manager: $managerName"
 
-        holder.statusText.text = project.status
+        holder.statusText.text = project.status ?: "N/A"
 
-        val statusColor = when (project.status.lowercase()) {
+        val statusColor = when (project.status?.lowercase() ?: "") {
             "active" -> R.color.green
             "completed" -> R.color.gray
             else -> R.color.black
         }
+
         holder.statusText.setTextColor(holder.itemView.context.getColor(statusColor))
 
         holder.editIcon.setOnClickListener {

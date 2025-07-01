@@ -50,15 +50,17 @@ class ProjectRepository(private val service: ProjectService) {
         }
     }
 
-    suspend fun getProjectsByManager(managerId: String, token: String): List<Project> {
-        val url = "project?id_manager=eq.$managerId"
-        val response = service.getProjectsByManager(url, token)   // <-- token aqui!
+    suspend fun getProjectsByManager(managerId: String): List<Project> {
+        val response = service.getProjectsByManager("eq.$managerId")
         if (response.isSuccessful) {
             return response.body() ?: emptyList()
         } else {
-            throw Exception("Erro ao obter projetos do gestor: ${response.code()}")
+            val error = response.errorBody()?.string()
+            Log.e("TASKWAVE_API", "Erro Supabase: HTTP ${response.code()} - $error")
+            throw Exception("Erro ao obter projetos do gestor: ${response.code()} - $error")
         }
     }
+
 
     suspend fun getProjectById(id: String): Project? {
         val url = "project?id_project=eq.$id"

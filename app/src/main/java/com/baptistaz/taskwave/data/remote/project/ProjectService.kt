@@ -9,6 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 interface ProjectService {
@@ -36,10 +37,9 @@ interface ProjectService {
         @Url url: String
     ): Response<List<Project>>
 
-    @GET
+    @GET("project")
     suspend fun getProjectsByManager(
-        @Url url: String,
-        @retrofit2.http.Header("Authorization") token: String
+        @Query("id_manager") idManager: String
     ): Response<List<Project>>
 
     @GET
