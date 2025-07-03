@@ -49,7 +49,7 @@ class UserAdapter(
             holder.editIcon.setOnClickListener {
                 val context = holder.itemView.context
                 val intent = Intent(context, EditUserActivity::class.java)
-                intent.putExtra("userId", user.id_user)
+                intent.putExtra("USER_ID", user.id_user) // <-- Corrige aqui para "USER_ID"
                 context.startActivity(intent)
             }
 

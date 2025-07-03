@@ -51,8 +51,16 @@ class ManagerCreateTaskActivity : AppCompatActivity() {
         val token = SessionManager.getAccessToken(this) ?: return
         lifecycleScope.launch {
             users = UserRepository().getAllUsers(token) ?: emptyList()
+            // Filtrar só utilizadores normais (profileType == "USER")
+            val normalUsers = users.filter { it.profileType.equals("USER", ignoreCase = true) }
+            users = normalUsers // Só guardas os normais!
+
             val names = users.map { it.name }
-            spinnerResponsible.adapter = ArrayAdapter(this@ManagerCreateTaskActivity, android.R.layout.simple_spinner_dropdown_item, names)
+            spinnerResponsible.adapter = ArrayAdapter(
+                this@ManagerCreateTaskActivity,
+                android.R.layout.simple_spinner_dropdown_item,
+                names
+            )
         }
 
         buttonCreate.setOnClickListener {

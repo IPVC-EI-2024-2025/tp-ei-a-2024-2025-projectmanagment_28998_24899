@@ -62,7 +62,11 @@ class CreateTaskActivity : AppCompatActivity() {
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
             users = (UserRepository().getAllUsers(token) ?: emptyList())
-                .filterNot { it.profileType.equals("ADMIN", true) }
+                .filterNot {
+                    it.profileType.equals("ADMIN", true) ||
+                            it.profileType.equals("GESTOR", true) ||
+                            it.profileType.equals("MANAGER", true) // dependendo do valor no teu DB!
+                }
 
             spinnerAssignUser.adapter = ArrayAdapter(
                 this@CreateTaskActivity,
