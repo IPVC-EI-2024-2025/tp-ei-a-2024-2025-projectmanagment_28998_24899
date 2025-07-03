@@ -28,7 +28,6 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manager_evaluate_team)
 
-        // Toolbar com "up"
         findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar).apply {
             setNavigationOnClickListener { finish() }
         }
@@ -39,7 +38,6 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
         val projectId = intent.getStringExtra("PROJECT_ID") ?: return finish()
         val token = SessionManager.getAccessToken(this) ?: return finish()
 
-        // Carrega equipa REAL do projeto diretamente da VIEW project_team
         lifecycleScope.launch {
             try {
                 val service = RetrofitInstance.getProjectTeamService(token)
@@ -62,9 +60,16 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
 
         btnSubmit.setOnClickListener {
             lifecycleScope.launch {
-                val ratings = teamAdapter.getRatings() // Map<String, Int>
+                val ratings = teamAdapter.getRatings()
+                val comments = teamAdapter.getComments()
+
                 val evaluations = ratings.map { (userId, score) ->
-                    Evaluation(id_project = projectId, id_user = userId, score = score)
+                    Evaluation(
+                        id_project = projectId,
+                        id_user = userId,
+                        score = score,
+                        comment = comments[userId]
+                    )
                 }
 
                 Log.d("EVAL-REQ", Gson().toJson(evaluations))
