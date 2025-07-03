@@ -2,6 +2,8 @@ package com.baptistaz.taskwave.ui.home.manager
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -23,6 +25,7 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
     private lateinit var textEnd: TextView
     private lateinit var buttonViewTasks: Button
     private lateinit var buttonEditProject: Button
+    private lateinit var buttonMarkComplete: Button
 
     private lateinit var projectId: String
     private var token: String? = null
@@ -43,6 +46,7 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
         textEnd = findViewById(R.id.text_project_end)
         buttonViewTasks = findViewById(R.id.button_view_tasks)
         buttonEditProject = findViewById(R.id.button_edit_project)
+        buttonMarkComplete = findViewById(R.id.button_mark_complete)
 
         projectId = intent.getStringExtra("PROJECT_ID") ?: return finish()
         token = SessionManager.getAccessToken(this) ?: return
@@ -104,6 +108,27 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
                         startActivity(intent)
                     }
                 }
+
+                // --- NOVO: Button Mark Complete ---
+                // Liga ao layout, caso ainda não tenhas no onCreate()
+                if (!::buttonMarkComplete.isInitialized) {
+                    buttonMarkComplete = findViewById(R.id.button_mark_complete)
+                }
+
+                // Mostra ou oculta conforme as condições
+                if (project.status == "Active" && isManager) {
+                    buttonMarkComplete.visibility = View.VISIBLE
+                } else {
+                    buttonMarkComplete.visibility = View.GONE
+                }
+
+                buttonMarkComplete.setOnClickListener {
+                    Log.d("DEBUG-PROJECT", "Vai abrir avaliação com PROJECT_ID: $projectId")
+                    val intent = Intent(this@ManagerProjectDetailsActivity, ManagerEvaluateTeamActivity::class.java)
+                    intent.putExtra("PROJECT_ID", projectId)
+                    startActivity(intent)
+                }
+
             } else {
                 Toast.makeText(this@ManagerProjectDetailsActivity, "Projeto não encontrado!", Toast.LENGTH_SHORT).show()
                 finish()

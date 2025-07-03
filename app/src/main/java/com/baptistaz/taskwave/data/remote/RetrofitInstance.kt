@@ -2,6 +2,8 @@ package com.baptistaz.taskwave.data.remote
 
 import com.baptistaz.taskwave.BuildConfig
 import com.baptistaz.taskwave.data.remote.auth.AuthService
+import com.baptistaz.taskwave.data.remote.manager.EvaluationService
+import com.baptistaz.taskwave.data.remote.manager.ProjectTeamService
 import com.baptistaz.taskwave.data.remote.project.ProjectService
 import com.baptistaz.taskwave.data.remote.project.TaskService
 import com.baptistaz.taskwave.data.remote.project.TaskUpdateService
@@ -104,4 +106,7 @@ object RetrofitInstance {
     fun getTaskService(token: String)       = buildRest(token, TaskService::class.java)
     fun getUserTaskService(token: String)   = buildRest(token, UserTaskService::class.java)
     fun getTaskUpdateService(token: String) = buildRest(token, TaskUpdateService::class.java)
+    fun getEvaluationService(token: String): EvaluationService = buildRest(token, EvaluationService::class.java)
+    fun getProjectTeamService(token: String): ProjectTeamService = buildRest(token, ProjectTeamService::class.java)
+
 }
