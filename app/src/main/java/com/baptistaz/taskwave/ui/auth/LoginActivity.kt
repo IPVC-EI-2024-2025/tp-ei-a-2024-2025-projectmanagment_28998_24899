@@ -14,7 +14,7 @@ import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.auth.AuthRepository
 import com.baptistaz.taskwave.ui.home.admin.AdminHomeActivity
-import com.baptistaz.taskwave.ui.home.manager.ManagerHomeActivity
+import com.baptistaz.taskwave.ui.home.manager.ManagerProjectsAreaActivity
 import com.baptistaz.taskwave.ui.home.user.UserHomeActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import com.google.android.material.textfield.TextInputEditText
@@ -80,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
 
                                 when (user.profileType.uppercase()) {
                                     "ADMIN" -> startActivity(Intent(this@LoginActivity, AdminHomeActivity::class.java))
-                                    "GESTOR" -> startActivity(Intent(this@LoginActivity, ManagerHomeActivity::class.java))
+                                    "GESTOR" -> startActivity(Intent(this@LoginActivity, ManagerProjectsAreaActivity::class.java))
                                     "USER" -> startActivity(Intent(this@LoginActivity, UserHomeActivity::class.java))
                                     else -> {
                                         Log.e("LOGIN_ERROR", "Perfil inválido: ${user.profileType}")

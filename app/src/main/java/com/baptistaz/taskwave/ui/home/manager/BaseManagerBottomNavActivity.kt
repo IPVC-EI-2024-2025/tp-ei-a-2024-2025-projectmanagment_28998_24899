@@ -23,14 +23,6 @@ abstract class BaseManagerBottomNavActivity : AppCompatActivity() {
                     }
                     true
                 }
-                R.id.nav_home -> {
-                    if (getSelectedMenuId() != R.id.nav_home) {
-                        startActivity(Intent(this, ManagerHomeActivity::class.java))
-                        overridePendingTransition(0, 0)
-                        finish()
-                    }
-                    true
-                }
                 R.id.nav_manager_area -> {
                     if (getSelectedMenuId() != R.id.nav_manager_area) {
                         startActivity(Intent(this, ManagerProjectsAreaActivity::class.java))
