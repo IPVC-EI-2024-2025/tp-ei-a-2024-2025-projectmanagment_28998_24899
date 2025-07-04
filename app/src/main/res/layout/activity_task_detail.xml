@@ -1,7 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:padding="24dp">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/button_orange"
+        android:spinnerMode="dropdown" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -9,27 +21,54 @@
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-    <TextView android:id="@+id/text_title" android:textSize="20sp" android:textStyle="bold"
-        android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <TextView android:id="@+id/text_description" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <TextView android:id="@+id/text_status" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <TextView android:id="@+id/text_creation_date" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <TextView android:id="@+id/text_conclusion_date" android:layout_width="match_parent" android:layout_height="wrap_content"/>
-    <TextView android:id="@+id/text_priority" android:layout_width="match_parent" android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/text_title"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    <!-- Novo: nome do responsável -->
+    <TextView
+        android:id="@+id/text_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_creation_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_conclusion_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/text_priority"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Nome do responsável -->
     <TextView
         android:id="@+id/text_assigned_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Responsável: "
+        android:text="@string/task_detail_responsible"
         android:textStyle="bold"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
 
-    <Button android:id="@+id/button_edit_task" android:text="Editar Tarefa"
-        android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="32dp"/>
+    <Button
+        android:id="@+id/button_edit_task"
+        android:text="@string/task_detail_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp" />
 
-    <!-- imediatamente depois do botão Editar -->
     <Button
         android:id="@+id/button_mark_complete"
         android:layout_width="match_parent"
@@ -37,6 +76,4 @@
         android:text="@string/btn_mark_completed"
         android:backgroundTint="@color/button_orange"
         android:visibility="gone" />
-
-
 </LinearLayout>

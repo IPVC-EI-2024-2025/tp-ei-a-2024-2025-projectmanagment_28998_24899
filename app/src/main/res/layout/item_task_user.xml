@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="@drawable/card_bg"
@@ -11,7 +10,7 @@
         android:id="@+id/text_task_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Task Title"
+        android:text="@string/task_title"
         android:textStyle="bold"
         android:textSize="18sp"
         android:textColor="@color/black"/>
@@ -20,7 +19,7 @@
         android:id="@+id/text_task_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Description"
+        android:text="@string/task_description"
         android:textSize="14sp"
         android:layout_marginBottom="4dp"/>
 
@@ -28,7 +27,7 @@
         android:id="@+id/text_task_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="IN_PROGRESS"
+        android:text="@string/task_status"
         android:textSize="13sp"
         android:layout_marginBottom="2dp"/>
 
@@ -36,7 +35,7 @@
         android:id="@+id/text_task_due_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="2025-03-03"
+        android:text="@string/task_due_date_sample"
         android:textSize="13sp"
         android:layout_marginBottom="2dp"/>
 
@@ -44,7 +43,7 @@
         android:id="@+id/text_task_responsavel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Responsible: ..."
+        android:text="@string/responsible_colon"
         android:textSize="13sp"
         android:textStyle="italic"/>
 </LinearLayout>

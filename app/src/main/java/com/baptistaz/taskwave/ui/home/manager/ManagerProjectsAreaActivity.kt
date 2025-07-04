@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.manager
 
+import BaseManagerBottomNavActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -34,6 +35,7 @@ class ManagerProjectsAreaActivity : BaseManagerBottomNavActivity() {
         btnAtivos = findViewById(R.id.btnAtivos)
         btnConcluidos = findViewById(R.id.btnConcluidos)
         rv = findViewById(R.id.rvProjects)
+
         rv.layoutManager = LinearLayoutManager(this)
         adapter = ManagerProjectAdapter(this)
         rv.adapter = adapter
@@ -43,6 +45,7 @@ class ManagerProjectsAreaActivity : BaseManagerBottomNavActivity() {
             refreshFilteredList()
             updateButtonStates()
         }
+
         btnConcluidos.setOnClickListener {
             showingActive = false
             refreshFilteredList()
@@ -61,9 +64,7 @@ class ManagerProjectsAreaActivity : BaseManagerBottomNavActivity() {
     private fun loadProjectsApi() {
         val token = SessionManager.getAccessToken(this) ?: ""
         val managerId = SessionManager.getUserId(this) ?: ""
-        projectRepo = ProjectRepository(
-            RetrofitInstance.getProjectService(token)
-        )
+        projectRepo = ProjectRepository(RetrofitInstance.getProjectService(token))
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
@@ -72,7 +73,7 @@ class ManagerProjectsAreaActivity : BaseManagerBottomNavActivity() {
             } catch (e: Exception) {
                 Toast.makeText(
                     this@ManagerProjectsAreaActivity,
-                    "Erro ao carregar projetos: ${e.message ?: "desconhecido"}",
+                    getString(R.string.error_loading_projects, e.message ?: "desconhecido"),
                     Toast.LENGTH_LONG
                 ).show()
             }
@@ -90,6 +91,7 @@ class ManagerProjectsAreaActivity : BaseManagerBottomNavActivity() {
     private fun updateButtonStates() {
         btnAtivos.setBackgroundColor(if (showingActive) getColor(R.color.button_orange) else getColor(R.color.gray))
         btnAtivos.setTextColor(if (showingActive) getColor(R.color.background_white) else getColor(R.color.black))
+
         btnConcluidos.setBackgroundColor(if (!showingActive) getColor(R.color.button_orange) else getColor(R.color.gray))
         btnConcluidos.setTextColor(if (!showingActive) getColor(R.color.background_white) else getColor(R.color.black))
     }

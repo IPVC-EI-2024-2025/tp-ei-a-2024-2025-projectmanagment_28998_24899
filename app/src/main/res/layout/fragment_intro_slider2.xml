@@ -11,14 +11,14 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/taskwave_logo"
-        android:contentDescription="TaskWave Logo" />
+        android:contentDescription="@string/logo_content_desc" />
 
     <ImageView
         android:id="@+id/image_illustration"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:src="@drawable/person_tablet"
-        android:contentDescription="Ilustração de gestão eficiente de tarefas" />
+        android:contentDescription="@string/illustration_2_content_desc" />
 
     <TextView
         android:id="@+id/text_title"

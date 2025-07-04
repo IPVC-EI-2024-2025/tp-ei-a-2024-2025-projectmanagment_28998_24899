@@ -10,13 +10,13 @@ import android.provider.MediaStore
 import android.util.Log
 import android.widget.CheckBox
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.OutputStreamWriter
 
-class ExportStatisticsActivity : AppCompatActivity() {
+class ExportStatisticsActivity : BaseLocalizedActivity() {
 
     private lateinit var cbProjects: CheckBox
     private lateinit var cbUsers: CheckBox
@@ -39,7 +39,7 @@ class ExportStatisticsActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Export Statistics"
+        supportActionBar?.title = getString(R.string.export_statistics_title)
 
         cbProjects = findViewById(R.id.checkbox_projects)
         cbUsers = findViewById(R.id.checkbox_users)
@@ -48,12 +48,12 @@ class ExportStatisticsActivity : AppCompatActivity() {
         btnExportPDF = findViewById(R.id.button_export_pdf)
 
         btnExportCSV.setOnClickListener {
-            Toast.makeText(this, "A exportar CSV...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.exporting_csv), Toast.LENGTH_SHORT).show()
             exportCSV()
         }
 
         btnExportPDF.setOnClickListener {
-            Toast.makeText(this, "A exportar PDF...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.exporting_pdf), Toast.LENGTH_SHORT).show()
             CoroutineScope(Dispatchers.IO).launch {
                 exportPDF()
             }
@@ -63,11 +63,11 @@ class ExportStatisticsActivity : AppCompatActivity() {
     private fun exportCSV() {
         val token = SessionManager.getAccessToken(this)
         if (token.isNullOrEmpty()) {
-            Toast.makeText(this, "Erro: sessão expirada", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.error_session_expired), Toast.LENGTH_SHORT).show()
             return
         }
         if (!cbProjects.isChecked && !cbUsers.isChecked && !cbTasks.isChecked) {
-            Toast.makeText(this, "Selecione pelo menos uma opção.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.select_at_least_one), Toast.LENGTH_SHORT).show()
             return
         }
         CoroutineScope(Dispatchers.IO).launch {
@@ -100,12 +100,12 @@ class ExportStatisticsActivity : AppCompatActivity() {
                     }
                 }
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ExportStatisticsActivity, "Exportação CSV concluída com sucesso!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ExportStatisticsActivity, getString(R.string.csv_export_success), Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 Log.e("EXPORT_CSV", "Erro durante a exportação: ${e.message}", e)
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@ExportStatisticsActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ExportStatisticsActivity, "${getString(R.string.error)}: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -138,14 +138,14 @@ class ExportStatisticsActivity : AppCompatActivity() {
                 writer.flush()
                 writer.close()
             }
-        } ?: throw Exception("Não foi possível criar o ficheiro CSV.")
+        } ?: throw Exception(getString(R.string.error_creating_csv))
     }
 
     private suspend fun exportPDF() {
         val token = SessionManager.getAccessToken(this)
         if (token.isNullOrEmpty()) {
             withContext(Dispatchers.Main) {
-                Toast.makeText(this@ExportStatisticsActivity, "Erro: sessão expirada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ExportStatisticsActivity, getString(R.string.error_session_expired), Toast.LENGTH_SHORT).show()
             }
             return
         }
@@ -205,18 +205,18 @@ class ExportStatisticsActivity : AppCompatActivity() {
                 MediaStore.Files.getContentUri("external")
             }
             val uri = resolver.insert(collection, contentValues)
-                ?: throw Exception("Não foi possível criar o ficheiro PDF.")
+                ?: throw Exception(getString(R.string.error_creating_pdf))
             resolver.openOutputStream(uri).use { outputStream ->
                 pdfDocument.writeTo(outputStream)
             }
             pdfDocument.close()
 
             withContext(Dispatchers.Main) {
-                Toast.makeText(this@ExportStatisticsActivity, "Exportação PDF concluída com sucesso!", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@ExportStatisticsActivity, getString(R.string.pdf_export_success), Toast.LENGTH_LONG).show()
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                Toast.makeText(this@ExportStatisticsActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@ExportStatisticsActivity, "${getString(R.string.error)}: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -231,7 +231,7 @@ class ExportStatisticsActivity : AppCompatActivity() {
         if (requestCode == 100 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             exportCSV()
         } else {
-            Toast.makeText(this, "Permissão negada. Não é possível exportar.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.permission_denied_export), Toast.LENGTH_SHORT).show()
         }
     }
 }

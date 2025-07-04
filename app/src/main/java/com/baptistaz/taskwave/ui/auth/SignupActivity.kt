@@ -7,18 +7,18 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.auth.AuthRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
-class SignupActivity : AppCompatActivity() {
+class SignupActivity : BaseLocalizedActivity() {
     private lateinit var authViewModel: AuthViewModel
     private lateinit var editEmail: TextInputEditText
     private lateinit var editName: TextInputEditText
@@ -30,8 +30,10 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        authViewModel = ViewModelProvider(this, AuthViewModelFactory(AuthRepository(RetrofitInstance.auth)))
-            .get(AuthViewModel::class.java)
+        authViewModel = ViewModelProvider(
+            this,
+            AuthViewModelFactory(AuthRepository(RetrofitInstance.auth))
+        )[AuthViewModel::class.java]
 
         authViewModel.clearAuthResponse()
 
@@ -49,13 +51,19 @@ class SignupActivity : AppCompatActivity() {
             val mobile = editMobile.text.toString()
             val password = editPassword.text.toString()
             val confirmPassword = editConfirmPassword.text.toString()
+
             if (email.isNotBlank() && name.isNotBlank() && mobile.isNotBlank() &&
-                password.isNotBlank() && password == confirmPassword) {
+                password.isNotBlank() && password == confirmPassword
+            ) {
                 lifecycleScope.launch {
                     authViewModel.signup(email, password)
                 }
             } else {
-                Toast.makeText(this, "Verifique os campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    getString(R.string.toast_check_fields),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 
@@ -77,7 +85,7 @@ class SignupActivity : AppCompatActivity() {
                                 name = editName.text.toString(),
                                 username = editEmail.text.toString().split("@")[0],
                                 email = editEmail.text.toString(),
-                                password = "", // Não guardar senha aqui
+                                password = "", // não guardar a senha localmente
                                 profileType = "USER",
                                 photo = "",
                                 phoneNumber = editMobile.text.toString(),
@@ -88,23 +96,35 @@ class SignupActivity : AppCompatActivity() {
                             val success = userRepository.createUser(user, token)
                             if (success) {
                                 Log.d("SIGNUP_DEBUG", "Perfil criado com sucesso")
-                                Toast.makeText(this@SignupActivity, "Registo concluído!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    this@SignupActivity,
+                                    getString(R.string.toast_registration_success),
+                                    Toast.LENGTH_SHORT
+                                ).show()
                                 startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
                                 finish()
                             } else {
                                 Log.e("SIGNUP_ERROR", "Erro ao criar perfil, mas utilizador registado no Auth")
-                                Toast.makeText(this@SignupActivity, "Erro ao criar perfil, mas pode fazer login", Toast.LENGTH_LONG).show()
+                                Toast.makeText(
+                                    this@SignupActivity,
+                                    getString(R.string.toast_profile_creation_failed),
+                                    Toast.LENGTH_LONG
+                                ).show()
                                 startActivity(Intent(this@SignupActivity, LoginActivity::class.java))
                                 finish()
                             }
                         }
                     } else {
                         Log.e("SIGNUP_ERROR", "Token ou authId nulos: token=$token, authId=$authId")
-                        Toast.makeText(this, "Erro no registo: token ou authId inválidos", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this,
+                            getString(R.string.toast_invalid_token),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 } else {
                     Log.e("SIGNUP_ERROR", "Erro no registo: ${response.errorBody()?.string()}")
-                    Toast.makeText(this, "Erro no registo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.toast_signup_error), Toast.LENGTH_SHORT).show()
                 }
             }
         }

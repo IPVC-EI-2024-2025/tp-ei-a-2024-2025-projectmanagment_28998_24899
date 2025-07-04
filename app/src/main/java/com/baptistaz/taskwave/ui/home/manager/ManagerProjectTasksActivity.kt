@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,10 +16,11 @@ import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
-class ManagerProjectTasksActivity : AppCompatActivity() {
+class ManagerProjectTasksActivity : BaseLocalizedActivity() {
 
     private lateinit var adapterActive: TaskAdapter
     private lateinit var adapterCompleted: TaskAdapter
@@ -38,7 +38,7 @@ class ManagerProjectTasksActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Tarefas"
+        supportActionBar?.title = getString(R.string.title_tasks)
 
         projectId = intent.getStringExtra("PROJECT_ID") ?: return
         repository = TaskRepository(RetrofitInstance.taskService)
@@ -47,7 +47,6 @@ class ManagerProjectTasksActivity : AppCompatActivity() {
         recyclerCompleted = findViewById(R.id.recycler_completed)
         buttonCreateTask = findViewById(R.id.button_create_task)
 
-        // ⚠️ SEMPRE BUSCA O PROJETO AO BACKEND PARA SABER SE PODES EDITAR
         val token = SessionManager.getAccessToken(this) ?: return
         val myUserId = SessionManager.getUserId(this) ?: return
 
@@ -56,7 +55,6 @@ class ManagerProjectTasksActivity : AppCompatActivity() {
             val project = projectRepo.getProjectById(projectId)
             isManager = (project?.idManager == myUserId)
 
-            // Adapter para tarefas em progresso (editar/remover)
             adapterActive = TaskAdapter(
                 emptyList(),
                 onClick = { task ->
@@ -68,30 +66,29 @@ class ManagerProjectTasksActivity : AppCompatActivity() {
                 onDelete = { task ->
                     if (isManager) {
                         AlertDialog.Builder(this@ManagerProjectTasksActivity)
-                            .setTitle("Eliminar Tarefa")
-                            .setMessage("Tens a certeza que queres eliminar '${task.title}'?")
-                            .setPositiveButton("Sim") { _, _ ->
+                            .setTitle(getString(R.string.dialog_delete_title))
+                            .setMessage(getString(R.string.dialog_delete_message, task.title))
+                            .setPositiveButton(getString(R.string.yes)) { _, _ ->
                                 lifecycleScope.launch {
                                     try {
                                         repository.deleteTask(task.idTask)
-                                        Toast.makeText(this@ManagerProjectTasksActivity, "Tarefa eliminada!", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(this@ManagerProjectTasksActivity, getString(R.string.task_deleted), Toast.LENGTH_SHORT).show()
                                         loadTasksWithResponsible()
                                     } catch (e: Exception) {
-                                        Toast.makeText(this@ManagerProjectTasksActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(this@ManagerProjectTasksActivity, getString(R.string.error_deleting_task, e.message), Toast.LENGTH_LONG).show()
                                     }
                                 }
                             }
-                            .setNegativeButton("Cancelar", null)
+                            .setNegativeButton(getString(R.string.cancel), null)
                             .show()
                     }
                 },
                 canEdit = isManager
             )
 
-            // Adapter para concluídas (apenas visualizar)
             adapterCompleted = TaskAdapter(
                 emptyList(),
-                onClick = { /* apenas detalhes, se quiseres! */ },
+                onClick = { /* apenas visualizar */ },
                 onDelete = null,
                 canEdit = false
             )
@@ -126,20 +123,22 @@ class ManagerProjectTasksActivity : AppCompatActivity() {
                 val tasks = repository.getTasksByProject(projectId)
                 val utRepo = UserTaskRepository(RetrofitInstance.userTaskService)
                 val allUserTasks = tasks.flatMap { utRepo.getUserTasksByTask(it.idTask) }
-                val token  = SessionManager.getAccessToken(this@ManagerProjectTasksActivity) ?: ""
-                val users  = UserRepository().getAllUsers(token) ?: emptyList()
+                val token = SessionManager.getAccessToken(this@ManagerProjectTasksActivity) ?: ""
+                val users = UserRepository().getAllUsers(token) ?: emptyList()
                 val mapId2Name = users.associate { it.id_user to it.name }
 
-                // Separar tarefas por estado
                 val active = tasks.filter { it.state == "IN_PROGRESS" }
                 val completed = tasks.filter { it.state == "COMPLETED" }
 
                 val activeList = active.map { t ->
-                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }?.let { mapId2Name[it.idUser] } ?: "Não atribuído"
+                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }
+                        ?.let { mapId2Name[it.idUser] } ?: getString(R.string.unassigned)
                     TaskWithUser(t, responsible)
                 }
+
                 val completedList = completed.map { t ->
-                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }?.let { mapId2Name[it.idUser] } ?: "Não atribuído"
+                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }
+                        ?.let { mapId2Name[it.idUser] } ?: getString(R.string.unassigned)
                     TaskWithUser(t, responsible)
                 }
 
@@ -147,10 +146,13 @@ class ManagerProjectTasksActivity : AppCompatActivity() {
                 adapterCompleted.updateData(completedList)
 
             } catch (e: Exception) {
-                Toast.makeText(this@ManagerProjectTasksActivity, "Erro ao carregar tarefas: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ManagerProjectTasksActivity, getString(R.string.error_loading_tasks, e.message), Toast.LENGTH_SHORT).show()
             }
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean { finish(); return true }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
 }

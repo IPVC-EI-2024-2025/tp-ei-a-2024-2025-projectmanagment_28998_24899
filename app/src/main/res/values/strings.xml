@@ -1,82 +1,445 @@
 <resources>
-    <!-- activity_home.xml -->
     <string name="app_name">TaskWave</string>
-    <string name="welcome_to_taskwave">Welcome to TaskWave!</string>
-    <string name="logout">Logout</string>
-    <string name="change_language">Change Language</string>
 
-    <!-- activity_intro.xml -->
-    <string name="next">Next</string>
-
-    <!-- activity_login.xml -->
-    <string name="login">Login</string>
+    <!-- LoginActivity -->
+    <string name="login_title">Sign in</string>
+    <string name="login_prompt">Please fill the credentials</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
-    <string name="login_button">Login</string>
-    <string name="no_account_signup">Don\'t have an account? Sign up</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="sign_in_prompt">Please fill the credentials</string>
-    <string name="login_with_google">Login With Google</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="signup_prompt">Don\'t have an account yet?</string>
+    <string name="signup_link">SIGN UP</string>
 
-    <!-- activity_signup.xml -->
-    <string name="signup">Sign Up</string>
+    <!-- SignupActivity -->
+    <string name="name_hint">Name</string>
+    <string name="mobile_hint">Mobile Number</string>
     <string name="confirm_password_hint">Confirm Password</string>
-    <string name="signup_button">Sign Up</string>
-    <string name="have_account_login">Already have an account? Login</string>
+    <string name="register">REGISTER</string>
+    <string name="login_prompt_label">Already have an account?</string>
+    <string name="login_link">SIGN IN</string>
 
-    <!-- fragment_intro_slider1.xml -->
-    <string name="intro_title_1">Efficient Task Management</string>
-    <string name="intro_description_1">Stay organized and productive</string>
+    <!-- AssignManagerActivity -->
+    <string name="assign_manager_title">Assign Manager</string>
+    <string name="current_manager_label">Current: %1$s</string>
+    <string name="toast_select_different_manager">Please select a different manager.</string>
+    <string name="toast_manager_updated">Manager updated!</string>
+    <string name="current_manager_placeholder">Current: Fulano</string>
+    <string name="update">Update</string>
 
-    <!-- fragment_intro_slider2.xml -->
-    <string name="intro_title_2">Simplified Collaboration</string>
-    <string name="intro_description_2">Works as a team with ease</string>
+    <!-- ExportStatisticsActivity -->
+    <string name="exporting_csv">Exporting CSV...</string>
+    <string name="exporting_pdf">Exporting PDF...</string>
+    <string name="csv_export_success">CSV export completed successfully!</string>
+    <string name="pdf_export_success">PDF export completed successfully!</string>
+    <string name="select_at_least_one">Please select at least one option.</string>
+    <string name="error_session_expired">Error: session expired</string>
+    <string name="error">Error</string>
+    <string name="error_creating_csv">Could not create CSV file.</string>
+    <string name="error_creating_pdf">Could not create PDF file.</string>
+    <string name="permission_denied_export">Permission denied. Cannot export.</string>
+    <string name="export_statistics_title">Export Statistics</string>
+    <string name="export_checkbox_projects">Export Projects</string>
+    <string name="export_checkbox_users">Export Users</string>
+    <string name="export_checkbox_tasks">Export Tasks</string>
+    <string name="export_button_csv">Export as CSV</string>
+    <string name="export_button_pdf">Export as PDF</string>
 
-    <!-- fragment_intro_slider3.xml -->
-    <string name="intro_title_3">Track Deadlines</string>
-    <string name="intro_description_3">Keep up with your work</string>
 
-    <!-- res/values/strings.xml -->
-    <string name="nova_tarefa">Nova Tarefa</string>
-    <string name="editar_tarefa">Editar Tarefa</string>
-    <string name="manager_label">Manager: %s</string>
+    <!-- CreateProjectActivity -->
+    <string name="create_project_title">Create Project</string>
+    <string name="create_project_name_hint">Project Name</string>
+    <string name="create_project_description_hint">Description</string>
+    <string name="create_project_start_hint">Start Date (YYYY-MM-DD)</string>
+    <string name="create_project_end_hint">End Date (YYYY-MM-DD)</string>
+    <string name="create_project_manager_label">Manager</string>
+    <string name="create_project_button">Create Project</string>
+    <string name="create_project_success">Project created successfully!</string>
+    <string name="create_project_error">Error: %1$s</string>
+    <string name="create_project_toolbar_title">Create Project</string>
 
 
-    <string name="btn_mark_completed">Marcar concluída</string>
-    <string name="msg_task_completed">Tarefa marcada como concluída!</string>
+    <!-- CreateTaskActivity -->
+    <string name="create_task_title">New Task</string>
+    <string name="create_task_hint_title">Title</string>
+    <string name="create_task_hint_description">Description</string>
+    <string name="create_task_hint_creation_date">Creation Date (YYYY-MM-DD)</string>
+    <string name="create_task_hint_conclusion_date">Conclusion Date (optional)</string>
+    <string name="create_task_button">Create</string>
+    <string name="create_task_success">Task created!</string>
+    <string name="create_task_error">Error: %1$s</string>
+    <string name="create_task_missing_fields">Title and creation date are required</string>
+    <string name="create_task_no_user_selected">Please select a user (admins are excluded)</string>
 
-    <string name="toast_task_completed">Tarefa concluída!</string>
 
-    <string name="project_tasks">Tasks</string>
-    <string name="not_assigned">Not assigned</string>
+    <!-- EditProjectActivity -->
+    <string name="edit_project_title">Edit Project</string>
+    <string name="edit_project_name_hint">Project Name</string>
+    <string name="edit_project_description_hint">Description</string>
+    <string name="edit_project_start_hint">Start Date (YYYY-MM-DD)</string>
+    <string name="edit_project_end_hint">End Date (YYYY-MM-DD)</string>
+    <string name="edit_project_manager_label">Manager</string>
+    <string name="edit_project_button">Save Changes</string>
+    <string name="edit_project_success">Project updated!</string>
+    <string name="edit_project_error">Update failed: %1$s</string>
+    <string name="edit_project_toolbar_title">Edit Project</string>
 
-    <string name="tasks">Tasks</string>
 
-    <string name="greeting_user">Hi, %1$s 👋</string>
-    <string name="history">History</string>
-    <string name="no_updates_yet">No updates yet</string>
-    <string name="mark_completed">Mark Completed</string>
-    <string name="no_date">No Date</string>
+    <!-- EditTaskActivity -->
+    <string name="edit_task_hint_title">Title</string>
+    <string name="edit_task_hint_description">Description</string>
+    <string name="edit_task_hint_creation_date">Creation Date (YYYY-MM-DD)</string>
+    <string name="edit_task_hint_conclusion_date">Conclusion Date (optional)</string>
+    <string name="edit_task_button_save">Save Changes</string>
+    <string name="edit_task_state_prefix">Current state: %1$s</string>
+    <string name="edit_task_success">Task updated!</string>
+    <string name="edit_task_error">Error: %1$s</string>
+    <string name="edit_task_toolbar_title">Edit Task</string>
 
-    <string name="btn_history">History</string>
 
+    <!-- ManageManagerActivity -->
+    <string name="manage_manager_title">Assign New Manager</string>
+    <string name="manage_manager_project_name">Project Name</string>
+    <string name="manage_manager_current_label">Current Manager</string>
+    <string name="manage_manager_current_value">(none)</string>
+    <string name="manage_manager_select_label">Select New Manager</string>
+    <string name="manage_manager_button">Update Manager</string>
+    <string name="manage_manager_toolbar_title">Assign New Manager</string>
+    <string name="manage_manager_already_assigned">Already assigned to this manager.</string>
+    <string name="manage_manager_success">Manager updated successfully!</string>
+    <string name="manage_manager_error">Error: %1$s</string>
+
+
+    <!-- ManageProjectsActivity -->
+    <string name="manage_projects_title">Manage Projects</string>
+    <string name="manage_projects_button_new">+ New Project</string>
+    <string name="manage_projects_search_hint">Search Projects</string>
+    <string name="manage_projects_filter_all">All</string>
+    <string name="manage_projects_filter_active">Active</string>
+    <string name="manage_projects_filter_completed">Completed</string>
+    <string name="project_manager_placeholder">Manager: …</string>
+    <string name="edit_project">Edit project</string>
+    <string name="delete_project">Delete project</string>
+    <string name="project_tasks_delete_confirm">Are you sure you want to delete \'%1$s\'?</string>
+    <string name="delete_project_title">Delete Project</string>
+    <string name="delete_project_success">Project deleted!</string>
+    <string name="delete_project_error">Error while deleting: %1$s</string>
+    <string name="delete_project_confirm_yes">Yes</string>
+    <string name="delete_project_confirm_no">Cancel</string>
+    <string name="manage_projects_toolbar_title">Manage Projects</string>
+
+
+    <!-- ProjectDetailsActivity -->
+    <string name="project_details_name">Project Name</string>
+    <string name="project_details_description">Project Description</string>
+    <string name="project_details_status">Status</string>
+    <string name="project_details_manager">Manager: </string>
+    <string name="project_details_start">Start Date</string>
+    <string name="project_details_end">End Date</string>
+    <string name="project_details_button_tasks">View Tasks</string>
+    <string name="project_details_button_manager">Manage Manager</string>
+    <string name="project_details_button_complete">Mark as Complete</string>
+    <string name="project_details_no_manager">(no manager)</string>
+    <string name="project_details_pending_tasks">There are %1$d pending tasks in this project.\n\nDo you want to mark them all as completed?</string>
+    <string name="project_details_completed_success">Project successfully completed!</string>
+    <string name="project_details_completed_error">Error while completing project: %1$s</string>
+
+
+    <!-- ProjectTasksActivity -->
+    <string name="project_tasks_create">CREATE TASK</string>
+    <string name="project_tasks_delete_title">Delete Task</string>
+    <string name="project_tasks_delete_success">Task deleted!</string>
+    <string name="project_tasks_delete_error">Error deleting: %1$s</string>
+    <string name="project_tasks_loading_error">Error loading tasks: %1$s</string>
+    <string name="project_tasks_not_assigned">Not assigned</string>
+
+    <!-- TaskDetailActivity -->
+    <string name="task_detail_responsible">Responsible: </string>
+    <string name="task_detail_edit">Edit Task</string>
+    <string name="btn_mark_completed">Mark as Completed</string>
+    <string name="msg_task_completed">Task marked as completed!</string>
+    <string name="task_detail_loading">Responsible: (loading…)</string>
+    <string name="task_detail_responsible_unassigned">Responsible: Not assigned</string>
+    <string name="task_detail_responsible_unknown">[User not found]</string>
+    <string name="task_detail_loading_error">Responsible: Error loading</string>
+    <string name="task_detail_responsible_named">Responsible: %1$s</string>
+
+
+
+    <!-- CreateUserActivity -->
+    <string name="title_create_user">Create User</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_phone">Phone</string>
+    <string name="btn_create_user">Create User</string>
+    <string name="error_fields_required">Please fill in all required fields</string>
+    <string name="success_user_created">User created successfully!</string>
+    <string name="error_user_db">Error creating user in database!</string>
+    <string name="error_user_auth">Error creating user in authentication!</string>
+    <string name="error_unexpected">Unexpected error</string>
+
+
+    <!-- EditUserActivity -->
+    <string name="title_edit_user">Edit User</string>
+    <string name="label_profile_type">Profile Type</string>
+    <string name="btn_save_user">Save Changes</string>
+    <string name="error_no_user">No user specified</string>
+    <string name="error_load_user">Failed to load user</string>
+    <string name="success_user_updated">User updated successfully!</string>
+    <string name="error_user_update">Error updating user: %1$s</string>
+    <string name="default_profile_type">User</string>
+
+
+    <!-- ManageUsersActivity -->
+    <string name="title_manage_users">Manage Users</string>
+    <string name="hint_search_user">Search User</string>
+    <string name="btn_new_user">+ New User</string>
+    <string name="stat_total">Total</string>
+    <string name="stat_admins">Admins</string>
+    <string name="stat_managers">Managers</string>
+    <string name="stat_users">Users</string>
+    <string name="profile_picture">Profile picture</string>
+    <string name="sample_user_name">User Name</string>
+    <string name="sample_user_email">email@email.com</string>
+    <string name="sample_role_admin">Admin</string>
+    <string name="edit_user">Edit user</string>
+    <string name="delete_user">Delete user</string>
+
+    <!-- UserDetailsActivity -->
+    <string name="title_user_details">User Details</string>
+    <string name="sample_user_role">Admin</string>
+    <string name="label_description">Description</string>
+    <string name="sample_description">Detailed user/admin description.</string>
+    <string name="text_tasks_assigned">Assigned tasks: 0</string>
+    <string name="text_tasks_completed">Completed tasks: 0</string>
+    <string name="title_projects">Projects</string>
+
+    <!-- AdminHomeActivity -->
+    <string name="title_admin_dashboard">Admin Dashboard</string>
+    <string name="stat_projects">Projects</string>
+    <string name="stat_tasks">Tasks</string>
+    <string name="btn_view_profile">View My Profile</string>
+    <string name="assign_manager">Assign Manager</string>
+    <string name="icon_assign_manager">Assign manager icon</string>
+    <string name="export_statistics">Export Statistics</string>
+    <string name="icon_export_statistics">Export statistics icon</string>
+    <string name="manage_projects">Manage Projects</string>
+    <string name="icon_manage_projects">Manage projects icon</string>
+    <string name="manage_users">Manage Users</string>
+    <string name="icon_manage_users">Manage users icon</string>
+
+    <!-- AdminProfileActivity -->
+    <string name="title_profile">My Profile</string>
+    <string name="label_name">Name:</string>
+    <string name="label_email">Email:</string>
+    <string name="btn_logout">Log Out</string>
+    <string name="loading">Loading…</string>
+    <string name="loading_email">loading@example.com</string>
+
+    <!-- ManagerCreateTaskActivity -->
+    <string name="title_create_task">Create Task</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_conclusion_date">Conclusion Date (YYYY-MM-DD)</string>
+    <string name="label_responsible">Responsible</string>
+    <string name="btn_create">Create</string>
+
+    <!-- ManagerEditProjectActivity -->
+    <string name="hint_project_name">Project Name</string>
+    <string name="hint_project_description">Description</string>
+    <string name="hint_start_date">Start Date</string>
+    <string name="hint_end_date">End Date</string>
+    <string name="btn_save_changes">Save Changes</string>
+    <string name="title_edit_project">Edit Project</string>
+    <string name="project_updated_success">Project updated!</string>
+
+
+    <!-- ManagerEvaluateTeamActivity -->
+    <string name="title_evaluate_team">Team Evaluation</string>
+    <string name="btn_submit_evaluation">Submit Evaluation</string>
+    <string name="member_name">Name</string>
+    <string name="comment_optional">Comment (optional)</string>
+    <string name="rating_bar_description">Member rating</string>
+    <string name="evaluation_user_name">User Name</string>
+    <string name="evaluation_comment">Comment</string>
+    <string name="no_members_to_evaluate">No members to evaluate.</string>
+    <string name="error_loading_team">Error loading team: %1$s</string>
+    <string name="evaluation_submitted">Evaluations submitted!</string>
+    <string name="error_submitting_evaluation">Error submitting evaluations!</string>
+    <string name="error_generic_with_message">ERROR: %1$s</string>
+
+
+    <!-- ManagerProfileActivity -->
+    <string name="label_phone">Phone:</string>
+    <string name="text_placeholder">...</string>
+
+    <!-- ManagerProjectDetailsActivity -->
+    <string name="project_name">Project Name</string>
+    <string name="project_description">Project Description</string>
+    <string name="project_status">Status</string>
+    <string name="label_manager">Manager: %1$s</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="btn_view_tasks">View Tasks</string>
+    <string name="btn_edit_project">Edit Project</string>
+    <string name="project_not_found">Project not found!</string>
+    <string name="only_manager_can_edit">Only the manager of this project can edit.</string>
+    <string name="no_manager">No manager</string>
+    <string name="pending_tasks_title">Pending Tasks</string>
+    <string name="alert_pending_tasks">There are %1$d pending tasks in this project.\n\nDo you want to mark them all as completed and proceed to evaluation?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error_checking_tasks">Error checking tasks: %1$s</string>
+    <string name="error_loading_data">Error loading data: %1$s</string>
+
+
+
+    <!-- ManagerProjectDetailsCompletedActivity -->
+    <string name="project_tasks">Project Tasks</string>
+    <string name="evaluations">Evaluations</string>
+    <string name="label_manager_with_value">Manager: %1$s</string>
+    <string name="unknown_user">Unknown user</string>
+
+
+    <!-- ManagerProjectsAreaActivity -->
+    <string name="title_my_projects">My Projects</string>
+    <string name="btn_in_progress">In Progress</string>
+    <string name="btn_completed">Completed</string>
+    <string name="error_loading_projects">Error loading projects: %1$s</string>
+
+
+    <!-- ManagerProjectTasksActivity -->
     <string name="label_active_tasks">Active Tasks</string>
     <string name="label_completed_tasks">Completed Tasks</string>
-    <string name="btn_create_task">Create Task</string>
-
-    <string name="responsible_fmt">Responsible: %1$s</string>
-
-    <string name="del_task_title">Delete Task</string>
-    <string name="del_task_msg">Are you sure you want to delete “%1$s”?</string>
-    <string name="yes">Yes</string>
+    <string name="btn_create_task">CREATE TASK</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="dialog_delete_title">Delete Task</string>
+    <string name="dialog_delete_message">Are you sure you want to delete \'%1$s\'?</string>
     <string name="cancel">Cancel</string>
-    <string name="toast_task_deleted">Task deleted!</string>
+    <string name="task_deleted">Task deleted!</string>
+    <string name="error_deleting_task">Error: %1$s</string>
+    <string name="error_loading_tasks">Failed to load tasks: %1$s</string>
+    <string name="unassigned">Unassigned</string>
 
 
+    <!-- ManagerSettingsActivity -->
+    <string name="option_edit_profile">Edit Profile</string>
+    <string name="option_change_language">Change Language</string>
+    <string name="option_notifications">Notifications</string>
+    <string name="toast_loading_profile">Profile still loading</string>
+    <string name="error_loading_profile">Error loading profile</string>
+    <string name="task_responsible_default">Unassigned</string>
 
 
+    <!-- ManagerTaskDetailsActivity -->
+    <string name="task_title">Title</string>
+    <string name="task_description">Description</string>
+    <string name="task_status">IN_PROGRESS</string>
+    <string name="task_creation_date">2025-07-01</string>
+    <string name="task_conclusion_date">2025-08-01</string>
+    <string name="task_priority">HIGH</string>
+    <string name="task_responsible_prefix">Responsible: %1$s</string>
+    <string name="task_no_updates">This task has no updates yet.</string>
+    <string name="button_edit_task">Edit Task</string>
+    <string name="button_mark_done">Mark as Completed</string>
+    <string name="toast_task_completed">Task marked as completed!</string>
+
+    <!-- AddUpdateActivity -->
+    <string name="hint_update_title">Enter update title…</string>
+    <string name="hint_update_notes">Write your notes…</string>
+    <string name="hint_update_location">Enter location…</string>
+    <string name="hint_update_time">e.g. 3 h 15 min</string>
+    <string name="label_upload_photo">Upload Photo</string>
+    <string name="btn_add_update">+ Add Update</string>
+    <string name="error_creating_update">Error creating update: %1$s</string>
 
 
+    <!-- TaskHistoryActivity -->
+    <string name="history">Task History</string>
+
+    <!-- UpdateDetailsActivity -->
+    <string name="update_details">Update Details</string>
+    <string name="label_notes">Notes</string>
+    <string name="label_location">Location</string>
+    <string name="label_time_spent">Time Spent</string>
+    <string name="btn_edit_update">Edit Update</string>
+    <string name="btn_delete">Delete</string>
+    <string name="toast_update_deleted">Update deleted successfully</string>
+
+    <!-- UserEvaluationsActivity -->
+    <string name="title_user_evaluations">My Evaluations</string>
+    <string name="error_loading_evaluations">Failed to load evaluations: %1$s</string>
+
+
+    <!-- UserHomeActivity -->
+    <string name="greeting_user">Hi, %1$s 👋</string>
+    <string name="title_assigned_tasks">Assigned Tasks</string>
+    <string name="btn_my_evaluations">My Evaluations</string>
+    <string name="btn_history">Task History</string>
+    <string name="no_date">No Date</string>
+    <string name="toast_missing_user_id">User without ID!</string>
+
+    <!-- UserProjectDetailsActivity -->
+    <string name="project_details">Project Details</string>
+    <string name="label_start_date">Start: </string>
+    <string name="label_end_date">End: </string>
+    <string name="placeholder_date">YYYY-MM-DD</string>
+    <string name="placeholder_name">Name</string>
+
+
+    <!-- UserProjectTasksActivity -->
+    <string name="not_assigned">Not Assigned</string>
+    <string name="tasks">Tasks</string>
+
+    <!-- UserSettingsActivity -->
+    <string name="title_account_settings">Account Settings</string>
+
+
+    <!-- UserTaskDetailsActivity -->
+    <string name="mark_completed">Mark as Completed</string>
+    <string name="toast_mark_failed">Failed to mark task: %1$s</string>
+    <string name="error_loading_updates">Error loading updates: %1$s</string>
+
+    <string name="title_edit_update">Edit Update</string>
+    <string name="toast_update_saved">Update saved successfully!</string>
+
+
+    <!-- IntroActivity -->
+    <string name="next">Next</string>
+
+    <!-- IntroSlider1Fragment -->
+    <string name="intro_title_1">Organize your tasks</string>
+    <string name="intro_description_1">Managing your work has never been easier and more effective.</string>
+    <string name="logo_content_desc">TaskWave Logo</string>
+    <string name="illustration_content_desc">Efficient task management illustration</string>
+
+    <!-- IntroSlider2Fragment -->
+    <string name="intro_title_2">Track your progress</string>
+    <string name="intro_description_2">See what’s done and what’s left to finish.</string>
+    <string name="illustration_2_content_desc">Progress tracking illustration</string>
+
+    <!-- IntroSlider3Fragment -->
+    <string name="intro_title_3">Gain time and focus</string>
+    <string name="intro_description_3">Focus on the right tasks at the right time.</string>
+    <string name="illustration_3_content_desc">Focus and time management illustration</string>
+
+    <string name="remove">Remove</string>
+    <string name="task">Task</string>
+    <string name="status">Status</string>
+
+    <string name="task_due_date">Due Date</string>
+    <string name="responsible">Responsible:</string>
+    <string name="task_due_date_sample">2025–03–03</string>
+    <string name="responsible_colon">Responsible: …</string>
+
+    <!-- Toasts / Feedback Messages -->
+    <string name="toast_check_fields">Please check the fields</string>
+    <string name="toast_registration_success">Registration completed!</string>
+    <string name="toast_profile_creation_failed">Failed to create profile, but you can still log in</string>
+    <string name="toast_invalid_token">Signup error: invalid token or authId</string>
+    <string name="toast_signup_error">Signup error</string>
 
 
 </resources>

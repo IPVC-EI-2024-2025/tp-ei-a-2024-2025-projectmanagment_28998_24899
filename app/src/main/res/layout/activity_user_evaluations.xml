@@ -5,14 +5,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+    <!-- TOPO com Toolbar + Spinner sobreposto -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/button_orange"
-        app:title="As Minhas Avaliações"
-        app:titleTextColor="@android:color/white"/>
+        android:layout_height="wrap_content">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/button_orange"
+            app:title="@string/title_user_evaluations"
+            app:titleTextColor="@android:color/white" />
+
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="12dp"
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/background_white" />
+    </FrameLayout>
+
+    <!-- Lista de Avaliações -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_user_evaluations"
         android:layout_width="match_parent"

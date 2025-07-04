@@ -9,6 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/button_orange"
+            android:spinnerMode="dropdown" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -16,7 +26,7 @@
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
         <TextView
-            android:text="Nova Tarefa"
+            android:text="@string/create_task_title"
             android:textStyle="bold"
             android:textSize="22sp"
             android:layout_width="wrap_content"
@@ -25,20 +35,20 @@
 
         <EditText
             android:id="@+id/input_title"
-            android:hint="Título"
+            android:hint="@string/create_task_hint_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/input_description"
-            android:hint="Descrição"
+            android:hint="@string/create_task_hint_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"/>
 
         <EditText
             android:id="@+id/input_creation_date"
-            android:hint="Data de Criação (YYYY-MM-DD)"
+            android:hint="@string/create_task_hint_creation_date"
             android:inputType="date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -46,7 +56,7 @@
 
         <EditText
             android:id="@+id/input_conclusion_date"
-            android:hint="Data de Conclusão (opcional)"
+            android:hint="@string/create_task_hint_conclusion_date"
             android:inputType="date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,7 +76,7 @@
 
         <Button
             android:id="@+id/button_create_task"
-            android:text="Criar"
+            android:text="@string/create_task_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"/>

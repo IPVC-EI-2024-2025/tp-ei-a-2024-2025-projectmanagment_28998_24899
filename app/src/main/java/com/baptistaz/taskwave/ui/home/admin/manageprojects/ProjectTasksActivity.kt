@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,10 +16,11 @@ import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
-class ProjectTasksActivity : AppCompatActivity() {
+class ProjectTasksActivity : BaseLocalizedActivity() {
 
     private lateinit var adapterActive: TaskAdapter
     private lateinit var adapterCompleted: TaskAdapter
@@ -35,31 +35,25 @@ class ProjectTasksActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project_tasks)
 
-        // Toolbar
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.tasks)
+        supportActionBar?.title = getString(R.string.project_tasks_create)
 
-        // 1) Recupera o ID e o status do projeto vindos da Intent
-        projectId    = intent.getStringExtra("project_id") ?: return
+        projectId = intent.getStringExtra("project_id") ?: return
         projectStatus = intent.getStringExtra("project_status") ?: "Active"
         val isComplete = projectStatus.equals("Completed", ignoreCase = true)
 
-        // 2) Instancia o repositório
         repository = TaskRepository(RetrofitInstance.taskService)
 
-        // 3) Liga as views
-        recyclerActive     = findViewById(R.id.recycler_active)
-        recyclerCompleted  = findViewById(R.id.recycler_completed)
-        buttonCreateTask   = findViewById(R.id.button_create_task)
+        recyclerActive = findViewById(R.id.recycler_active)
+        recyclerCompleted = findViewById(R.id.recycler_completed)
+        buttonCreateTask = findViewById(R.id.button_create_task)
 
-        // 4) Se for projeto concluído, esconde o botão de criar
         if (isComplete) buttonCreateTask.visibility = View.GONE
 
-        // 5) Configura os adapters já levando em conta o status
         adapterActive = TaskAdapter(
             emptyList(),
-            onClick  = if (isComplete) ({ /* no-op */ }) else { task ->
+            onClick = if (isComplete) ({ }) else { task ->
                 startActivity(
                     Intent(this, TaskDetailActivity::class.java)
                         .putExtra("task", task)
@@ -67,47 +61,45 @@ class ProjectTasksActivity : AppCompatActivity() {
             },
             onDelete = if (isComplete) null else { task ->
                 AlertDialog.Builder(this)
-                    .setTitle("Delete Task")
-                    .setMessage("Are you sure you want to delete '${task.title}'?")
-                    .setPositiveButton("Yes") { _, _ ->
+                    .setTitle(getString(R.string.project_tasks_delete_title))
+                    .setMessage(getString(R.string.project_tasks_delete_confirm, task.title))
+                    .setPositiveButton(getString(R.string.delete_project_confirm_yes)) { _, _ ->
                         lifecycleScope.launch {
                             try {
                                 repository.deleteTask(task.idTask)
                                 Toast.makeText(
                                     this@ProjectTasksActivity,
-                                    "Task deleted!",
+                                    getString(R.string.project_tasks_delete_success),
                                     Toast.LENGTH_SHORT
                                 ).show()
                                 loadTasksWithResponsible()
                             } catch (e: Exception) {
                                 Toast.makeText(
                                     this@ProjectTasksActivity,
-                                    "Error deleting: ${e.message}",
+                                    getString(R.string.project_tasks_delete_error, e.message),
                                     Toast.LENGTH_LONG
                                 ).show()
                             }
                         }
                     }
-                    .setNegativeButton("Cancel", null)
+                    .setNegativeButton(getString(R.string.delete_project_confirm_no), null)
                     .show()
             },
-            canEdit  = !isComplete
+            canEdit = !isComplete
         )
 
         adapterCompleted = TaskAdapter(
             emptyList(),
-            onClick  = { /* leitura apenas, ou no-op */ },
+            onClick = { },
             onDelete = null,
-            canEdit  = false
+            canEdit = false
         )
 
-        // 6) Associa ao RecyclerView
-        recyclerActive.layoutManager    = LinearLayoutManager(this)
-        recyclerActive.adapter          = adapterActive
+        recyclerActive.layoutManager = LinearLayoutManager(this)
+        recyclerActive.adapter = adapterActive
         recyclerCompleted.layoutManager = LinearLayoutManager(this)
-        recyclerCompleted.adapter       = adapterCompleted
+        recyclerCompleted.adapter = adapterCompleted
 
-        // 7) Botão de criar tarefa (só aparece se não estiver concluído)
         buttonCreateTask.setOnClickListener {
             startActivity(
                 Intent(this, CreateTaskActivity::class.java)
@@ -115,7 +107,6 @@ class ProjectTasksActivity : AppCompatActivity() {
             )
         }
 
-        // 8) Carrega as tarefas
         loadTasksWithResponsible()
     }
 
@@ -130,20 +121,25 @@ class ProjectTasksActivity : AppCompatActivity() {
                 val tasks = repository.getTasksByProject(projectId)
                 val utRepo = UserTaskRepository(RetrofitInstance.userTaskService)
                 val allUserTasks = tasks.flatMap { utRepo.getUserTasksByTask(it.idTask) }
-                val token  = SessionManager.getAccessToken(this@ProjectTasksActivity) ?: ""
-                val users  = UserRepository().getAllUsers(token) ?: emptyList()
+
+                val token = SessionManager.getAccessToken(this@ProjectTasksActivity) ?: ""
+                val users = UserRepository().getAllUsers(token) ?: emptyList()
                 val mapId2Name = users.associate { it.id_user to it.name }
 
-                // Separar tarefas por estado
                 val active = tasks.filter { it.state == "IN_PROGRESS" }
                 val completed = tasks.filter { it.state == "COMPLETED" }
 
                 val activeList = active.map { t ->
-                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }?.let { mapId2Name[it.idUser] } ?: "Not assigned"
+                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }
+                        ?.let { mapId2Name[it.idUser] }
+                        ?: getString(R.string.project_tasks_not_assigned)
                     TaskWithUser(t, responsible)
                 }
+
                 val completedList = completed.map { t ->
-                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }?.let { mapId2Name[it.idUser] } ?: "Not assigned"
+                    val responsible = allUserTasks.firstOrNull { it.idTask == t.idTask }
+                        ?.let { mapId2Name[it.idUser] }
+                        ?: getString(R.string.project_tasks_not_assigned)
                     TaskWithUser(t, responsible)
                 }
 
@@ -151,10 +147,17 @@ class ProjectTasksActivity : AppCompatActivity() {
                 adapterCompleted.updateData(completedList)
 
             } catch (e: Exception) {
-                Toast.makeText(this@ProjectTasksActivity, "Error loading tasks: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@ProjectTasksActivity,
+                    getString(R.string.project_tasks_loading_error, e.message),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean { finish(); return true }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
 }

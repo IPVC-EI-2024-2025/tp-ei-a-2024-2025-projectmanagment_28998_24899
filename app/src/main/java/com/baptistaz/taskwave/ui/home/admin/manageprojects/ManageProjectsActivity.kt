@@ -14,7 +14,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,11 +23,12 @@ import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class ManageProjectsActivity : AppCompatActivity() {
+class ManageProjectsActivity : BaseLocalizedActivity() {
 
     private lateinit var textTotal: TextView
     private lateinit var textActive: TextView
@@ -59,7 +59,7 @@ class ManageProjectsActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Manage Projects"
+        supportActionBar?.title = getString(R.string.manage_projects_toolbar_title)
 
         val cardTotal = findViewById<androidx.cardview.widget.CardView>(R.id.card_total)
         val cardActive = findViewById<androidx.cardview.widget.CardView>(R.id.card_active)
@@ -71,10 +71,8 @@ class ManageProjectsActivity : AppCompatActivity() {
 
         inputSearch = findViewById(R.id.input_search)
         spinnerFilter = findViewById(R.id.spinner_filter)
-
         recyclerView = findViewById(R.id.recycler_projects)
 
-        // Carrega managers antes de criar o adapter!
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
             managers = UserRepository().getAllManagers(token) ?: emptyList()
@@ -87,8 +85,16 @@ class ManageProjectsActivity : AppCompatActivity() {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(this@ManageProjectsActivity)
 
-            val options = listOf("Todos", "Ativos", "Completos")
-            spinnerFilter.adapter = ArrayAdapter(this@ManageProjectsActivity, android.R.layout.simple_spinner_dropdown_item, options)
+            val options = listOf(
+                getString(R.string.manage_projects_filter_all),
+                getString(R.string.manage_projects_filter_active),
+                getString(R.string.manage_projects_filter_completed)
+            )
+            spinnerFilter.adapter = ArrayAdapter(
+                this@ManageProjectsActivity,
+                android.R.layout.simple_spinner_dropdown_item,
+                options
+            )
 
             spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
@@ -132,10 +138,10 @@ class ManageProjectsActivity : AppCompatActivity() {
 
         val filtered = fullProjectList.filter { project ->
             val matchesSearch = project.name.contains(query, ignoreCase = true)
-            val matchesStatus = when (selectedStatus.lowercase()) {
-                "ativos" -> project.status.equals("active", true)
-                "completos" -> project.status.equals("completed", true)
-                else -> true // "Todos"
+            val matchesStatus = when (selectedStatus) {
+                getString(R.string.manage_projects_filter_active) -> project.status.equals("active", true)
+                getString(R.string.manage_projects_filter_completed) -> project.status.equals("completed", true)
+                else -> true // Todos
             }
             matchesSearch && matchesStatus
         }
@@ -145,20 +151,28 @@ class ManageProjectsActivity : AppCompatActivity() {
 
     private fun eliminarProjeto(project: Project) {
         AlertDialog.Builder(this)
-            .setTitle("Eliminar Projeto")
-            .setMessage("Tens a certeza que queres eliminar '${project.name}'?")
-            .setPositiveButton("Sim") { _, _ ->
+            .setTitle(getString(R.string.delete_project_title))
+            .setMessage(getString(R.string.project_tasks_delete_confirm, project.name))
+            .setPositiveButton(getString(R.string.delete_project_confirm_yes)) { _, _ ->
                 lifecycleScope.launch {
                     try {
                         viewModel.deleteProject(project.idProject)
                         viewModel.loadProjects()
-                        Toast.makeText(this@ManageProjectsActivity, "Projeto eliminado!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@ManageProjectsActivity,
+                            getString(R.string.delete_project_success),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     } catch (e: Exception) {
-                        Toast.makeText(this@ManageProjectsActivity, "Erro ao eliminar: ${e.message}", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@ManageProjectsActivity,
+                            getString(R.string.delete_project_error, e.message ?: "Erro desconhecido"),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(getString(R.string.delete_project_confirm_no), null)
             .show()
     }
 

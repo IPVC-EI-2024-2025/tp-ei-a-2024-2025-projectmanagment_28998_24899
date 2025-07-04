@@ -14,7 +14,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:src="@drawable/ic_two_people"
-        android:contentDescription="Icon" />
+        android:contentDescription="@string/icon_assign_manager" />
 
     <View
         android:layout_width="1dp"
@@ -25,7 +25,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Assign Manager"
+        android:text="@string/assign_manager"
         android:textSize="16sp"
         android:textColor="@color/black"
         android:textStyle="bold" />

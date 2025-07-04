@@ -2,18 +2,19 @@ package com.baptistaz.taskwave.ui.home.user
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-abstract class BaseBottomNavActivity : AppCompatActivity() {
-    // Cada filha vai definir qual item do menu está selecionado
+abstract class BaseBottomNavActivity : BaseLocalizedActivity() {  // <- herda BaseLocalizedActivity
     abstract fun getSelectedMenuId(): Int
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
+        super.onPostCreate(savedInstanceState) // já chama o super do BaseLocalizedActivity
+
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav?.selectedItemId = getSelectedMenuId()
+
         bottomNav?.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_profile -> {

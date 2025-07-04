@@ -6,17 +6,17 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserProjectDetailsActivity : AppCompatActivity() {
+class UserProjectDetailsActivity : BaseLocalizedActivity() {
 
     private lateinit var textName: TextView
     private lateinit var textDescription: TextView
@@ -33,21 +33,19 @@ class UserProjectDetailsActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = ""
+        supportActionBar?.title = getString(R.string.project_details)
 
-        textName = findViewById(R.id.text_project_name)
+        textName        = findViewById(R.id.text_project_name)
         textDescription = findViewById(R.id.text_project_description)
-        textStatus = findViewById(R.id.text_project_status)
-        textManager = findViewById(R.id.text_manager)
-        textStart = findViewById(R.id.text_project_start)
-        textEnd = findViewById(R.id.text_project_end)
+        textStatus      = findViewById(R.id.text_project_status)
+        textManager     = findViewById(R.id.text_manager)
+        textStart       = findViewById(R.id.text_project_start)
+        textEnd         = findViewById(R.id.text_project_end)
         buttonViewTasks = findViewById(R.id.button_view_tasks)
 
-        // Recebe o ID do projeto pelo Intent
         val projectId = intent.getStringExtra("PROJECT_ID") ?: return
         val token = SessionManager.getAccessToken(this) ?: return
 
-        // Busca detalhes do projeto
         CoroutineScope(Dispatchers.Main).launch {
             val repo = ProjectRepository(RetrofitInstance.getProjectService(token))
             val project = repo.getProjectById(projectId)
@@ -58,15 +56,14 @@ class UserProjectDetailsActivity : AppCompatActivity() {
                 textStart.text = project.startDate
                 textEnd.text = project.endDate
 
-                // Buscar apenas o manager associado ao projeto
                 val managerId = project.idManager ?: ""
                 val manager = if (managerId.isNotEmpty()) {
                     UserRepository().getUserById(managerId, token)
-                } else {
-                    null
-                }
-                val managerName = manager?.name ?: "No manager"
+                } else null
+
+                val managerName = manager?.name ?: getString(R.string.no_manager)
                 textManager.text = managerName
+
                 Log.d("CurrentManager", "ID=$managerId, Name=$managerName")
 
                 buttonViewTasks.setOnClickListener {
@@ -75,7 +72,11 @@ class UserProjectDetailsActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             } else {
-                Toast.makeText(this@UserProjectDetailsActivity, "Project not found!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@UserProjectDetailsActivity,
+                    getString(R.string.project_not_found),
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish()
             }
         }

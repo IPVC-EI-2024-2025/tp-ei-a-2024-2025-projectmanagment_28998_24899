@@ -6,6 +6,16 @@
     android:background="@color/background_white"
     android:orientation="vertical">
 
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/button_orange" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -27,7 +37,6 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    android:background="@color/button_orange"
                     android:layout_gravity="top"
                     android:scaleY="1.5"
                     android:translationY="-60dp"
@@ -51,7 +60,7 @@
                 android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="..."
+                android:text="@string/text_placeholder"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
@@ -62,7 +71,7 @@
                 android:id="@+id/text_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="..."
+                android:text="@string/text_placeholder"
                 android:textSize="16sp"
                 android:textColor="@color/gray"
                 android:layout_marginTop="2dp"
@@ -95,7 +104,7 @@
                         android:id="@+id/text_username_card"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="..."
+                        android:text="@string/text_placeholder"
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         android:layout_marginStart="8dp"/>
@@ -119,7 +128,7 @@
                         android:id="@+id/text_email"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="..."
+                        android:text="@string/text_placeholder"
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         android:layout_marginStart="8dp"/>
@@ -143,7 +152,7 @@
                         android:id="@+id/text_phone"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="..."
+                        android:text="@string/text_placeholder"
                         android:textSize="16sp"
                         android:textColor="@color/black"
                         android:layout_marginStart="8dp"/>
@@ -155,7 +164,7 @@
                 android:id="@+id/button_logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Terminar Sessão"
+                android:text="@string/btn_logout"
                 android:backgroundTint="@color/red"
                 android:textColor="@android:color/white"
                 android:layout_marginTop="20dp"

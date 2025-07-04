@@ -10,13 +10,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginBottom="8dp"
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/button_orange" />
+
         <include layout="@layout/toolbar_back" />
 
         <TextView
             android:id="@+id/text_project_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Project Name"
+            android:text="@string/project_name"
             android:textStyle="bold"
             android:textSize="24sp"
             android:textColor="@color/black"
@@ -26,7 +35,7 @@
             android:id="@+id/text_project_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Project Description"
+            android:text="@string/project_description"
             android:textSize="16sp"
             android:layout_marginBottom="12dp"/>
 
@@ -34,7 +43,7 @@
             android:id="@+id/text_project_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Status"
+            android:text="@string/project_status"
             android:textStyle="italic"
             android:textSize="16sp"
             android:layout_marginBottom="12dp"/>
@@ -46,14 +55,14 @@
             android:layout_marginBottom="12dp">
 
             <TextView
-                android:text="Manager: "
+                android:text="@string/label_manager"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/text_manager"
-                android:text="Name"
+                android:text="@string/placeholder_name"
                 android:textSize="16sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -66,28 +75,28 @@
             android:layout_marginBottom="24dp">
 
             <TextView
-                android:text="Start Date: "
+                android:text="@string/label_start_date"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/text_project_start"
-                android:text="YYYY-MM-DD"
+                android:text="@string/placeholder_date"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"/>
 
             <TextView
-                android:text="End Date: "
+                android:text="@string/label_end_date"
                 android:textStyle="bold"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:id="@+id/text_project_end"
-                android:text="YYYY-MM-DD"
+                android:text="@string/placeholder_date"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -97,7 +106,7 @@
             android:id="@+id/button_view_tasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="VIEW TASKS"
+            android:text="@string/btn_view_tasks"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
             android:backgroundTint="@color/button_orange"

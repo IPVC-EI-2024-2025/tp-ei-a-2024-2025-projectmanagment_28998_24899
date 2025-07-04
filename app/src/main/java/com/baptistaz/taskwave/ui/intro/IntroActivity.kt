@@ -3,15 +3,15 @@ package com.baptistaz.taskwave.ui.intro
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.baptistaz.taskwave.MainActivity
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class IntroActivity : AppCompatActivity() {
+class IntroActivity : BaseLocalizedActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
 

@@ -11,8 +11,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.Project
-import com.baptistaz.taskwave.data.model.UserTask
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
@@ -25,35 +23,32 @@ class UserHomeActivity : BaseBottomNavActivity() {
 
     override fun getSelectedMenuId() = R.id.nav_home
 
-    /* UI refs */
     private lateinit var layoutProjects: LinearLayout
-    private lateinit var layoutTasks   : LinearLayout
-    private lateinit var imageUser     : ImageView
-    private lateinit var textGreeting  : TextView
-    private lateinit var btnHistory    : Button
-    private lateinit var btnMyEvals   : Button
+    private lateinit var layoutTasks: LinearLayout
+    private lateinit var imageUser: ImageView
+    private lateinit var textGreeting: TextView
+    private lateinit var btnHistory: Button
+    private lateinit var btnMyEvals: Button
 
     private var currentUser: User? = null
 
-    /* ---------- lifecycle ---------- */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_home)
 
         layoutProjects = findViewById(R.id.layout_projects)
-        layoutTasks    = findViewById(R.id.layout_tasks)
-        imageUser      = findViewById(R.id.image_user)
-        textGreeting   = findViewById(R.id.text_greeting)
-        btnMyEvals  = findViewById(R.id.button_my_evaluations)
-        btnHistory     = findViewById(R.id.button_history)
+        layoutTasks = findViewById(R.id.layout_tasks)
+        imageUser = findViewById(R.id.image_user)
+        textGreeting = findViewById(R.id.text_greeting)
+        btnMyEvals = findViewById(R.id.button_my_evaluations)
+        btnHistory = findViewById(R.id.button_history)
 
-        // UserHomeActivity.kt  (dentro do onCreate)
         btnHistory.setOnClickListener {
             currentUser?.id_user?.let { id ->
                 Intent(this, TaskHistoryActivity::class.java)
                     .putExtra("USER_ID", id)
                     .also { startActivity(it) }
-            } ?: Toast.makeText(this, "Utilizador sem ID!", Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(this, getString(R.string.toast_missing_user_id), Toast.LENGTH_SHORT).show()
         }
 
         btnMyEvals.setOnClickListener {
@@ -68,16 +63,15 @@ class UserHomeActivity : BaseBottomNavActivity() {
         loadUserDashboard()
     }
 
-    /* ---------- dashboard ---------- */
     private fun loadUserDashboard() {
-        val token  = SessionManager.getAccessToken(this) ?: return
-        val authId = SessionManager.getAuthId(this)     ?: return
+        val token = SessionManager.getAccessToken(this) ?: return
+        val authId = SessionManager.getAuthId(this) ?: return
 
         CoroutineScope(Dispatchers.Main).launch {
             val userRepo = UserRepository()
             userRepo.getUserByAuthId(authId, token)?.let { u ->
                 currentUser = u
-                textGreeting.text = getString(R.string.greeting_user, u.name)  // "Hi, %s 👋"
+                textGreeting.text = getString(R.string.greeting_user, u.name)
                 u.id_user?.let { loadProjectsAndTasks(it, token) }
             }
         }
@@ -85,13 +79,11 @@ class UserHomeActivity : BaseBottomNavActivity() {
 
     private suspend fun loadProjectsAndTasks(userId: String, token: String) {
         val utRepo = UserTaskRepository(RetrofitInstance.getUserTaskService(token))
-        val allUserTasks: List<UserTask> =
-            utRepo.getTasksOfUser(userId, token) ?: emptyList()
+        val allUserTasks = utRepo.getTasksOfUser(userId, token) ?: emptyList()
 
-        /* ---------- PROJETOS ---------- */
-        val projects: List<Project> =
-            allUserTasks.mapNotNull { it.task?.project }
-                .distinctBy { it.idProject }
+        // --- Projetos ---
+        val projects = allUserTasks.mapNotNull { it.task?.project }
+            .distinctBy { it.idProject }
 
         layoutProjects.removeAllViews()
         projects.forEach { proj ->
@@ -108,10 +100,10 @@ class UserHomeActivity : BaseBottomNavActivity() {
             layoutProjects.addView(btn)
         }
 
-        /* ---------- TAREFAS (apenas IN_PROGRESS) ---------- */
+        // --- Tarefas em progresso ---
         val activeTasks = allUserTasks
             .filter { it.task?.state == "IN_PROGRESS" }
-            .sortedBy { it.task?.conclusionDate ?: "" }      // YYYY-MM-DD → ordena bem
+            .sortedBy { it.task?.conclusionDate ?: "" }
 
         layoutTasks.removeAllViews()
         activeTasks.forEach { ut ->
@@ -129,7 +121,6 @@ class UserHomeActivity : BaseBottomNavActivity() {
                 }
             }
 
-            // título
             card.addView(TextView(this).apply {
                 text = task.title
                 setTextColor(ContextCompat.getColor(context, R.color.black))
@@ -137,18 +128,17 @@ class UserHomeActivity : BaseBottomNavActivity() {
                 setTypeface(null, Typeface.BOLD)
             })
 
-            // descrição
-            card.addView(TextView(this).apply { text = task.description })
-
-            // info
             card.addView(TextView(this).apply {
-                val deadline = task.conclusionDate ?: getString(R.string.no_date) // "No Date"
+                text = task.description
+            })
+
+            card.addView(TextView(this).apply {
+                val deadline = task.conclusionDate ?: getString(R.string.no_date)
                 text = "${task.state}\n$deadline"
                 setTextColor(ContextCompat.getColor(context, R.color.gray_dark))
                 textSize = 14f
             })
 
-            // badge prioridade
             val badge = TextView(this).apply {
                 text = task.priority ?: ""
                 setPadding(18, 8, 18, 8)
@@ -156,13 +146,13 @@ class UserHomeActivity : BaseBottomNavActivity() {
                 setTypeface(null, Typeface.BOLD)
                 textSize = 13f
                 background = when ((task.priority ?: "").uppercase()) {
-                    "HIGH"   -> ContextCompat.getDrawable(context, R.drawable.priority_badge_high)
+                    "HIGH" -> ContextCompat.getDrawable(context, R.drawable.priority_badge_high)
                     "MEDIUM" -> ContextCompat.getDrawable(context, R.drawable.priority_badge_medium)
-                    "LOW"    -> ContextCompat.getDrawable(context, R.drawable.priority_badge_low)
-                    else     -> null
+                    "LOW" -> ContextCompat.getDrawable(context, R.drawable.priority_badge_low)
+                    else -> null
                 }
             }
-            card.addView(LinearLayout(this).also { it.addView(badge) })
+            card.addView(LinearLayout(this).apply { addView(badge) })
 
             layoutTasks.addView(card)
         }

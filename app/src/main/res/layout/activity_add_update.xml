@@ -10,6 +10,16 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar_back"/>
 
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/button_orange"
+        android:spinnerMode="dropdown" />
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,7 +46,7 @@
                     android:id="@+id/input_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter update title…"
+                    android:hint="@string/hint_update_title"
                     android:inputType="textCapSentences"
                     android:singleLine="true"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -57,7 +67,7 @@
                     android:id="@+id/input_notes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter your notes…"
+                    android:hint="@string/hint_update_notes"
                     android:inputType="textCapSentences|textMultiLine"
                     android:minLines="3"/>
             </com.google.android.material.textfield.TextInputLayout>
@@ -78,7 +88,7 @@
                     android:id="@+id/input_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Enter location…"
+                    android:hint="@string/hint_update_location"
                     android:inputType="textCapWords"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -98,7 +108,7 @@
                     android:id="@+id/input_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="e.g. 3 h 15 min"
+                    android:hint="@string/hint_update_time"
                     android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,14 +131,14 @@
                     android:backgroundTint="@color/button_orange_light"
                     android:src="@drawable/ic_camera_24"
                     android:scaleType="centerInside"
-                    android:contentDescription="Upload Photo"/>
+                    android:contentDescription="@string/label_upload_photo"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
-                    android:text="Upload Photo"
+                    android:text="@string/label_upload_photo"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
             </LinearLayout>
 
@@ -139,7 +149,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="+ Add Update"
+                android:text="@string/btn_add_update"
                 android:textAllCaps="false"
                 android:backgroundTint="@color/button_orange"
                 app:layout_constraintTop_toBottomOf="@id/layout_photo"
@@ -147,5 +157,4 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

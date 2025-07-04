@@ -7,11 +7,11 @@
 
     <TextView
         android:id="@+id/tv_user_name"
+        android:text="@string/evaluation_user_name"
         android:textStyle="bold"
         android:textSize="16sp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nome do Utilizador"/>
+        android:layout_height="wrap_content" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -25,6 +25,5 @@
         android:id="@+id/tv_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Comentário" />
-
+        android:text="@string/evaluation_comment" />
 </LinearLayout>

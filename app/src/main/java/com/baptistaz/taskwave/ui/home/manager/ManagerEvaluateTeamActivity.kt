@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +14,12 @@ import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.manager.EvaluationRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
 
-class ManagerEvaluateTeamActivity : AppCompatActivity() {
+class ManagerEvaluateTeamActivity : BaseLocalizedActivity() {
 
     private lateinit var rvTeam: RecyclerView
     private lateinit var btnSubmit: Button
@@ -44,7 +44,11 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
                 val service = RetrofitInstance.getProjectTeamService(token)
                 val teamList = service.getTeamMembersByProject("eq.$projectId")
                 if (teamList.isEmpty()) {
-                    Toast.makeText(this@ManagerEvaluateTeamActivity, "Não há membros para avaliar.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@ManagerEvaluateTeamActivity,
+                        getString(R.string.no_members_to_evaluate),
+                        Toast.LENGTH_LONG
+                    ).show()
                     finish()
                     return@launch
                 }
@@ -54,7 +58,11 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
                 rvTeam.adapter = teamAdapter
             } catch (e: Exception) {
                 Log.e("DEBUG-EVAL", "Erro ao carregar equipa: ${e.message}", e)
-                Toast.makeText(this@ManagerEvaluateTeamActivity, "Erro ao carregar equipa: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@ManagerEvaluateTeamActivity,
+                    getString(R.string.error_loading_team, e.message),
+                    Toast.LENGTH_LONG
+                ).show()
                 finish()
             }
         }
@@ -94,17 +102,14 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
                                 )
                                 projectRepo.updateProject(projectId, updatedProject)
 
-                                // NOVO: Atualizar todas as tarefas e user_tasks
+                                // Atualizar tarefas e user_tasks
                                 val taskService = RetrofitInstance.getTaskService(token)
                                 val userTaskService = RetrofitInstance.getUserTaskService(token)
                                 val userTaskRepo = UserTaskRepository(userTaskService)
 
                                 val projectTasks = taskService.getTasksByProject("eq.$projectId")
                                 projectTasks.filter { it.state == "IN_PROGRESS" }.forEach { task ->
-                                    // Atualizar a task
                                     taskService.updateTask(task.copy(state = "COMPLETED"))
-
-                                    // Atualizar user_task
                                     val userTasks = userTaskService.getUserTasksByTask("eq.${task.idTask}")
                                     userTasks.forEach { ut ->
                                         userTaskRepo.updateUserTask(ut.copy(status = "COMPLETED"))
@@ -112,17 +117,29 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
                                 }
                             }
                         } catch (e: Exception) {
-                            Log.e("UPDATE_PROJECT", "Erro ao atualizar projeto/tarefas para Completed: ${e.message}", e)
+                            Log.e("UPDATE_PROJECT", "Erro ao atualizar projeto/tarefas: ${e.message}", e)
                         }
 
-                        Toast.makeText(this@ManagerEvaluateTeamActivity, "Avaliações submetidas!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@ManagerEvaluateTeamActivity,
+                            getString(R.string.evaluation_submitted),
+                            Toast.LENGTH_SHORT
+                        ).show()
                         finish()
                     } else {
-                        Toast.makeText(this@ManagerEvaluateTeamActivity, "Erro ao submeter avaliações!", Toast.LENGTH_LONG).show()
+                        Toast.makeText(
+                            this@ManagerEvaluateTeamActivity,
+                            getString(R.string.error_submitting_evaluation),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 } catch (e: Exception) {
                     Log.e("EVAL-EXCEPTION", "Falhou submit: ${e.message}", e)
-                    Toast.makeText(this@ManagerEvaluateTeamActivity, "ERRO: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@ManagerEvaluateTeamActivity,
+                        getString(R.string.error_generic_with_message, e.message),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

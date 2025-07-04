@@ -7,17 +7,17 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
-class ManagerProjectDetailsActivity : AppCompatActivity() {
+class ManagerProjectDetailsActivity : BaseLocalizedActivity() {
     private lateinit var textName: TextView
     private lateinit var textDesc: TextView
     private lateinit var textStatus: TextView
@@ -39,6 +39,7 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.project_name)
 
         // Liga views
         textName           = findViewById(R.id.text_project_name)
@@ -71,7 +72,11 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
                 val projectRepo = ProjectRepository(RetrofitInstance.getProjectService(jwt))
                 val project     = projectRepo.getProjectById(projectId)
                 if (project == null) {
-                    Toast.makeText(this@ManagerProjectDetailsActivity, "Projeto não encontrado!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@ManagerProjectDetailsActivity,
+                        getString(R.string.project_not_found),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     finish()
                     return@launch
                 }
@@ -79,15 +84,15 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
                 // 2) Popula UI
                 textName.text   = project.name
                 textDesc.text   = project.description
-                textStatus.text = project.status
-                textStart.text  = project.startDate
-                textEnd.text    = project.endDate
+                textStatus.text = getString(R.string.project_status) + ": ${project.status}"
+                textStart.text  = getString(R.string.start_date) + ": ${project.startDate}"
+                textEnd.text    = getString(R.string.end_date) + ": ${project.endDate}"
 
                 // 3) Carrega nome do gestor
                 val managerName = project.idManager
                     ?.let { UserRepository().getUserById(it, jwt)?.name }
-                    ?: "No manager"
-                textManager.text = getString(R.string.manager_label, managerName)
+                    ?: getString(R.string.no_manager)
+                textManager.text = getString(R.string.label_manager) + managerName
 
                 // 4) Verifica se o utilizador é de facto o gestor
                 val myId      = SessionManager.getUserId(this@ManagerProjectDetailsActivity)
@@ -103,9 +108,11 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
                             startActivity(it)
                         }
                     } else {
-                        Toast.makeText(this@ManagerProjectDetailsActivity,
-                            "Só o gestor deste projeto pode editar.",
-                            Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this@ManagerProjectDetailsActivity,
+                            getString(R.string.only_manager_can_edit),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
 
@@ -125,47 +132,48 @@ class ManagerProjectDetailsActivity : AppCompatActivity() {
                     View.GONE
                 }
 
-                // 5) Lógica de confirmação e marcação de tarefas pendentes
+                // 5) Lógica de marcação como concluído
                 buttonMarkComplete.setOnClickListener {
                     lifecycleScope.launch {
                         try {
-                            // Instancia o repositório de tasks
                             val taskRepo = TaskRepository(RetrofitInstance.getTaskService(jwt))
                             val tasks    = taskRepo.getTasksByProject(projectId)
                             val pending  = tasks.filter { it.state != "COMPLETED" }
 
                             if (pending.isNotEmpty()) {
-                                // Há tarefas pendentes: alerta
                                 AlertDialog.Builder(this@ManagerProjectDetailsActivity)
-                                    .setTitle("Tarefas pendentes")
-                                    .setMessage("Existem ${pending.size} tarefas pendentes neste projeto.\n\nDeseja marcá-las todas como concluídas e avançar para avaliação?")
-                                    .setPositiveButton("Sim") { _, _ ->
+                                    .setTitle(getString(R.string.pending_tasks_title))
+                                    .setMessage(getString(R.string.alert_pending_tasks, pending.size))
+                                    .setPositiveButton(getString(R.string.yes)) { _, _ ->
                                         lifecycleScope.launch {
-                                            // Marca cada pending como completed
                                             pending.forEach { t ->
                                                 try { taskRepo.markCompleted(t.idTask) } catch (_: Exception) {}
                                             }
                                             goToEvaluateTeam()
                                         }
                                     }
-                                    .setNegativeButton("Não", null)
+                                    .setNegativeButton(getString(R.string.no), null)
                                     .show()
                             } else {
-                                // Sem pendentes: avança
                                 goToEvaluateTeam()
                             }
+
                         } catch (e: Exception) {
-                            Toast.makeText(this@ManagerProjectDetailsActivity,
-                                "Erro ao verificar tarefas: ${e.message}",
-                                Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                this@ManagerProjectDetailsActivity,
+                                getString(R.string.error_checking_tasks, e.message),
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
                     }
                 }
 
             } catch (e: Exception) {
-                Toast.makeText(this@ManagerProjectDetailsActivity,
-                    "Erro ao carregar dados: ${e.message}",
-                    Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    this@ManagerProjectDetailsActivity,
+                    getString(R.string.error_loading_data, e.message),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }

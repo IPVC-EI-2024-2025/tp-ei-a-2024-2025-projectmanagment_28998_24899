@@ -5,6 +5,16 @@
     android:orientation="vertical"
     android:background="@color/background_white">
 
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/button_orange"
+        android:spinnerMode="dropdown" />
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -24,7 +34,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="20sp"
-            android:text="Título"/>
+            android:text="@string/task_title" />
 
         <TextView
             android:id="@+id/text_description"
@@ -32,31 +42,31 @@
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textColor="@color/gray"
-            android:text="Descrição" />
+            android:text="@string/task_description" />
 
         <TextView
             android:id="@+id/text_state"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="IN_PROGRESS" />
+            android:text="@string/task_status" />
 
         <TextView
             android:id="@+id/text_creation_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2025-07-01" />
+            android:text="@string/task_creation_date" />
 
         <TextView
             android:id="@+id/text_conclusion_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2025-08-01" />
+            android:text="@string/task_conclusion_date" />
 
         <TextView
             android:id="@+id/text_priority"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HIGH" />
+            android:text="@string/task_priority" />
 
         <TextView
             android:id="@+id/text_responsible"
@@ -64,45 +74,43 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:text="Responsável: ..." />
-
+            android:text="@string/task_responsible_prefix" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/text_no_updates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Esta tarefa ainda não tem updates."
+        android:text="@string/task_no_updates"
         android:visibility="gone"
         android:gravity="center"
         android:textColor="@color/gray"
         android:layout_marginTop="30dp"
-        android:textSize="15sp"/>
+        android:textSize="15sp" />
 
     <Button
         android:id="@+id/button_edit_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Editar Tarefa"
+        android:text="@string/button_edit_task"
         android:backgroundTint="@color/button_orange"
         android:textColor="@android:color/white"
         android:layout_margin="16dp"
-        android:layout_marginTop="0dp"/>
+        android:layout_marginTop="0dp" />
 
     <Button
         android:id="@+id/button_mark_done"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Marcar Concluída"
+        android:text="@string/button_mark_done"
         android:backgroundTint="@color/button_orange"
         android:textColor="@android:color/white"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_updates"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="10dp"/>
-
+        android:padding="10dp" />
 </LinearLayout>

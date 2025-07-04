@@ -39,24 +39,31 @@ class UserSettingsActivity : BaseBottomNavActivity() {
         txtName        = findViewById(R.id.text_name)
         imgProfile     = findViewById(R.id.image_profile)
 
-        // Edit Profile
-        findViewById<LinearLayout>(R.id.option_edit_profile)
-            .setOnClickListener {
-                currentUserId?.let { id ->
-                    Intent(this, EditUserActivity::class.java)
-                        .putExtra("USER_ID", id)
-                        .also { startActivity(it) }
-                } ?: Toast.makeText(this, "Perfil ainda a carregar", Toast.LENGTH_SHORT).show()
-            }
+        // Editar perfil
+        findViewById<LinearLayout>(R.id.option_edit_profile).setOnClickListener {
+            currentUserId?.let { id ->
+                Intent(this, EditUserActivity::class.java)
+                    .putExtra("USER_ID", id)
+                    .also { startActivity(it) }
+            } ?: Toast.makeText(
+                this,
+                getString(R.string.toast_loading_profile),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
-        // Outras opções (só placeholders por agora)
-        findViewById<LinearLayout>(R.id.option_change_language).setOnClickListener { /* ... */ }
+        // Placeholder - mudar idioma
+        findViewById<LinearLayout>(R.id.option_change_language).setOnClickListener {
+            // A troca de idioma é feita pelo Spinner (não aqui)
+        }
+
+        // Placeholder - toggle notificações
         findViewById<Switch>(R.id.switch_notifications)
             .setOnCheckedChangeListener { _, isChecked ->
-                // TODO: guardar preferência
+                // TODO: guardar estado
             }
 
-        // Bottom nav
+        // Bottom nav (opcional aqui, já é tratado pela BaseBottomNavActivity)
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.selectedItemId = R.id.nav_settings
         bottomNav.setOnItemSelectedListener { true }
@@ -69,7 +76,7 @@ class UserSettingsActivity : BaseBottomNavActivity() {
 
     private fun loadCurrentUser() {
         // Mostra spinner
-        progress.visibility      = View.VISIBLE
+        progress.visibility = View.VISIBLE
         contentLayout.visibility = View.GONE
 
         val token  = SessionManager.getAccessToken(this) ?: return
@@ -81,16 +88,16 @@ class UserSettingsActivity : BaseBottomNavActivity() {
 
             if (user != null) {
                 contentLayout.visibility = View.VISIBLE
-                txtName.text            = user.name
-                // Se tiver foto, carrega aqui em imgProfile: Picasso/Glide/etc.
+                txtName.text = user.name
                 currentUserId = user.id_user
             } else {
-                Toast.makeText(this@UserSettingsActivity,
-                    "Falha ao carregar perfil",
-                    Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this@UserSettingsActivity,
+                    getString(R.string.error_loading_profile),
+                    Toast.LENGTH_SHORT
+                ).show()
                 finish()
             }
         }
     }
 }
-

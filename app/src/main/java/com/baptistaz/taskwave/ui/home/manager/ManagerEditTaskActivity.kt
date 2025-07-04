@@ -8,7 +8,6 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Task
@@ -17,11 +16,12 @@ import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-class ManagerEditTaskActivity : AppCompatActivity() {
+class ManagerEditTaskActivity : BaseLocalizedActivity() {
 
     private lateinit var inputTitle       : EditText
     private lateinit var inputDescription : EditText

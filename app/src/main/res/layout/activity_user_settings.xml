@@ -13,6 +13,16 @@
         android:scaleY="1.2"
         android:layout_gravity="top"/>
 
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_gravity="end|top"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/background_white" />
+
     <!-- Loading Spinner -->
     <ProgressBar
         android:id="@+id/progress_loading"
@@ -59,7 +69,6 @@
                     android:elevation="4dp"
                     android:layout_gravity="center"/>
 
-                <!-- Sem texto por omissão -->
                 <TextView
                     android:id="@+id/text_name"
                     android:layout_width="wrap_content"
@@ -77,18 +86,16 @@
                     android:layout_marginTop="14dp"
                     android:layout_marginBottom="8dp"/>
 
-                <!-- Secção de Account Settings -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Account Settings"
+                    android:text="@string/title_account_settings"
                     android:textStyle="bold"
                     android:textColor="@color/gray_dark"
                     android:textSize="15sp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="6dp"/>
 
-                <!-- Edit Profile -->
                 <LinearLayout
                     android:id="@+id/option_edit_profile"
                     android:layout_width="match_parent"
@@ -105,7 +112,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Edit Profile"
+                        android:text="@string/option_edit_profile"
                         android:textSize="15sp"
                         android:layout_marginStart="8dp"/>
                     <ImageView
@@ -115,7 +122,6 @@
                         app:tint="@color/gray_dark"/>
                 </LinearLayout>
 
-                <!-- Change Language -->
                 <LinearLayout
                     android:id="@+id/option_change_language"
                     android:layout_width="match_parent"
@@ -132,7 +138,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Change Language"
+                        android:text="@string/option_change_language"
                         android:textSize="15sp"
                         android:layout_marginStart="8dp"/>
                     <ImageView
@@ -142,7 +148,6 @@
                         app:tint="@color/gray_dark"/>
                 </LinearLayout>
 
-                <!-- Notificações -->
                 <LinearLayout
                     android:id="@+id/option_notifications"
                     android:layout_width="match_parent"
@@ -154,7 +159,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Notifications"
+                        android:text="@string/option_notifications"
                         android:textSize="15sp"/>
                     <Switch
                         android:id="@+id/switch_notifications"
@@ -167,7 +172,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

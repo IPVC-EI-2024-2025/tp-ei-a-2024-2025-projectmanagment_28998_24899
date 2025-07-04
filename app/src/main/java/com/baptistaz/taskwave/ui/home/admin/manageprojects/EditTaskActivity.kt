@@ -8,7 +8,6 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Task
@@ -17,21 +16,22 @@ import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.util.UUID
 
-class EditTaskActivity : AppCompatActivity() {
+class EditTaskActivity : BaseLocalizedActivity() {
 
-    private lateinit var inputTitle       : EditText
-    private lateinit var inputDescription : EditText
-    private lateinit var inputCreation    : EditText
-    private lateinit var inputConclusion  : EditText
-    private lateinit var spinnerPriority  : Spinner
-    private lateinit var spinnerAssign    : Spinner
-    private lateinit var txtState         : TextView
-    private lateinit var buttonSave       : Button
-    private lateinit var task             : Task
+    private lateinit var inputTitle: EditText
+    private lateinit var inputDescription: EditText
+    private lateinit var inputCreation: EditText
+    private lateinit var inputConclusion: EditText
+    private lateinit var spinnerPriority: Spinner
+    private lateinit var spinnerAssign: Spinner
+    private lateinit var txtState: TextView
+    private lateinit var buttonSave: Button
+    private lateinit var task: Task
 
     private var users: List<User> = emptyList()
 
@@ -41,23 +41,21 @@ class EditTaskActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Editar Tarefa"
+        supportActionBar?.title = getString(R.string.edit_task_toolbar_title)
 
         task = intent.getSerializableExtra("task") as? Task ?: return finish()
 
-        /* refs */
-        inputTitle       = findViewById(R.id.input_title)
+        inputTitle = findViewById(R.id.input_title)
         inputDescription = findViewById(R.id.input_description)
-        inputCreation    = findViewById(R.id.input_creation_date)
-        inputConclusion  = findViewById(R.id.input_conclusion_date)
-        spinnerPriority  = findViewById(R.id.spinner_priority)
-        spinnerAssign    = findViewById(R.id.spinner_assign_user)
-        txtState         = findViewById(R.id.text_state)
-        buttonSave       = findViewById(R.id.button_save_edit)
+        inputCreation = findViewById(R.id.input_creation_date)
+        inputConclusion = findViewById(R.id.input_conclusion_date)
+        spinnerPriority = findViewById(R.id.spinner_priority)
+        spinnerAssign = findViewById(R.id.spinner_assign_user)
+        txtState = findViewById(R.id.text_state)
+        buttonSave = findViewById(R.id.button_save_edit)
 
-        txtState.text = "Estado atual: ${task.state}"
+        txtState.text = getString(R.string.edit_task_state_prefix, task.state)
 
-        /* preencher restantes campos */
         inputTitle.setText(task.title)
         inputDescription.setText(task.description)
         inputCreation.setText(task.creationDate)
@@ -72,7 +70,6 @@ class EditTaskActivity : AppCompatActivity() {
                 .getPosition(task.priority ?: "LOW")
         )
 
-        /* carrega utilizadores (sem Admin) */
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
             users = (UserRepository().getAllUsers(token) ?: emptyList())
@@ -92,42 +89,48 @@ class EditTaskActivity : AppCompatActivity() {
         }
 
         buttonSave.setOnClickListener {
-            val upd = task.copy(
-                title          = inputTitle.text.toString(),
-                description    = inputDescription.text.toString(),
-                creationDate   = inputCreation.text.toString(),
+            val updated = task.copy(
+                title = inputTitle.text.toString(),
+                description = inputDescription.text.toString(),
+                creationDate = inputCreation.text.toString(),
                 conclusionDate = inputConclusion.text.toString().takeIf { it.isNotBlank() },
-                priority       = spinnerPriority.selectedItem.toString()
-                /* state intocado */
+                priority = spinnerPriority.selectedItem.toString()
             )
 
-            val tRepo  = TaskRepository(RetrofitInstance.taskService)
+            val tRepo = TaskRepository(RetrofitInstance.taskService)
             val utRepo = UserTaskRepository(RetrofitInstance.userTaskService)
 
             lifecycleScope.launch {
                 try {
-                    tRepo.updateTask(upd.idTask, upd)
+                    tRepo.updateTask(updated.idTask, updated)
 
-                    /* novo responsável */
-                    utRepo.getUserTasksByTask(upd.idTask)
+                    utRepo.getUserTasksByTask(updated.idTask)
                         .forEach { utRepo.deleteUserTask(it.idUserTask) }
 
-                    val sel = users[spinnerAssign.selectedItemPosition]
+                    val selectedUser = users[spinnerAssign.selectedItemPosition]
                     utRepo.assignUserToTask(
                         UserTask(
                             idUserTask = UUID.randomUUID().toString(),
-                            idUser     = sel.id_user ?: "",
-                            idTask     = upd.idTask,
+                            idUser = selectedUser.id_user ?: "",
+                            idTask = updated.idTask,
                             registrationDate = null,
-                            status     = "ASSIGNED"
+                            status = "ASSIGNED"
                         )
                     )
 
-                    Toast.makeText(this@EditTaskActivity, "Tarefa atualizada!", Toast.LENGTH_SHORT).show()
-                    setResult(RESULT_OK, intent.putExtra("task", upd))
+                    Toast.makeText(
+                        this@EditTaskActivity,
+                        getString(R.string.edit_task_success),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    setResult(RESULT_OK, intent.putExtra("task", updated))
                     finish()
                 } catch (e: Exception) {
-                    Toast.makeText(this@EditTaskActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@EditTaskActivity,
+                        getString(R.string.edit_task_error, e.message ?: "Erro desconhecido"),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }

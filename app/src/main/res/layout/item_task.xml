@@ -15,13 +15,14 @@
             android:id="@+id/text_task_title"
             android:textSize="18sp"
             android:textStyle="bold"
+            android:text="@string/task_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
 
         <Button
             android:id="@+id/button_delete_task"
-            android:text="Remover"
+            android:text="@string/remove"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:textSize="13sp"
@@ -33,6 +34,7 @@
     <!-- Restantes campos -->
     <TextView
         android:id="@+id/text_task_description"
+        android:text="@string/task_description"
         android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -40,12 +42,14 @@
 
     <TextView
         android:id="@+id/text_task_status"
+        android:text="@string/task_status"
         android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/text_task_due_date"
+        android:text="@string/task_due_date"
         android:textSize="14sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
@@ -54,8 +58,7 @@
         android:id="@+id/text_task_responsavel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Responsável: "
+        android:text="@string/responsible"
         android:textStyle="bold"
         android:layout_marginTop="4dp"/>
-
 </LinearLayout>

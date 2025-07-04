@@ -6,6 +6,16 @@
     android:background="@color/background_white"
     android:orientation="vertical">
 
+    <!-- Spinner de idioma no topo -->
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="12dp"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/button_orange" />
+
     <!-- Conteúdo principal -->
     <ScrollView
         android:layout_width="match_parent"
@@ -36,7 +46,7 @@
                     android:id="@+id/text_greeting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Hi, User 👋"
+                    android:text="@string/greeting_user"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     android:paddingStart="16dp" />
@@ -46,7 +56,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Projects"
+                android:text="@string/title_projects"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginTop="24dp"
@@ -62,7 +72,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Assigned Tasks"
+                android:text="@string/title_assigned_tasks"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginTop="32dp"
@@ -72,7 +82,7 @@
                 android:id="@+id/button_my_evaluations"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="As Minhas Avaliações"
+                android:text="@string/btn_my_evaluations"
                 android:backgroundTint="@color/button_orange"
                 android:textColor="@color/background_white"
                 android:layout_marginBottom="8dp"/>

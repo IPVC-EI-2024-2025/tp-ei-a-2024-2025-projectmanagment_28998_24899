@@ -13,17 +13,17 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.UserRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class ManageUsersActivity : AppCompatActivity() {
+class ManageUsersActivity : BaseLocalizedActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: UserAdapter
@@ -52,7 +52,7 @@ class ManageUsersActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Manage Users"
+        supportActionBar?.title = getString(R.string.title_manage_users)
 
         // Views
         recyclerView = findViewById(R.id.recycler_users)
@@ -66,16 +66,17 @@ class ManageUsersActivity : AppCompatActivity() {
         cardManagers = findViewById(R.id.card_managers)
         cardUsers = findViewById(R.id.card_users)
 
+        cardTotal.findViewById<TextView>(R.id.text_stat_label).text = getString(R.string.stat_total)
+        cardAdmins.findViewById<TextView>(R.id.text_stat_label).text = getString(R.string.stat_admins)
+        cardManagers.findViewById<TextView>(R.id.text_stat_label).text = getString(R.string.stat_managers)
+        cardUsers.findViewById<TextView>(R.id.text_stat_label).text = getString(R.string.stat_users)
+
         statTotal = cardTotal.findViewById(R.id.text_stat_value)
         statAdmins = cardAdmins.findViewById(R.id.text_stat_value)
         statManagers = cardManagers.findViewById(R.id.text_stat_value)
         statUsers = cardUsers.findViewById(R.id.text_stat_value)
 
-        cardTotal.findViewById<TextView>(R.id.text_stat_label).text = "Total"
-        cardAdmins.findViewById<TextView>(R.id.text_stat_label).text = "Admins"
-        cardManagers.findViewById<TextView>(R.id.text_stat_label).text = "Managers"
-        cardUsers.findViewById<TextView>(R.id.text_stat_label).text = "Users"
-
+        // Adapter
         adapter = UserAdapter(filteredUsers, { userId -> deleteUser(userId) }) { user ->
             val intent = Intent(this, UserDetailsActivity::class.java)
             intent.putExtra("userId", user.id_user)
@@ -86,7 +87,12 @@ class ManageUsersActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
 
         // Filtro
-        val roles = listOf("All", "Admin", "Gestor", "User")
+        val roles = listOf(
+            getString(R.string.stat_total),
+            getString(R.string.stat_admins),
+            getString(R.string.stat_managers),
+            getString(R.string.stat_users)
+        )
         spinnerFilter.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
 
         spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -117,7 +123,6 @@ class ManageUsersActivity : AppCompatActivity() {
             val result = userRepository.getAllUsers(token)
             if (result != null) {
                 allUsers.clear()
-                // Ordena: Admins primeiro, depois Gestores, depois Users
                 allUsers.addAll(result.sortedWith(
                     compareBy<User> {
                         when (it.profileType.uppercase()) {
@@ -135,14 +140,14 @@ class ManageUsersActivity : AppCompatActivity() {
 
     private fun applyFilters() {
         val query = inputSearch.text.toString().trim().lowercase()
-        val selectedFilter = spinnerFilter.selectedItem.toString().lowercase()
+        val selectedFilter = spinnerFilter.selectedItem.toString()
 
         val filtered = allUsers.filter { user ->
             val matchesSearch = user.name.lowercase().contains(query) || user.email.lowercase().contains(query)
             val matchesFilter = when (selectedFilter) {
-                "admin" -> user.profileType.equals("ADMIN", true)
-                "gestor" -> user.profileType.equals("GESTOR", true)
-                "user" -> user.profileType.equals("USER", true)
+                getString(R.string.stat_admins) -> user.profileType.equals("ADMIN", true)
+                getString(R.string.stat_managers) -> user.profileType.equals("GESTOR", true)
+                getString(R.string.stat_users) -> user.profileType.equals("USER", true)
                 else -> true
             }
             matchesSearch && matchesFilter
@@ -165,10 +170,10 @@ class ManageUsersActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             val success = userRepository.deleteUser(userId, token)
             if (success) {
-                Toast.makeText(this@ManageUsersActivity, "Utilizador eliminado!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ManageUsersActivity, getString(R.string.delete_user), Toast.LENGTH_SHORT).show()
                 fetchUsers()
             } else {
-                Toast.makeText(this@ManageUsersActivity, "Erro ao eliminar utilizador!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@ManageUsersActivity, getString(R.string.error_user_update, ""), Toast.LENGTH_SHORT).show()
             }
         }
     }

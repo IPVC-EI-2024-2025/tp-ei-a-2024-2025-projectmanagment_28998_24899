@@ -3,17 +3,17 @@ package com.baptistaz.taskwave.ui.home.user
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.TaskUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.project.TaskUpdateRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
-class AddUpdateActivity : AppCompatActivity() {
+class AddUpdateActivity : BaseLocalizedActivity() {
 
     private lateinit var repo: TaskUpdateRepository
     private lateinit var taskId: String
@@ -37,8 +37,8 @@ class AddUpdateActivity : AppCompatActivity() {
         findViewById<Button>(R.id.button_add_update).setOnClickListener {
             val newUpd = TaskUpdate(
                 idTask = taskId,
-                title  = inputTitle.text.toString(),
-                notes  = inputNotes.text?.toString(),
+                title = inputTitle.text.toString(),
+                notes = inputNotes.text?.toString(),
                 location = inputLoc.text?.toString(),
                 timeSpent = inputTime.text?.toString()
             )
@@ -48,12 +48,18 @@ class AddUpdateActivity : AppCompatActivity() {
                     setResult(RESULT_OK)
                     finish()
                 } catch (e: Exception) {
-                    Toast.makeText(this@AddUpdateActivity,
-                        "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@AddUpdateActivity,
+                        getString(R.string.error_creating_update, e.message ?: "desconhecido"),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean { finish(); return true }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
 }

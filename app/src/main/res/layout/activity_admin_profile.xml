@@ -8,15 +8,27 @@
     android:padding="16dp"
     android:background="@color/background_white">
 
+    <!-- Spinner de Idioma -->
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/button_orange"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_profile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/button_orange"
-        app:title="Meu Perfil"
+        app:title="@string/title_profile"
         app:titleTextColor="@color/black"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/spinner_language"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -25,7 +37,7 @@
         android:id="@+id/text_admin_name_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Nome:"
+        android:text="@string/label_name"
         android:textStyle="bold"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/toolbar_profile"
@@ -38,7 +50,7 @@
         android:id="@+id/text_admin_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Carregando..."
+        android:text="@string/loading"
         android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@id/text_admin_name_label"
         app:layout_constraintStart_toEndOf="@id/text_admin_name_label"
@@ -50,7 +62,7 @@
         android:id="@+id/text_admin_email_label"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="E-mail:"
+        android:text="@string/label_email"
         android:textStyle="bold"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/text_admin_name_label"
@@ -63,14 +75,14 @@
         android:id="@+id/text_admin_email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="carregando@exemplo.com"
+        android:text="@string/loading_email"
         android:textSize="16sp"
         app:layout_constraintBaseline_toBaselineOf="@id/text_admin_email_label"
         app:layout_constraintStart_toEndOf="@id/text_admin_email_label"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="8dp"/>
 
-    <!-- Espaçador para empurrar o botão para baixo -->
+    <!-- Espaçador -->
     <View
         android:id="@+id/spacer"
         android:layout_width="0dp"
@@ -86,7 +98,7 @@
         android:id="@+id/button_logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="@string/btn_logout"
         android:background="@color/button_orange"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

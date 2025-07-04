@@ -11,11 +11,21 @@
         android:orientation="vertical"
         android:padding="0dp">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/button_orange" />
+
         <TextView
             android:id="@+id/text_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Os Meus Projetos"
+            android:text="@string/title_my_projects"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -39,7 +49,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Em Progresso"
+                android:text="@string/btn_in_progress"
                 android:backgroundTint="@color/button_orange"
                 android:textColor="@color/background_white"
                 android:layout_marginEnd="4dp" />
@@ -49,7 +59,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Concluídos"
+                android:text="@string/btn_completed"
                 android:backgroundTint="@color/gray"
                 android:textColor="@color/black"
                 android:layout_marginStart="4dp" />
@@ -61,7 +71,6 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:padding="16dp" />
-
     </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

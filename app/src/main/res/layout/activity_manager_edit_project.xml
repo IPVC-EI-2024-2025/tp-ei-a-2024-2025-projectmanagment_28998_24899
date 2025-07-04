@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:orientation="vertical"
@@ -9,17 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/button_orange"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <include layout="@layout/toolbar_back" />
 
         <EditText
             android:id="@+id/input_name"
-            android:hint="Nome do Projeto"
+            android:hint="@string/hint_project_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/input_description"
-            android:hint="Descrição"
+            android:hint="@string/hint_project_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -31,21 +43,21 @@
 
         <EditText
             android:id="@+id/input_start_date"
-            android:hint="Data de Início"
+            android:hint="@string/hint_start_date"
             android:inputType="date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/input_end_date"
-            android:hint="Data de Fim"
+            android:hint="@string/hint_end_date"
             android:inputType="date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/button_edit"
-            android:text="Guardar Alterações"
+            android:text="@string/btn_save_changes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"/>

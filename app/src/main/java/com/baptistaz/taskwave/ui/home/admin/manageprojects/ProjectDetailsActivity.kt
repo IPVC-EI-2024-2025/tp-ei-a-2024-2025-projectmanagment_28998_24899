@@ -8,7 +8,6 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.ProjectUpdate
@@ -17,23 +16,24 @@ import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
-class ProjectDetailsActivity : AppCompatActivity() {
+class ProjectDetailsActivity : BaseLocalizedActivity() {
 
-    private lateinit var textName      : TextView
-    private lateinit var textManager   : TextView
-    private lateinit var textDesc      : TextView
-    private lateinit var textStatus    : TextView
-    private lateinit var textStartDate : TextView
-    private lateinit var textEndDate   : TextView
-    private lateinit var buttonTasks   : Button
-    private lateinit var buttonMgr     : Button
-    private lateinit var buttonDone    : Button
+    private lateinit var textName: TextView
+    private lateinit var textManager: TextView
+    private lateinit var textDesc: TextView
+    private lateinit var textStatus: TextView
+    private lateinit var textStartDate: TextView
+    private lateinit var textEndDate: TextView
+    private lateinit var buttonTasks: Button
+    private lateinit var buttonMgr: Button
+    private lateinit var buttonDone: Button
 
-    private var managers : List<User> = emptyList()
-    private lateinit var project      : com.baptistaz.taskwave.data.model.Project
+    private var managers: List<User> = emptyList()
+    private lateinit var project: com.baptistaz.taskwave.data.model.Project
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,15 +42,15 @@ class ProjectDetailsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        textName       = findViewById(R.id.text_project_name)
-        textManager    = findViewById(R.id.text_manager)
-        textDesc       = findViewById(R.id.text_project_description)
-        textStatus     = findViewById(R.id.text_project_status)
-        textStartDate  = findViewById(R.id.text_project_start)
-        textEndDate    = findViewById(R.id.text_project_end)
-        buttonTasks    = findViewById(R.id.button_view_tasks)
-        buttonMgr      = findViewById(R.id.button_manage_manager)
-        buttonDone     = findViewById(R.id.button_mark_complete)
+        textName = findViewById(R.id.text_project_name)
+        textManager = findViewById(R.id.text_manager)
+        textDesc = findViewById(R.id.text_project_description)
+        textStatus = findViewById(R.id.text_project_status)
+        textStartDate = findViewById(R.id.text_project_start)
+        textEndDate = findViewById(R.id.text_project_end)
+        buttonTasks = findViewById(R.id.button_view_tasks)
+        buttonMgr = findViewById(R.id.button_manage_manager)
+        buttonDone = findViewById(R.id.button_mark_complete)
 
         project = intent.getSerializableExtra("project") as? com.baptistaz.taskwave.data.model.Project
             ?: return finish()
@@ -86,9 +86,9 @@ class ProjectDetailsActivity : AppCompatActivity() {
 
                     if (pending.isNotEmpty()) {
                         AlertDialog.Builder(this@ProjectDetailsActivity)
-                            .setTitle("Tarefas pendentes")
-                            .setMessage("Existem ${pending.size} tarefas pendentes neste projeto.\n\nDeseja marcá-las todas como concluídas?")
-                            .setPositiveButton("Sim") { _, _ ->
+                            .setTitle(getString(R.string.project_details_button_complete))
+                            .setMessage(getString(R.string.project_details_pending_tasks, pending.size))
+                            .setPositiveButton(getString(R.string.delete_project_confirm_yes)) { _, _ ->
                                 lifecycleScope.launch {
                                     pending.forEach { t ->
                                         try {
@@ -101,7 +101,7 @@ class ProjectDetailsActivity : AppCompatActivity() {
                                     concluirProjeto(token)
                                 }
                             }
-                            .setNegativeButton("Não", null)
+                            .setNegativeButton(getString(R.string.delete_project_confirm_no), null)
                             .show()
                     } else {
                         concluirProjeto(token)
@@ -126,16 +126,17 @@ class ProjectDetailsActivity : AppCompatActivity() {
     }
 
     private fun atualizarUI(p: com.baptistaz.taskwave.data.model.Project) {
-        textName.text      = p.name
-        textDesc.text      = p.description
-        textStatus.text    = p.status
+        textName.text = p.name
+        textDesc.text = p.description
+        textStatus.text = p.status
         textStartDate.text = p.startDate
-        textEndDate.text   = p.endDate
-        val mgrName = managers.firstOrNull { it.id_user == p.idManager }?.name ?: "No manager"
-        textManager.text = "Manager: $mgrName"
+        textEndDate.text = p.endDate
+        val mgrName = managers.firstOrNull { it.id_user == p.idManager }?.name
+            ?: getString(R.string.project_details_no_manager)
+        textManager.text = getString(R.string.project_details_manager) + mgrName
 
         buttonDone.visibility = if (p.status.equals("Completed", ignoreCase = true)) View.GONE else View.VISIBLE
-        buttonMgr.visibility  = if (p.status.equals("Completed", ignoreCase = true)) View.GONE else View.VISIBLE
+        buttonMgr.visibility = if (p.status.equals("Completed", ignoreCase = true)) View.GONE else View.VISIBLE
     }
 
     override fun onSupportNavigateUp(): Boolean = finish().let { true }
@@ -153,11 +154,11 @@ class ProjectDetailsActivity : AppCompatActivity() {
                 id_manager = project.idManager
             )
             projectRepo.updateProject(project.idProject, updated)
-            Toast.makeText(this, "Projeto concluído com sucesso!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, getString(R.string.project_details_completed_success), Toast.LENGTH_SHORT).show()
             project = project.copy(status = "Completed")
             atualizarUI(project)
         } catch (e: Exception) {
-            Toast.makeText(this, "Erro ao concluir projeto: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, getString(R.string.project_details_completed_error, e.message ?: ""), Toast.LENGTH_LONG).show()
         }
     }
 }

@@ -10,12 +10,22 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/button_orange"
+            android:spinnerMode="dropdown" />
+
         <include layout="@layout/toolbar_back" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Create User"
+            android:text="@string/title_create_user"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/black"
@@ -26,7 +36,7 @@
             android:id="@+id/edit_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Full Name"
+            android:hint="@string/hint_full_name"
             android:inputType="textPersonName"
             android:layout_marginBottom="12dp"/>
 
@@ -34,7 +44,7 @@
             android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Email"
+            android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:layout_marginBottom="12dp"/>
 
@@ -42,7 +52,7 @@
             android:id="@+id/edit_username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username"
+            android:hint="@string/hint_username"
             android:inputType="text"
             android:layout_marginBottom="12dp"/>
 
@@ -50,7 +60,7 @@
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
+            android:hint="@string/hint_password"
             android:inputType="textPassword"
             android:layout_marginBottom="12dp"/>
 
@@ -58,7 +68,7 @@
             android:id="@+id/edit_phonenumber"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Telemóvel"
+            android:hint="@string/hint_phone"
             android:inputType="phone"
             android:layout_marginBottom="24dp"/>
 
@@ -72,7 +82,7 @@
             android:id="@+id/btn_create"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create User"
+            android:text="@string/btn_create_user"
             android:background="@color/button_orange"
             android:textColor="@color/background_white"/>
 

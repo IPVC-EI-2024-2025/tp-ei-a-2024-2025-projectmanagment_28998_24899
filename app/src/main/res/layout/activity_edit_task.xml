@@ -9,6 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/button_orange"
+            android:spinnerMode="dropdown" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -17,7 +27,7 @@
 
         <EditText
             android:id="@+id/input_title"
-            android:hint="Título"
+            android:hint="@string/edit_task_hint_title"
             android:inputType="textCapSentences"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -26,7 +36,7 @@
 
         <EditText
             android:id="@+id/input_description"
-            android:hint="Descrição"
+            android:hint="@string/edit_task_hint_description"
             android:inputType="textCapSentences"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,11 +48,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:paddingTop="8dp"/>
+            android:paddingTop="8dp" />
 
         <EditText
             android:id="@+id/input_creation_date"
-            android:hint="Data de Criação (YYYY-MM-DD)"
+            android:hint="@string/edit_task_hint_creation_date"
             android:inputType="date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -51,7 +61,7 @@
 
         <EditText
             android:id="@+id/input_conclusion_date"
-            android:hint="Data de Conclusão (opcional)"
+            android:hint="@string/edit_task_hint_conclusion_date"
             android:inputType="date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -73,7 +83,7 @@
 
         <Button
             android:id="@+id/button_save_edit"
-            android:text="Guardar Alterações"
+            android:text="@string/edit_task_button_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="48dp"

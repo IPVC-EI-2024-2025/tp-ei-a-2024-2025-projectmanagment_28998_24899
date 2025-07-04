@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.manager
 
+import BaseManagerBottomNavActivity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button

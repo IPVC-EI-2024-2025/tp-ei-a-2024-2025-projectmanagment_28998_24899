@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Nome"
+            android:text="@string/member_name"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="@color/gray" />
@@ -26,14 +26,15 @@
             android:layout_height="wrap_content"
             android:numStars="5"
             android:stepSize="1"
-            android:rating="3" />
+            android:rating="3"
+            android:contentDescription="@string/rating_bar_description"/>
     </LinearLayout>
 
     <EditText
         android:id="@+id/et_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Comentário (opcional)"
+        android:hint="@string/comment_optional"
         android:maxLines="3"
         android:inputType="textMultiLine"
         android:paddingTop="8dp" />

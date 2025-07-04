@@ -5,6 +5,16 @@
     android:orientation="vertical"
     android:background="@color/background_white">
 
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/button_orange" />
+
     <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -18,7 +28,7 @@
         android:id="@+id/label_active"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tarefas Ativas"
+        android:text="@string/label_active_tasks"
         android:textStyle="bold"
         android:textSize="16sp"
         android:paddingTop="16dp"
@@ -38,7 +48,7 @@
         android:id="@+id/label_completed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tarefas Concluídas"
+        android:text="@string/label_completed_tasks"
         android:textStyle="bold"
         android:textSize="16sp"
         android:paddingTop="24dp"
@@ -58,9 +68,8 @@
         android:id="@+id/button_create_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="CRIAR TAREFA"
+        android:text="@string/btn_create_task"
         android:layout_margin="16dp"
         android:backgroundTint="@color/button_orange"
         android:textColor="@color/background_white"/>
-
 </LinearLayout>

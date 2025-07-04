@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,10 +18,11 @@ import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.TaskUpdateRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
 import com.baptistaz.taskwave.ui.home.user.UpdateAdapter
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
-class ManagerTaskDetailsActivity : AppCompatActivity() {
+class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
 
     private lateinit var textTitle: TextView
     private lateinit var textDescription: TextView
@@ -50,17 +50,17 @@ class ManagerTaskDetailsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        textTitle        = findViewById(R.id.text_title)
-        textDescription  = findViewById(R.id.text_description)
-        textState        = findViewById(R.id.text_state)
-        textCreationDate = findViewById(R.id.text_creation_date)
-        textConclusionDate = findViewById(R.id.text_conclusion_date)
-        textPriority     = findViewById(R.id.text_priority)
-        textResponsible  = findViewById(R.id.text_responsible)
-        textNoUpdates    = findViewById(R.id.text_no_updates)
-        recyclerUpdates  = findViewById(R.id.recycler_updates)
-        btnEdit          = findViewById(R.id.button_edit_task)
-        btnDone          = findViewById(R.id.button_mark_done)
+        textTitle         = findViewById(R.id.text_title)
+        textDescription   = findViewById(R.id.text_description)
+        textState         = findViewById(R.id.text_state)
+        textCreationDate  = findViewById(R.id.text_creation_date)
+        textConclusionDate= findViewById(R.id.text_conclusion_date)
+        textPriority      = findViewById(R.id.text_priority)
+        textResponsible   = findViewById(R.id.text_responsible)
+        textNoUpdates     = findViewById(R.id.text_no_updates)
+        recyclerUpdates   = findViewById(R.id.recycler_updates)
+        btnEdit           = findViewById(R.id.button_edit_task)
+        btnDone           = findViewById(R.id.button_mark_done)
 
         taskId = intent.getStringExtra("TASK_ID") ?: return finish()
         canEdit = intent.getBooleanExtra("CAN_EDIT", false)
@@ -69,14 +69,13 @@ class ManagerTaskDetailsActivity : AppCompatActivity() {
         val myUserId = SessionManager.getUserId(this) ?: ""
 
         repoUpd  = TaskUpdateRepository(RetrofitInstance.getTaskUpdateService(token))
-        repoTask = TaskRepository       (RetrofitInstance.taskService)
+        repoTask = TaskRepository(RetrofitInstance.taskService)
 
         recyclerUpdates.layoutManager = LinearLayoutManager(this)
 
         btnEdit.setOnClickListener { openEditTask() }
         btnDone.setOnClickListener { marcarConcluida() }
 
-        // Proteção extra: Oculta se não pode editar
         if (!canEdit) {
             btnEdit.visibility = View.GONE
             btnDone.visibility = View.GONE
@@ -98,27 +97,25 @@ class ManagerTaskDetailsActivity : AppCompatActivity() {
             textDescription.text   = task.description
             textState.text         = task.state
             textCreationDate.text  = task.creationDate
-            textConclusionDate.text = task.conclusionDate ?: "-"
+            textConclusionDate.text= task.conclusionDate ?: "-"
             textPriority.text      = task.priority ?: "-"
 
-            // Buscar responsável da tarefa
-            val userTaskRepo = UserTaskRepository(RetrofitInstance.getUserTaskService(
-                SessionManager.getAccessToken(this@ManagerTaskDetailsActivity) ?: ""
-            ))
+            val userTaskRepo = UserTaskRepository(RetrofitInstance.getUserTaskService(token = SessionManager.getAccessToken(this@ManagerTaskDetailsActivity) ?: ""))
             val userTasks = userTaskRepo.getUserTasksByTask(task.idTask)
+
             val responsibleUserId = userTasks.firstOrNull()?.idUser
             val responsibleName = if (responsibleUserId != null) {
                 val userRepo = UserRepository()
                 val token = SessionManager.getAccessToken(this@ManagerTaskDetailsActivity) ?: ""
                 val user = userRepo.getUserById(responsibleUserId, token)
-                user?.name ?: "Não atribuído"
+                user?.name ?: getString(R.string.task_responsible_default)
             } else {
-                "Não atribuído"
+                getString(R.string.task_responsible_default)
             }
-            textResponsible.text = "Responsável: $responsibleName"
+
+            textResponsible.text = getString(R.string.task_responsible_prefix, responsibleName)
 
             val updates = repoUpd.list(taskId).sortedBy { it.date }
-            Log.d("DEBUG_TASK", "updates=${updates}")
 
             if (updates.isEmpty()) {
                 textNoUpdates.visibility = View.VISIBLE
@@ -159,5 +156,8 @@ class ManagerTaskDetailsActivity : AppCompatActivity() {
     private fun toast(msg: String) =
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
 
-    override fun onSupportNavigateUp(): Boolean { finish(); return true }
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return true
+    }
 }

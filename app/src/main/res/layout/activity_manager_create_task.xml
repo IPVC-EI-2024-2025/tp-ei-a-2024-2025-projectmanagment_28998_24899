@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_white">
 
     <LinearLayout
@@ -10,10 +11,21 @@
         android:orientation="vertical"
         android:padding="24dp">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/button_orange"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Criar Tarefa"
+            android:text="@string/title_create_task"
             android:textSize="20sp"
             android:textStyle="bold"
             android:gravity="center"
@@ -24,7 +36,7 @@
             android:id="@+id/input_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Título"
+            android:hint="@string/hint_title"
             android:background="@drawable/text_input_background"
             android:padding="12dp"
             android:layout_marginBottom="12dp"/>
@@ -33,7 +45,7 @@
             android:id="@+id/input_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Descrição"
+            android:hint="@string/hint_description"
             android:background="@drawable/text_input_background"
             android:padding="12dp"
             android:layout_marginBottom="12dp"/>
@@ -42,7 +54,7 @@
             android:id="@+id/input_conclusion_date"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Data de conclusão (YYYY-MM-DD)"
+            android:hint="@string/hint_conclusion_date"
             android:background="@drawable/text_input_background"
             android:padding="12dp"
             android:layout_marginBottom="12dp"/>
@@ -56,7 +68,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Responsável"
+            android:text="@string/label_responsible"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_marginTop="4dp"
@@ -72,7 +84,7 @@
             android:id="@+id/button_create_task"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Criar"
+            android:text="@string/btn_create"
             android:background="@color/button_orange"
             android:textColor="@android:color/white"/>
     </LinearLayout>

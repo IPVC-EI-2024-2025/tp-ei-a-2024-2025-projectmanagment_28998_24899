@@ -7,13 +7,23 @@
     android:background="@color/background_white"
     tools:context=".ui.home.admin.manageprojects.ManageProjectsActivity">
 
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/button_orange"
+        android:spinnerMode="dropdown" />
+
     <include layout="@layout/toolbar_back" />
 
     <!-- Título -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Manage Projects"
+        android:text="@string/manage_projects_title"
         android:gravity="center"
         android:padding="16dp"
         android:textSize="22sp"
@@ -33,6 +43,7 @@
         <include layout="@layout/project_card_stat" android:id="@+id/card_completed" />
     </LinearLayout>
 
+    <!-- Filtros -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,30 +63,29 @@
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:hint="Search Projects"
+            android:hint="@string/manage_projects_search_hint"
             android:background="@drawable/text_input_background"
             android:padding="12dp"
             android:drawableStart="@android:drawable/ic_menu_search"/>
     </LinearLayout>
 
+    <!-- Botão -->
     <Button
         android:id="@+id/button_new_project"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="+ New Project"
+        android:text="@string/manage_projects_button_new"
         android:layout_margin="16dp"
         android:textColor="@android:color/white"
         android:background="@color/button_orange"
         android:elevation="4dp"/>
 
+    <!-- Lista de projetos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_projects"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="8dp"
         android:layout_marginBottom="16dp"/>
-
-
-    <!-- TODO: Lista + Filtros + Search (nos próximos passos) -->
 
 </LinearLayout>

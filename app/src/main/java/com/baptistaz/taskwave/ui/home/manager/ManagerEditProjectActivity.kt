@@ -7,18 +7,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.model.ProjectUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class ManagerEditProjectActivity : AppCompatActivity() {
+class ManagerEditProjectActivity : BaseLocalizedActivity() {
 
     private lateinit var inputName: EditText
     private lateinit var inputDescription: EditText
@@ -37,7 +37,7 @@ class ManagerEditProjectActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Editar Projeto"
+        supportActionBar?.title = getString(R.string.title_edit_project)
 
         // Liga componentes (IDs atualizados!)
         inputName = findViewById(R.id.input_name)
@@ -47,7 +47,7 @@ class ManagerEditProjectActivity : AppCompatActivity() {
         inputEndDate = findViewById(R.id.input_end_date)
         buttonEdit = findViewById(R.id.button_edit)
 
-        // Status apenas "active" ou "completed"
+        // Status apenas "Active" ou "Completed"
         val statusOptions = listOf("Active", "Completed")
         spinnerStatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, statusOptions)
 
@@ -59,7 +59,7 @@ class ManagerEditProjectActivity : AppCompatActivity() {
         inputDescription.setText(project.description)
         inputStartDate.setText(project.startDate)
         inputEndDate.setText(project.endDate)
-        spinnerStatus.setSelection(statusOptions.indexOf(project.status?.lowercase() ?: "active"))
+        spinnerStatus.setSelection(statusOptions.indexOfFirst { it.equals(project.status, ignoreCase = true) })
 
         // Botão de guardar alterações
         buttonEdit.setOnClickListener {
@@ -81,7 +81,7 @@ class ManagerEditProjectActivity : AppCompatActivity() {
                         status = statusFormatted,
                         start_date = inputStartDate.text.toString(),
                         end_date = inputEndDate.text.toString(),
-                        id_manager = project.idManager // Mantém sempre o mesmo manager!
+                        id_manager = project.idManager
                     )
 
                     val gson = com.google.gson.Gson()
@@ -90,11 +90,15 @@ class ManagerEditProjectActivity : AppCompatActivity() {
 
                     repo.updateProject(project.idProject, updatedProject)
 
-                    Toast.makeText(this@ManagerEditProjectActivity, "Projeto atualizado!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@ManagerEditProjectActivity,
+                        getString(R.string.project_updated_success),
+                        Toast.LENGTH_SHORT).show()
+
                     finish()
                 } catch (e: Exception) {
                     Log.e("EDIT_PROJECT_ERROR", "Erro ao atualizar: ${e.message}", e)
-                    Toast.makeText(this@ManagerEditProjectActivity, "Erro ao atualizar: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ManagerEditProjectActivity,
+                        "Erro ao atualizar: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }

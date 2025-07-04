@@ -9,6 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/button_orange"
+            android:spinnerMode="dropdown" />
+
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -20,7 +30,7 @@
             android:id="@+id/text_project_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Project Name"
+            android:text="@string/project_details_name"
             android:textStyle="bold"
             android:textSize="22sp"
             android:paddingTop="16dp" />
@@ -29,7 +39,7 @@
             android:id="@+id/text_project_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Project Description"
+            android:text="@string/project_details_description"
             android:textSize="16sp"
             android:paddingTop="8dp" />
 
@@ -37,7 +47,7 @@
             android:id="@+id/text_project_status"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Status"
+            android:text="@string/project_details_status"
             android:paddingTop="8dp" />
 
         <LinearLayout
@@ -50,7 +60,7 @@
                 android:id="@+id/text_manager"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Manager: "
+                android:text="@string/project_details_manager"
                 android:textStyle="bold"
                 android:layout_marginTop="12dp"/>
 
@@ -59,14 +69,14 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="Start Date" />
+                android:text="@string/project_details_start" />
 
             <TextView
                 android:id="@+id/text_project_end"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="End Date"
+                android:text="@string/project_details_end"
                 android:gravity="end" />
         </LinearLayout>
 
@@ -74,21 +84,21 @@
             android:id="@+id/button_view_tasks"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View Tasks"
+            android:text="@string/project_details_button_tasks"
             android:layout_marginTop="24dp" />
 
         <Button
             android:id="@+id/button_manage_manager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Manage Manager"
+            android:text="@string/project_details_button_manager"
             android:layout_marginTop="12dp" />
 
         <Button
             android:id="@+id/button_mark_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mark as Complete"
+            android:text="@string/project_details_button_complete"
             android:layout_marginTop="12dp" />
 
     </LinearLayout>

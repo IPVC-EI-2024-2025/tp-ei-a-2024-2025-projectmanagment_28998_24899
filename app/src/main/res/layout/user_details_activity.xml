@@ -10,13 +10,23 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/button_orange"
+            android:spinnerMode="dropdown" />
+
         <include layout="@layout/toolbar_back" />
 
         <!-- Título -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="User Details"
+            android:text="@string/title_user_details"
             android:textAlignment="center"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -38,7 +48,7 @@
                 android:id="@+id/text_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nome do Utilizador"
+                android:text="@string/sample_user_name"
                 android:textStyle="bold"
                 android:textSize="20sp"
                 android:textColor="@color/black"
@@ -48,7 +58,7 @@
                 android:id="@+id/text_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="user@email.pt"
+                android:text="@string/sample_user_email"
                 android:textSize="15sp"
                 android:textColor="@color/gray"
                 android:gravity="center_horizontal"
@@ -58,7 +68,7 @@
                 android:id="@+id/text_role"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Admin"
+                android:text="@string/sample_user_role"
                 android:textSize="15sp"
                 android:textColor="@color/background_white"
                 android:background="@drawable/role_badge_admin"
@@ -72,7 +82,7 @@
                 android:id="@+id/text_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descrição"
+                android:text="@string/label_description"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginTop="8dp"
@@ -82,13 +92,12 @@
                 android:id="@+id/text_description_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Descrição detalhada do utilizador/admin."
+                android:text="@string/sample_description"
                 android:textSize="14sp"
                 android:textColor="@color/gray_dark" />
         </LinearLayout>
 
-        <!-- Secção Tarefas (aparece só para USER/MANAGER) -->
-        <!-- Secção Tarefas (aparece só para USER/MANAGER) -->
+        <!-- Secção Tarefas -->
         <LinearLayout
             android:id="@+id/section_tasks"
             android:layout_width="match_parent"
@@ -103,7 +112,7 @@
                 android:id="@+id/text_tasks_assigned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Assigned tasks: 0"
+                android:text="@string/text_tasks_assigned"
                 android:textStyle="bold"
                 android:textSize="15sp" />
 
@@ -111,7 +120,7 @@
                 android:id="@+id/text_tasks_completed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Completed tasks: 0"
+                android:text="@string/text_tasks_completed"
                 android:layout_marginBottom="8dp" />
 
             <ProgressBar
@@ -123,7 +132,6 @@
                 android:progress="0"
                 android:progressTint="@color/button_orange" />
 
-            <!-- ⬇️ NOVO: lista de tarefas -->
             <LinearLayout
                 android:id="@+id/list_user_tasks"
                 android:layout_width="match_parent"
@@ -132,8 +140,7 @@
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
-
-        <!-- Secção Projetos (aparece só para USER/MANAGER) -->
+        <!-- Secção Projetos -->
         <LinearLayout
             android:id="@+id/section_projects"
             android:layout_width="match_parent"
@@ -146,7 +153,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Projects"
+                android:text="@string/title_projects"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:layout_marginBottom="4dp"/>
@@ -155,10 +162,7 @@
                 android:id="@+id/list_user_projects"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <!-- Dynamically add TextViews or Buttons for each project -->
-            </LinearLayout>
+                android:orientation="vertical"/>
         </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

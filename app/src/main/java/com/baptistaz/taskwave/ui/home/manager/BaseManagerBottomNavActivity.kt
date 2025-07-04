@@ -1,16 +1,22 @@
-package com.baptistaz.taskwave.ui.home.manager
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.ui.home.manager.ManagerProfileActivity
+import com.baptistaz.taskwave.ui.home.manager.ManagerProjectsAreaActivity
+import com.baptistaz.taskwave.ui.home.manager.ManagerSettingsActivity
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-abstract class BaseManagerBottomNavActivity : AppCompatActivity() {
+abstract class BaseManagerBottomNavActivity : BaseLocalizedActivity() {
+
     abstract fun getSelectedMenuId(): Int
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
+        // ✅ chama primeiro a super (BaseLocalizedActivity.onPostCreate)
         super.onPostCreate(savedInstanceState)
+
+        // Depois trata da bottom navigation
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav?.selectedItemId = getSelectedMenuId()
         bottomNav?.setOnItemSelectedListener { item ->
@@ -44,3 +50,4 @@ abstract class BaseManagerBottomNavActivity : AppCompatActivity() {
         }
     }
 }
+

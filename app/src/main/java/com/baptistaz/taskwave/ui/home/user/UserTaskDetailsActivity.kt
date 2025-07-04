@@ -6,7 +6,6 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,10 +15,11 @@ import com.baptistaz.taskwave.data.model.TaskUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.project.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.TaskUpdateRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
-class UserTaskDetailsActivity : AppCompatActivity() {
+class UserTaskDetailsActivity : BaseLocalizedActivity() {
 
     private lateinit var adapter : UpdateAdapter
     private lateinit var repoUpd : TaskUpdateRepository
@@ -41,7 +41,7 @@ class UserTaskDetailsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        /* ids – se falhar, fecha logo o ecrã */
+        /* ids */
         taskId = intent.getStringExtra("TASK_ID") ?: return finish()
         val token = SessionManager.getAccessToken(this) ?: return finish()
 
@@ -64,13 +64,11 @@ class UserTaskDetailsActivity : AppCompatActivity() {
             adapter       = this@UserTaskDetailsActivity.adapter
         }
 
-        /* carrega tudo de uma vez */
         refreshTaskAndUpdates()
     }
 
     /* ---------- network ---------- */
 
-    /** lê a tarefa → decide visibilidade do botão → carrega lista */
     private fun refreshTaskAndUpdates() = lifecycleScope.launch {
         try {
             task = repoTask.getTaskById(taskId) ?: return@launch
@@ -87,7 +85,7 @@ class UserTaskDetailsActivity : AppCompatActivity() {
             val list = repoUpd.list(taskId).sortedBy { it.date }
             adapter.setData(list)
         } catch (e: Exception) {
-            toast("Erro ao carregar updates: ${e.message}")
+            toast(getString(R.string.error_loading_updates, e.message ?: "erro"))
         }
     }
 
@@ -98,11 +96,9 @@ class UserTaskDetailsActivity : AppCompatActivity() {
             setResult(RESULT_OK)
             finish()
         } catch (e: Exception) {
-            toast("Erro: ${e.message}")
+            toast(getString(R.string.toast_mark_failed, e.message ?: "erro"))
         }
     }
-
-    /* ---------- navegação / helpers ---------- */
 
     private fun openAddUpdate() =
         addUpdLauncher.launch(Intent(this, AddUpdateActivity::class.java)

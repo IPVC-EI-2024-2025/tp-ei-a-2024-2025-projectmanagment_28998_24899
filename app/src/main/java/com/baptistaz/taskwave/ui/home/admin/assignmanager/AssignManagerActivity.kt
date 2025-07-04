@@ -9,19 +9,19 @@ import android.widget.LinearLayout
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.model.ProjectUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class AssignManagerActivity : AppCompatActivity() {
+class AssignManagerActivity : BaseLocalizedActivity() {
 
     private lateinit var listProjects: LinearLayout
     private var projects: List<Project> = emptyList()
@@ -34,7 +34,7 @@ class AssignManagerActivity : AppCompatActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Assign Manager"
+        supportActionBar?.title = getString(R.string.assign_manager_title)
 
         listProjects = findViewById(R.id.list_projects_with_manager)
         loadProjectsAndManagers()
@@ -62,8 +62,8 @@ class AssignManagerActivity : AppCompatActivity() {
             val view = inflater.inflate(R.layout.item_project_assign_manager, listProjects, false)
             view.findViewById<TextView>(R.id.text_project_name).text = project.name
             val currentManager = managers.firstOrNull { it.id_user == project.idManager }
-            view.findViewById<TextView>(R.id.text_current_manager).text =
-                "Current: ${currentManager?.name ?: "N/A"}"
+            val currentManagerText = getString(R.string.current_manager_label, currentManager?.name ?: "N/A")
+            view.findViewById<TextView>(R.id.text_current_manager).text = currentManagerText
 
             val spinner = view.findViewById<Spinner>(R.id.spinner_managers)
             val managerNames = managers.map { it.name }
@@ -77,7 +77,7 @@ class AssignManagerActivity : AppCompatActivity() {
                 if (selectedManager != null && selectedManager.id_user != project.idManager) {
                     assignManagerToProject(project, selectedManager)
                 } else {
-                    Toast.makeText(this, "Please select a different manager.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.toast_select_different_manager), Toast.LENGTH_SHORT).show()
                 }
             }
             listProjects.addView(view)
@@ -98,7 +98,7 @@ class AssignManagerActivity : AppCompatActivity() {
                 id_manager = manager.id_user
             )
             repo.updateProject(project.idProject, updateData)
-            Toast.makeText(this@AssignManagerActivity, "Manager updated!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@AssignManagerActivity, getString(R.string.toast_manager_updated), Toast.LENGTH_SHORT).show()
             loadProjectsAndManagers()
         }
     }

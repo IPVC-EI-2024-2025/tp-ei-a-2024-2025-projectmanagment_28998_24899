@@ -5,23 +5,36 @@
     android:layout_height="match_parent"
     android:background="@color/background_white">
 
-    <!-- Header arredondado -->
+    <!-- Header -->
     <View
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/button_orange"
         android:scaleY="1.2"
-        android:layout_gravity="top"/>
+        android:layout_gravity="top" />
 
-    <!-- Loading Spinner -->
+    <!-- Spinner POSICIONADO POR CIMA -->
+    <Spinner
+        android:id="@+id/spinner_language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_gravity="end"
+        android:spinnerMode="dropdown"
+        android:backgroundTint="@color/button_orange"
+        android:elevation="8dp" />
+
+    <!-- Loading -->
     <ProgressBar
         android:id="@+id/progress_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="64dp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
+    <!-- Conteúdo -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -37,7 +50,6 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-            <!-- Imagem de Perfil -->
             <ImageView
                 android:id="@+id/image_profile"
                 android:layout_width="80dp"
@@ -48,7 +60,6 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="8dp" />
 
-            <!-- Nome do utilizador -->
             <TextView
                 android:id="@+id/text_name"
                 android:layout_width="wrap_content"
@@ -57,9 +68,8 @@
                 android:textStyle="bold"
                 android:textSize="19sp"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="3dp"/>
+                android:layout_marginBottom="3dp" />
 
-            <!-- Editar Perfil -->
             <LinearLayout
                 android:id="@+id/option_edit_profile"
                 android:layout_width="match_parent"
@@ -71,17 +81,16 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/ic_person"
-                    app:tint="@color/button_orange"/>
+                    app:tint="@color/button_orange" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Editar Perfil"
+                    android:text="@string/option_edit_profile"
                     android:textSize="15sp"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp" />
             </LinearLayout>
 
-            <!-- Mudar Idioma -->
             <LinearLayout
                 android:id="@+id/option_change_language"
                 android:layout_width="match_parent"
@@ -93,17 +102,16 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:src="@drawable/ic_globe"
-                    app:tint="@color/button_orange"/>
+                    app:tint="@color/button_orange" />
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Mudar Idioma"
+                    android:text="@string/option_change_language"
                     android:textSize="15sp"
-                    android:layout_marginStart="8dp"/>
+                    android:layout_marginStart="8dp" />
             </LinearLayout>
 
-            <!-- Notificações -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,19 +122,19 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Notificações"
-                    android:textSize="15sp"/>
+                    android:text="@string/option_notifications"
+                    android:textSize="15sp" />
                 <Switch
                     android:id="@+id/switch_notifications"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:thumbTint="@color/button_orange"
-                    android:trackTint="@color/gray"/>
+                    android:trackTint="@color/gray" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

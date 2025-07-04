@@ -8,18 +8,18 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.UserTask
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class UserDetailsActivity : AppCompatActivity() {
+class UserDetailsActivity : BaseLocalizedActivity() {
 
     /* header */
     private lateinit var tvName : TextView
@@ -46,6 +46,7 @@ class UserDetailsActivity : AppCompatActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.title_user_details)
 
         /* bind */
         tvName        = findViewById(R.id.text_name)
@@ -79,7 +80,8 @@ class UserDetailsActivity : AppCompatActivity() {
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@UserDetailsActivity,
-                    "Erro a carregar detalhes: ${e.message}", Toast.LENGTH_LONG).show()
+                    getString(R.string.project_tasks_loading_error, e.message),
+                    Toast.LENGTH_LONG).show()
                 finish()
             }
         }
@@ -92,25 +94,23 @@ class UserDetailsActivity : AppCompatActivity() {
         supportActionBar?.title = u.name
 
         when (u.profileType.uppercase()) {
-            "ADMIN"  -> { tvRole.text = "ADMIN";  tvRole.setBackgroundResource(R.drawable.role_badge_admin) }
-            "GESTOR" -> { tvRole.text = "GESTOR"; tvRole.setBackgroundResource(R.drawable.role_badge_manager) }
-            else     -> { tvRole.text = "USER";   tvRole.setBackgroundResource(R.drawable.role_badge_user) }
-        }
-
-        when (u.profileType.uppercase()) {
             "ADMIN"  -> {
-                tvDesc.text = "Has full permissions within the system."
-                tvDescContent.text = "Can manage projects, users, tasks and export statistics."
+                tvRole.text = getString(R.string.sample_user_role)
+                tvRole.setBackgroundResource(R.drawable.role_badge_admin)
             }
             "GESTOR" -> {
-                tvDesc.text = "Description"
-                tvDescContent.text = "Manages assigned projects and distributes work among users."
+                tvRole.text = getString(R.string.stat_managers)
+                tvRole.setBackgroundResource(R.drawable.role_badge_manager)
             }
-            else -> {
-                tvDesc.text = "This user actively participates in projects by completing assigned tasks..."
-                tvDescContent.text = "Descrição detalhada do utilizador."
+            else     -> {
+                tvRole.text = getString(R.string.stat_users)
+                tvRole.setBackgroundResource(R.drawable.role_badge_user)
             }
         }
+
+        // Usar as strings padrão que já estão nos XML
+        tvDesc.text        = getString(R.string.label_description)
+        tvDescContent.text = getString(R.string.sample_description)
     }
 
     private fun showAdminOnly() {
@@ -129,8 +129,8 @@ class UserDetailsActivity : AppCompatActivity() {
         val totalAssigned  = tasks.size
         val totalCompleted = tasks.count { it.task?.state.equals("COMPLETED", true) }
 
-        tvAssigned.text  = "Assigned tasks: $totalAssigned"
-        tvCompleted.text = "Completed tasks: $totalCompleted"
+        tvAssigned.text  = getString(R.string.text_tasks_assigned).replace("0", totalAssigned.toString())
+        tvCompleted.text = getString(R.string.text_tasks_completed).replace("0", totalCompleted.toString())
         progress.max      = totalAssigned.coerceAtLeast(1)
         progress.progress = totalCompleted
 
