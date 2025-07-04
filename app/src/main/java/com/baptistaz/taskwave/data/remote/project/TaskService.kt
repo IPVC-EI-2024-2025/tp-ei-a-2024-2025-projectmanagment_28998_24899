@@ -47,4 +47,10 @@ interface TaskService {
     suspend fun deleteTask(
         @Query("id_task") idTaskFilter: String
     ): retrofit2.Response<Unit>
+
+    @POST("task")
+    suspend fun updateTask(
+        @Body task: Task
+    ): Task
+
 }

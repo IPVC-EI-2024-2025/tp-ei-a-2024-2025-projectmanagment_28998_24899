@@ -22,4 +22,10 @@ interface UserTaskService {
     suspend fun deleteUserTask(
         @Query("id_usertask") idUserTask: String
     ): Unit
+
+    @POST("usertask")
+    suspend fun updateUserTask(
+        @Body userTask: UserTask
+    ): UserTask
+
 }

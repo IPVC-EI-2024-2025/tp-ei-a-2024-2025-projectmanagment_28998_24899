@@ -23,4 +23,8 @@ class UserTaskRepository(private val service: UserTaskService) {
         }
         return resp.body()
     }
+
+    suspend fun updateUserTask(userTask: UserTask): UserTask =
+        service.updateUserTask(userTask)
+
 }

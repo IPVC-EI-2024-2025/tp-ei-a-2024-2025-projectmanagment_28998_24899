@@ -14,6 +14,7 @@ import com.baptistaz.taskwave.data.model.ProjectUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.manager.EvaluationRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
 import com.baptistaz.taskwave.utils.SessionManager
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
@@ -78,7 +79,6 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
                 try {
                     val success = repo.submitEvaluations(evaluations)
                     if (success) {
-                        // Atualizar projeto para Completed
                         val projectRepo = ProjectRepository(RetrofitInstance.getProjectService(token))
                         try {
                             val currentProject = projectRepo.getProjectById(projectId)
@@ -93,9 +93,26 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
                                     id_manager = currentProject.idManager
                                 )
                                 projectRepo.updateProject(projectId, updatedProject)
+
+                                // NOVO: Atualizar todas as tarefas e user_tasks
+                                val taskService = RetrofitInstance.getTaskService(token)
+                                val userTaskService = RetrofitInstance.getUserTaskService(token)
+                                val userTaskRepo = UserTaskRepository(userTaskService)
+
+                                val projectTasks = taskService.getTasksByProject("eq.$projectId")
+                                projectTasks.filter { it.state == "IN_PROGRESS" }.forEach { task ->
+                                    // Atualizar a task
+                                    taskService.updateTask(task.copy(state = "COMPLETED"))
+
+                                    // Atualizar user_task
+                                    val userTasks = userTaskService.getUserTasksByTask("eq.${task.idTask}")
+                                    userTasks.forEach { ut ->
+                                        userTaskRepo.updateUserTask(ut.copy(status = "COMPLETED"))
+                                    }
+                                }
                             }
                         } catch (e: Exception) {
-                            Log.e("UPDATE_PROJECT", "Erro a atualizar projeto para Completed: ${e.message}", e)
+                            Log.e("UPDATE_PROJECT", "Erro ao atualizar projeto/tarefas para Completed: ${e.message}", e)
                         }
 
                         Toast.makeText(this@ManagerEvaluateTeamActivity, "Avaliações submetidas!", Toast.LENGTH_SHORT).show()
@@ -112,5 +129,4 @@ class ManagerEvaluateTeamActivity : AppCompatActivity() {
     }
 }
 
-// Modelo simples para usar no Adapter
 data class TeamMember(val id: String, val name: String, var rating: Int = 3)
