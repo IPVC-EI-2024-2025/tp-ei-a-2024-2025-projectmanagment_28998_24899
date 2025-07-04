@@ -47,7 +47,8 @@ class AssignManagerActivity : AppCompatActivity() {
             val projectRepo = ProjectRepository(RetrofitInstance.getProjectService(token))
             val userRepo = UserRepository()
 
-            projects = projectRepo.getAllProjects().filter { !it.idManager.isNullOrEmpty() }
+            projects = projectRepo.getAllProjects()
+                .filter { !it.idManager.isNullOrEmpty() && it.status == "Active" }
             managers = userRepo.getAllManagers(token) ?: emptyList()
 
             showProjects()

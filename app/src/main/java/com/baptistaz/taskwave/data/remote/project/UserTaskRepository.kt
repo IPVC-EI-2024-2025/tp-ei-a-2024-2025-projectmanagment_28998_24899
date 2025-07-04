@@ -24,7 +24,9 @@ class UserTaskRepository(private val service: UserTaskService) {
         return resp.body()
     }
 
-    suspend fun updateUserTask(userTask: UserTask): UserTask =
-        service.updateUserTask(userTask)
+    suspend fun updateUserTask(userTask: UserTask): Boolean {
+        val response = service.updateUserTask(userTask.idUserTask, userTask)
+        return response.isSuccessful
+    }
 
 }

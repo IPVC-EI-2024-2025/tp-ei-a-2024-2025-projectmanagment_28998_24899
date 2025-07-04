@@ -14,17 +14,6 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         android:background="@color/stroke_orange" />
 
-    <!-- Secção de Tarefas Ativas -->
-    <TextView
-        android:id="@+id/label_active"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Active Tasks"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:paddingTop="16dp"
-        android:paddingStart="24dp"
-        android:paddingBottom="8dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_active"
@@ -33,18 +22,6 @@
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:nestedScrollingEnabled="false"/>
-
-    <!-- Secção de Tarefas Concluídas -->
-    <TextView
-        android:id="@+id/label_completed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Completed Tasks"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:paddingTop="24dp"
-        android:paddingStart="24dp"
-        android:paddingBottom="8dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_completed"

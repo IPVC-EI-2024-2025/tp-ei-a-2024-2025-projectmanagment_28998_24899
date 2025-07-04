@@ -4,6 +4,7 @@ import com.baptistaz.taskwave.data.model.UserTask
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -23,9 +24,10 @@ interface UserTaskService {
         @Query("id_usertask") idUserTask: String
     ): Unit
 
-    @POST("usertask")
+    @PATCH("usertask")
     suspend fun updateUserTask(
+        @Query("id_usertask") idUserTask: String,
         @Body userTask: UserTask
-    ): UserTask
+    ): retrofit2.Response<Unit>  // ← importante: Response<Unit>
 
 }

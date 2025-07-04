@@ -53,11 +53,16 @@
             android:hint="Telemóvel"
             android:inputType="phone"/>
 
-        <Spinner
-            android:id="@+id/spinner_role"
+        <TextView
+            android:id="@+id/text_profile_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="Profile Type"
+            android:textColor="@color/gray_dark"
+            android:padding="12dp"
+            android:enabled="false"
             android:layout_marginBottom="24dp"/>
+
 
         <Button
             android:id="@+id/btn_save"

@@ -7,15 +7,16 @@ import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.model.ProjectUpdate
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.data.remote.project.TaskRepository
+import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
@@ -32,17 +33,7 @@ class ProjectDetailsActivity : AppCompatActivity() {
     private lateinit var buttonDone    : Button
 
     private var managers : List<User> = emptyList()
-    private lateinit var project      : Project   // guarda sempre a versão actual
-
-    /* recebe resultado da ManageManagerActivity */
-    private val manageMgrLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { res ->
-        if (res.resultCode == RESULT_OK) {
-            val upd = res.data?.getSerializableExtra("project") as? Project
-            upd?.let { project = it; atualizarUI(it) }
-        }
-    }
+    private lateinit var project      : com.baptistaz.taskwave.data.model.Project
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,7 +42,6 @@ class ProjectDetailsActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        /* refs */
         textName       = findViewById(R.id.text_project_name)
         textManager    = findViewById(R.id.text_manager)
         textDesc       = findViewById(R.id.text_project_description)
@@ -62,8 +52,7 @@ class ProjectDetailsActivity : AppCompatActivity() {
         buttonMgr      = findViewById(R.id.button_manage_manager)
         buttonDone     = findViewById(R.id.button_mark_complete)
 
-        /* projecto inicial */
-        project = intent.getSerializableExtra("project") as? Project
+        project = intent.getSerializableExtra("project") as? com.baptistaz.taskwave.data.model.Project
             ?: return finish()
 
         val token = SessionManager.getAccessToken(this) ?: return
@@ -81,51 +70,49 @@ class ProjectDetailsActivity : AppCompatActivity() {
         }
 
         buttonMgr.setOnClickListener {
-            manageMgrLauncher.launch(
-                Intent(this, ManageManagerActivity::class.java)
-                    .putExtra("project", project)
-            )
+            val intent = Intent(this, ManageManagerActivity::class.java)
+                .putExtra("project", project)
+            startActivity(intent)
         }
 
         buttonDone.setOnClickListener {
-            // 1) Cria o payload mudando só o status
-            val updated = ProjectUpdate(
-                id_project  = project.idProject,
-                name        = project.name ?: "",
-                description = project.description ?: "",
-                status      = "Completed",
-                start_date  = project.startDate ?: "",
-                end_date    = project.endDate ?: "",
-                id_manager  = project.idManager
-            )
-
-            // 2) Chama o PATCH
+            val token = SessionManager.getAccessToken(this) ?: return@setOnClickListener
             lifecycleScope.launch {
                 try {
-                    ProjectRepository(RetrofitInstance.projectService)
-                        .updateProject(project.idProject, updated)
+                    val taskRepo = TaskRepository(RetrofitInstance.getTaskService(token))
+                    val userTaskRepo = UserTaskRepository(RetrofitInstance.getUserTaskService(token))
+                    val tasks = taskRepo.getTasksByProject(project.idProject)
+                    val pending = tasks.filter { it.state != "COMPLETED" }
 
-                    Toast.makeText(
-                        this@ProjectDetailsActivity,
-                        "Projeto marcado como concluído!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    // 3) Atualiza o objeto e a UI
-                    project = project.copy(status = "Completed")
-                    atualizarUI(project)
+                    if (pending.isNotEmpty()) {
+                        AlertDialog.Builder(this@ProjectDetailsActivity)
+                            .setTitle("Tarefas pendentes")
+                            .setMessage("Existem ${pending.size} tarefas pendentes neste projeto.\n\nDeseja marcá-las todas como concluídas?")
+                            .setPositiveButton("Sim") { _, _ ->
+                                lifecycleScope.launch {
+                                    pending.forEach { t ->
+                                        try {
+                                            taskRepo.markCompleted(t.idTask)
+                                            userTaskRepo.getUserTasksByTask(t.idTask).forEach { ut ->
+                                                userTaskRepo.updateUserTask(ut.copy(status = "COMPLETED"))
+                                            }
+                                        } catch (_: Exception) {}
+                                    }
+                                    concluirProjeto(token)
+                                }
+                            }
+                            .setNegativeButton("Não", null)
+                            .show()
+                    } else {
+                        concluirProjeto(token)
+                    }
                 } catch (e: Exception) {
-                    Toast.makeText(
-                        this@ProjectDetailsActivity,
-                        "Erro ao concluir: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(this@ProjectDetailsActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
 
-    /* Re-sync (caso haja alterações fora deste fluxo) */
     override fun onResume() {
         super.onResume()
         val token = SessionManager.getAccessToken(this) ?: return
@@ -138,7 +125,7 @@ class ProjectDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun atualizarUI(p: Project) {
+    private fun atualizarUI(p: com.baptistaz.taskwave.data.model.Project) {
         textName.text      = p.name
         textDesc.text      = p.description
         textStatus.text    = p.status
@@ -147,22 +134,30 @@ class ProjectDetailsActivity : AppCompatActivity() {
         val mgrName = managers.firstOrNull { it.id_user == p.idManager }?.name ?: "No manager"
         textManager.text = "Manager: $mgrName"
 
-        // <-- novo: mostrar só se NÃO estiver completed
-        buttonDone.visibility =
-            if (p.status.equals("Completed", ignoreCase = true)) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
-
-        // só mostra “Manage Manager” em projetos não-completos
-        buttonMgr.visibility =
-            if (p.status.equals("Completed", ignoreCase = true)) {
-                View.GONE
-            } else {
-                View.VISIBLE
-            }
+        buttonDone.visibility = if (p.status.equals("Completed", ignoreCase = true)) View.GONE else View.VISIBLE
+        buttonMgr.visibility  = if (p.status.equals("Completed", ignoreCase = true)) View.GONE else View.VISIBLE
     }
 
     override fun onSupportNavigateUp(): Boolean = finish().let { true }
+
+    private suspend fun concluirProjeto(token: String) {
+        try {
+            val projectRepo = ProjectRepository(RetrofitInstance.getProjectService(token))
+            val updated = ProjectUpdate(
+                id_project = project.idProject,
+                name = project.name ?: "",
+                description = project.description ?: "",
+                status = "Completed",
+                start_date = project.startDate ?: "",
+                end_date = project.endDate ?: "",
+                id_manager = project.idManager
+            )
+            projectRepo.updateProject(project.idProject, updated)
+            Toast.makeText(this, "Projeto concluído com sucesso!", Toast.LENGTH_SHORT).show()
+            project = project.copy(status = "Completed")
+            atualizarUI(project)
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erro ao concluir projeto: ${e.message}", Toast.LENGTH_LONG).show()
+        }
+    }
 }
