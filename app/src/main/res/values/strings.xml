@@ -39,6 +39,8 @@
     <!-- res/values/strings.xml -->
     <string name="nova_tarefa">Nova Tarefa</string>
     <string name="editar_tarefa">Editar Tarefa</string>
+    <string name="manager_label">Manager: %s</string>
+
 
     <string name="btn_mark_completed">Marcar concluída</string>
     <string name="msg_task_completed">Tarefa marcada como concluída!</string>
