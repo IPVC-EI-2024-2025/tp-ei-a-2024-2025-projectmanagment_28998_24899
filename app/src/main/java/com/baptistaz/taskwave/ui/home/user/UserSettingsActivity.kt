@@ -50,7 +50,6 @@ class UserSettingsActivity : BaseBottomNavActivity() {
             }
 
         // Outras opções (só placeholders por agora)
-        findViewById<LinearLayout>(R.id.option_change_password).setOnClickListener { /* ... */ }
         findViewById<LinearLayout>(R.id.option_change_language).setOnClickListener { /* ... */ }
         findViewById<Switch>(R.id.switch_notifications)
             .setOnCheckedChangeListener { _, isChecked ->

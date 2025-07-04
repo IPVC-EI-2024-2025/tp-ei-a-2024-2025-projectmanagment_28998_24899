@@ -115,33 +115,6 @@
                         app:tint="@color/gray_dark"/>
                 </LinearLayout>
 
-                <!-- Change Password -->
-                <LinearLayout
-                    android:id="@+id/option_change_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:paddingVertical="10dp">
-                    <ImageView
-                        android:layout_width="22dp"
-                        android:layout_height="22dp"
-                        android:src="@drawable/ic_key"
-                        app:tint="@color/button_orange"/>
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Change Password"
-                        android:textSize="15sp"
-                        android:layout_marginStart="8dp"/>
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/ic_arrow_right"
-                        app:tint="@color/gray_dark"/>
-                </LinearLayout>
-
                 <!-- Change Language -->
                 <LinearLayout
                     android:id="@+id/option_change_language"
