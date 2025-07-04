@@ -1,19 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:padding="24dp"
     android:background="@color/background_white">
 
-    <include layout="@layout/toolbar_back" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Export Statistics"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
-</LinearLayout>
+        <include layout="@layout/toolbar_back" />
+
+        <TextView
+            android:text="Export Statistics"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:id="@+id/checkbox_projects"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exportar Projetos" />
+
+        <CheckBox
+            android:id="@+id/checkbox_users"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exportar Utilizadores" />
+
+        <CheckBox
+            android:id="@+id/checkbox_tasks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exportar Tarefas" />
+
+        <Button
+            android:id="@+id/button_export_csv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exportar como CSV"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/button_orange"
+            android:textColor="@color/background_white" />
+
+        <Button
+            android:id="@+id/button_export_pdf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Exportar como PDF"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/button_orange"
+            android:textColor="@color/background_white" />
+
+    </LinearLayout>
+</ScrollView>
+

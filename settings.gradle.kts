@@ -16,9 +16,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }  // <-- adiciona isto
     }
 }
 
 rootProject.name = "TaskWave"
 include(":app")
- 

@@ -53,4 +53,10 @@ interface TaskService {
         @Body task: Task
     ): Task
 
+    @GET("task")
+    suspend fun getAllTasks(
+        @Query("select") select: String = "*"
+    ): List<Task>
+
+
 }

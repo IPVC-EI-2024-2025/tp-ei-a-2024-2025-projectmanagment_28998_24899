@@ -27,4 +27,9 @@ class TaskRepository(private val service: TaskService) {
     /** Altera apenas o estado para COMPLETED */
     suspend fun markCompleted(id: String): List<Task> =
         service.patchTask("eq.$id", TaskPatch(state = "COMPLETED"))
+
+    suspend fun getAllTasks(): List<Task> {
+        return service.getAllTasks()
+    }
+
 }
