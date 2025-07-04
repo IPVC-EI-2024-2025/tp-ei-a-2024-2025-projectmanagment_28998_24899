@@ -17,4 +17,9 @@ interface EvaluationService {
     suspend fun getEvaluationsByProject(
         @Query("id_project") projectId: String
     ): List<Evaluation>
+
+    @GET("evaluation")
+    suspend fun getEvaluationsByUser(
+        @Query("id_user") userId: String
+    ): List<Evaluation>
 }

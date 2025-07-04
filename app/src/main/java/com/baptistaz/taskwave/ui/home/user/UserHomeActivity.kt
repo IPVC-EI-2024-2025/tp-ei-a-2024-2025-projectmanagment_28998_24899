@@ -31,6 +31,7 @@ class UserHomeActivity : BaseBottomNavActivity() {
     private lateinit var imageUser     : ImageView
     private lateinit var textGreeting  : TextView
     private lateinit var btnHistory    : Button
+    private lateinit var btnMyEvals   : Button
 
     private var currentUser: User? = null
 
@@ -43,6 +44,7 @@ class UserHomeActivity : BaseBottomNavActivity() {
         layoutTasks    = findViewById(R.id.layout_tasks)
         imageUser      = findViewById(R.id.image_user)
         textGreeting   = findViewById(R.id.text_greeting)
+        btnMyEvals  = findViewById(R.id.button_my_evaluations)
         btnHistory     = findViewById(R.id.button_history)
 
         // UserHomeActivity.kt  (dentro do onCreate)
@@ -52,6 +54,10 @@ class UserHomeActivity : BaseBottomNavActivity() {
                     .putExtra("USER_ID", id)
                     .also { startActivity(it) }
             } ?: Toast.makeText(this, "Utilizador sem ID!", Toast.LENGTH_SHORT).show()
+        }
+
+        btnMyEvals.setOnClickListener {
+            startActivity(Intent(this, UserEvaluationsActivity::class.java))
         }
 
         loadUserDashboard()

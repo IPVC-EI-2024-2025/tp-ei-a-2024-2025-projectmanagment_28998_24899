@@ -25,4 +25,13 @@ class EvaluationRepository(private val token: String) {
             emptyList()
         }
     }
+
+    suspend fun getEvaluationsByUser(userId: String): List<Evaluation> {
+        return try {
+            service.getEvaluationsByUser("eq.$userId")
+        } catch (e: Exception) {
+            Log.e("EVALUATION", "Erro ao buscar avaliações do utilizador: ${e.message}", e)
+            emptyList()
+        }
+    }
 }

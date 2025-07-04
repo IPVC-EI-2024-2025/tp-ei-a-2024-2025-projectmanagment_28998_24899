@@ -66,6 +66,8 @@
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.user.EditUpdateActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.user.UserEvaluationsActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
 
 
         <activity android:name=".ui.home.user.TaskHistoryActivity"
@@ -105,8 +107,6 @@
 
 
 
-        <activity android:name=".ui.home.manager.ManagerHomeActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.manager.ManagerProfileActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
         <activity android:name=".ui.home.manager.ManagerSettingsActivity"
