@@ -1,85 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/background_white">
 
-    <LinearLayout
+    <!-- Toolbar com spinner embutido -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
-
-
-
-        <include layout="@layout/toolbar_back" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_orange"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <Spinner
             android:id="@+id/spinner_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/button_orange"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/background_white" />
+    </androidx.appcompat.widget.Toolbar>
 
-        <EditText
-            android:id="@+id/input_name"
+    <!-- Conteúdo scrollável -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/create_project_name_hint"
-            android:background="@drawable/text_input_background"
-            android:padding="12dp"
-            android:layout_marginBottom="12dp"/>
+            android:orientation="vertical"
+            android:padding="24dp">
 
-        <EditText
-            android:id="@+id/input_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/create_project_description_hint"
-            android:background="@drawable/text_input_background"
-            android:padding="12dp"
-            android:layout_marginBottom="12dp"/>
+            <EditText
+                android:id="@+id/input_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_project_name_hint"
+                android:background="@drawable/text_input_background"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/input_start_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/create_project_start_hint"
-            android:background="@drawable/text_input_background"
-            android:padding="12dp"
-            android:layout_marginBottom="12dp"/>
+            <EditText
+                android:id="@+id/input_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_project_description_hint"
+                android:background="@drawable/text_input_background"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/input_end_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/create_project_end_hint"
-            android:background="@drawable/text_input_background"
-            android:padding="12dp"
-            android:layout_marginBottom="20dp"/>
+            <EditText
+                android:id="@+id/input_start_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_project_start_hint"
+                android:background="@drawable/text_input_background"
+                android:padding="12dp"
+                android:layout_marginBottom="12dp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/create_project_manager_label"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_marginBottom="4dp"/>
+            <EditText
+                android:id="@+id/input_end_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/create_project_end_hint"
+                android:background="@drawable/text_input_background"
+                android:padding="12dp"
+                android:layout_marginBottom="20dp"/>
 
-        <Spinner
-            android:id="@+id/spinner_manager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_project_manager_label"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginBottom="4dp"/>
 
-        <Button
-            android:id="@+id/button_create_project"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/create_project_button"
-            android:background="@color/button_orange"
-            android:textColor="@android:color/white"/>
-    </LinearLayout>
-</ScrollView>
+            <Spinner
+                android:id="@+id/spinner_manager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"/>
+
+            <Button
+                android:id="@+id/button_create_project"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_project_button"
+                android:background="@color/button_orange"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -152,6 +152,7 @@
     <string name="project_tasks_delete_error">Error deleting: %1$s</string>
     <string name="project_tasks_loading_error">Error loading tasks: %1$s</string>
     <string name="project_tasks_not_assigned">Not assigned</string>
+    <string name="title_project_tasks">Tasks</string>
 
     <!-- TaskDetailActivity -->
     <string name="task_detail_responsible">Responsible: </string>
@@ -163,6 +164,7 @@
     <string name="task_detail_responsible_unknown">[User not found]</string>
     <string name="task_detail_loading_error">Responsible: Error loading</string>
     <string name="task_detail_responsible_named">Responsible: %1$s</string>
+    <string name="title_task_detail">Task Details</string>
 
 
 
@@ -322,6 +324,7 @@
     <string name="error_deleting_task">Error: %1$s</string>
     <string name="error_loading_tasks">Failed to load tasks: %1$s</string>
     <string name="unassigned">Unassigned</string>
+    <string name="title_user_tasks">Tasks</string>
 
 
     <!-- ManagerSettingsActivity -->
@@ -335,6 +338,7 @@
 
     <!-- ManagerTaskDetailsActivity -->
     <string name="task_title">Title</string>
+    <string name="title_task_details">Task Details</string>
     <string name="task_description">Description</string>
     <string name="task_status">IN_PROGRESS</string>
     <string name="task_creation_date">2025-07-01</string>
@@ -354,6 +358,7 @@
     <string name="label_upload_photo">Upload Photo</string>
     <string name="btn_add_update">+ Add Update</string>
     <string name="error_creating_update">Error creating update: %1$s</string>
+    <string name="title_add_update">New Update</string>
 
 
     <!-- TaskHistoryActivity -->

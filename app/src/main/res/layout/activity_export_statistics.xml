@@ -1,64 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:orientation="vertical"
     android:background="@color/background_white">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <!-- Toolbar com título e spinner -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_export"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-
-        <include layout="@layout/toolbar_back" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_orange"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="@string/export_statistics_title"
+        app:titleTextColor="@color/black">
 
         <Spinner
             android:id="@+id/spinner_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/button_orange"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/background_white"/>
+    </androidx.appcompat.widget.Toolbar>
 
-        <CheckBox
-            android:id="@+id/checkbox_projects"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/export_checkbox_projects" />
+    <!-- Conteúdo -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
 
-        <CheckBox
-            android:id="@+id/checkbox_users"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/export_checkbox_users" />
+            android:layout_height="wrap_content">
 
-        <CheckBox
-            android:id="@+id/checkbox_tasks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/export_checkbox_tasks" />
+            <CheckBox
+                android:id="@+id/checkbox_projects"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/export_checkbox_projects" />
 
-        <Button
-            android:id="@+id/button_export_csv"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/export_button_csv"
-            android:layout_marginTop="24dp"
-            android:backgroundTint="@color/button_orange"
-            android:textColor="@color/background_white" />
+            <CheckBox
+                android:id="@+id/checkbox_users"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/export_checkbox_users" />
 
-        <Button
-            android:id="@+id/button_export_pdf"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/export_button_pdf"
-            android:layout_marginTop="12dp"
-            android:backgroundTint="@color/button_orange"
-            android:textColor="@color/background_white" />
-    </LinearLayout>
-</ScrollView>
+            <CheckBox
+                android:id="@+id/checkbox_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/export_checkbox_tasks" />
+
+            <Button
+                android:id="@+id/button_export_csv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/export_button_csv"
+                android:layout_marginTop="24dp"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@color/background_white" />
+
+            <Button
+                android:id="@+id/button_export_pdf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/export_button_pdf"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@color/background_white" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

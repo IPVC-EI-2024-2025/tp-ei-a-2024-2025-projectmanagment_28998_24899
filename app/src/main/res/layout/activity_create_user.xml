@@ -1,83 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
+    android:orientation="vertical"
     android:background="@color/background_white">
 
-    <LinearLayout
+    <!-- Toolbar com Spinner incluído -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_create_user"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-
-        <include layout="@layout/toolbar_back" />
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_orange"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:title="@string/title_create_user"
+        app:titleTextColor="@color/black">
 
         <Spinner
             android:id="@+id/spinner_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/button_orange"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/background_white"/>
+    </androidx.appcompat.widget.Toolbar>
 
+    <!-- Conteúdo -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
 
-        <EditText
-            android:id="@+id/edit_name"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_full_name"
-            android:inputType="textPersonName"
-            android:layout_marginBottom="12dp"/>
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/edit_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_email"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="12dp"/>
+            <EditText
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_full_name"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/edit_username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_username"
-            android:inputType="text"
-            android:layout_marginBottom="12dp"/>
+            <EditText
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_email"
+                android:inputType="textEmailAddress"
+                android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/edit_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_password"
-            android:inputType="textPassword"
-            android:layout_marginBottom="12dp"/>
+            <EditText
+                android:id="@+id/edit_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_username"
+                android:inputType="text"
+                android:layout_marginBottom="12dp"/>
 
-        <EditText
-            android:id="@+id/edit_phonenumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/hint_phone"
-            android:inputType="phone"
-            android:layout_marginBottom="24dp"/>
+            <EditText
+                android:id="@+id/edit_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_password"
+                android:inputType="textPassword"
+                android:layout_marginBottom="12dp"/>
 
-        <Spinner
-            android:id="@+id/spinner_role"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"/>
+            <EditText
+                android:id="@+id/edit_phonenumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_phone"
+                android:inputType="phone"
+                android:layout_marginBottom="24dp"/>
 
-        <Button
-            android:id="@+id/btn_create"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btn_create_user"
-            android:background="@color/button_orange"
-            android:textColor="@color/background_white"/>
+            <Spinner
+                android:id="@+id/spinner_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"/>
 
-    </LinearLayout>
-</ScrollView>
+            <Button
+                android:id="@+id/btn_create"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_create_user"
+                android:background="@color/button_orange"
+                android:textColor="@color/background_white"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

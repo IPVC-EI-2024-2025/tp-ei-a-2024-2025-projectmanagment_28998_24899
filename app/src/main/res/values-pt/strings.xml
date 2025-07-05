@@ -152,6 +152,7 @@
     <string name="project_tasks_delete_error">Erro ao eliminar: %1$s</string>
     <string name="project_tasks_loading_error">Erro ao carregar tarefas: %1$s</string>
     <string name="project_tasks_not_assigned">Não atribuído</string>
+    <string name="title_project_tasks">Tarefas</string>
 
 
     <!-- TaskDetailActivity -->
@@ -164,6 +165,7 @@
     <string name="task_detail_responsible_unknown">[Utilizador não encontrado]</string>
     <string name="task_detail_loading_error">Responsável: Erro ao carregar</string>
     <string name="task_detail_responsible_named">Responsável: %1$s</string>
+    <string name="title_task_detail">Detalhes da Tarefa</string>
 
 
     <!-- CreateUserActivity -->
@@ -327,6 +329,7 @@
     <string name="error_deleting_task">Erro: %1$s</string>
     <string name="error_loading_tasks">Erro ao carregar tarefas: %1$s</string>
     <string name="unassigned">Não atribuído</string>
+    <string name="title_user_tasks">Tasks</string>
 
 
     <!-- ManagerSettingsActivity -->
@@ -338,6 +341,7 @@
 
     <!-- ManagerTaskDetailsActivity -->
     <string name="task_title">Título</string>
+    <string name="title_task_details">Detalhes da Tarefa</string>
     <string name="task_description">Descrição</string>
     <string name="task_status">IN_PROGRESS</string>
     <string name="task_creation_date">2025-07-01</string>
@@ -359,6 +363,7 @@
     <string name="label_upload_photo">Carregar Foto</string>
     <string name="btn_add_update">+ Adicionar Update</string>
     <string name="error_creating_update">Erro ao criar update: %1$s</string>
+    <string name="title_add_update">Novo Update</string>
 
 
     <!-- TaskHistoryActivity -->

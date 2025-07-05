@@ -1,108 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/admin_profile_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:orientation="vertical"
     android:background="@color/background_white">
 
-    <!-- Spinner de Idioma -->
-    <Spinner
-        android:id="@+id/spinner_language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:spinnerMode="dropdown"
-        android:backgroundTint="@color/button_orange"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Toolbar -->
+    <!-- Toolbar com spinner integrado -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_profile"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:background="@color/button_orange"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:title="@string/title_profile"
-        app:titleTextColor="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/spinner_language"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:titleTextColor="@color/black">
 
-    <!-- Nome do Admin (Label) -->
-    <TextView
-        android:id="@+id/text_admin_name_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/label_name"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_admin_name"
-        android:layout_marginTop="24dp"/>
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/background_white"/>
+    </androidx.appcompat.widget.Toolbar>
 
-    <!-- Nome do Admin (Valor) -->
-    <TextView
-        android:id="@+id/text_admin_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/loading"
-        android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/text_admin_name_label"
-        app:layout_constraintStart_toEndOf="@id/text_admin_name_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="8dp"/>
+    <!-- Conteúdo -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
 
-    <!-- E-mail do Admin (Label) -->
-    <TextView
-        android:id="@+id/text_admin_email_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/label_email"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/text_admin_name_label"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/text_admin_email"
-        android:layout_marginTop="16dp"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <!-- E-mail do Admin (Valor) -->
-    <TextView
-        android:id="@+id/text_admin_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/loading_email"
-        android:textSize="16sp"
-        app:layout_constraintBaseline_toBaselineOf="@id/text_admin_email_label"
-        app:layout_constraintStart_toEndOf="@id/text_admin_email_label"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="8dp"/>
+            <!-- Nome -->
+            <TextView
+                android:id="@+id/text_admin_name_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_name"
+                android:textStyle="bold"
+                android:textSize="16sp" />
 
-    <!-- Espaçador -->
-    <View
-        android:id="@+id/spacer"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/text_admin_email_label"
-        app:layout_constraintBottom_toTopOf="@id/button_logout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.8"/>
+            <TextView
+                android:id="@+id/text_admin_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/loading"
+                android:textSize="16sp"
+                android:layout_marginBottom="16dp"/>
 
-    <!-- Botão de Logout -->
-    <Button
-        android:id="@+id/button_logout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_logout"
-        android:background="@color/button_orange"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <!-- Email -->
+            <TextView
+                android:id="@+id/text_admin_email_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_email"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/text_admin_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/loading_email"
+                android:textSize="16sp"
+                android:layout_marginBottom="32dp"/>
+
+            <!-- Botão Logout -->
+            <Button
+                android:id="@+id/button_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_logout"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

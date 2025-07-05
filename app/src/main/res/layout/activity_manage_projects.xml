@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,19 +8,24 @@
     android:background="@color/background_white"
     tools:context=".ui.home.admin.manageprojects.ManageProjectsActivity">
 
+    <!-- Toolbar com spinner embutido -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_projects"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_orange"
+        app:title="@string/manage_projects_title"
+        app:titleTextColor="@color/black">
 
-
-    <include layout="@layout/toolbar_back" />
-
-    <Spinner
-        android:id="@+id/spinner_language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/button_orange"
-        android:spinnerMode="dropdown" />
+        <Spinner
+            android:id="@+id/spinner_language"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="16dp"
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/background_white"/>
+    </androidx.appcompat.widget.Toolbar>
 
     <!-- Cards estatísticos -->
     <LinearLayout
@@ -78,5 +84,4 @@
         android:layout_height="match_parent"
         android:paddingTop="8dp"
         android:layout_marginBottom="16dp"/>
-
 </LinearLayout>

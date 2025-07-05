@@ -1,97 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/background_white">
 
-    <LinearLayout
+    <!-- Toolbar com título e spinner -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_assign"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/button_orange"
+        app:title="@string/manage_manager_title"
+        app:titleTextColor="@color/black">
 
         <Spinner
             android:id="@+id/spinner_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:backgroundTint="@color/button_orange"
-            android:spinnerMode="dropdown" />
+            android:spinnerMode="dropdown"
+            android:backgroundTint="@color/background_white"/>
+    </androidx.appcompat.widget.Toolbar>
 
-        <include layout="@layout/toolbar_back" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/manage_manager_title"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="16dp"
-            android:textColor="@color/black"/>
+    <!-- Conteúdo -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/white"
-            android:padding="20dp"
-            android:elevation="2dp"
-            android:layout_marginBottom="24dp">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/text_project_title"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/manage_manager_project_name"
-                android:textStyle="bold"
-                android:padding="8dp"
-                android:textColor="@color/button_orange"
-                android:layout_marginBottom="8dp"
-                android:textSize="16sp"/>
+                android:background="@android:color/white"
+                android:padding="20dp"
+                android:elevation="2dp"
+                android:layout_marginBottom="24dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/manage_manager_current_label"
-                android:textStyle="bold"
-                android:layout_marginTop="12dp"/>
+                <TextView
+                    android:id="@+id/text_project_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manage_manager_project_name"
+                    android:textStyle="bold"
+                    android:padding="8dp"
+                    android:textColor="@color/button_orange"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="16sp"/>
 
-            <TextView
-                android:id="@+id/text_current_manager"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/manage_manager_current_value"
-                android:drawableLeft="@drawable/ic_person"
-                android:drawablePadding="8dp"
-                android:textSize="16sp"
-                android:layout_marginBottom="14dp"
-                android:layout_marginTop="2dp"
-                android:textColor="@color/black"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manage_manager_current_label"
+                    android:textStyle="bold"
+                    android:layout_marginTop="12dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/manage_manager_select_label"
-                android:textStyle="bold"
-                android:layout_marginTop="8dp"/>
+                <TextView
+                    android:id="@+id/text_current_manager"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manage_manager_current_value"
+                    android:drawableLeft="@drawable/ic_person"
+                    android:drawablePadding="8dp"
+                    android:textSize="16sp"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginTop="2dp"
+                    android:textColor="@color/black"/>
 
-            <Spinner
-                android:id="@+id/spinner_new_manager"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/manage_manager_select_label"
+                    android:textStyle="bold"
+                    android:layout_marginTop="8dp"/>
+
+                <Spinner
+                    android:id="@+id/spinner_new_manager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="12dp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_update_manager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:layout_marginBottom="12dp"/>
+                android:text="@string/manage_manager_button"
+                android:background="@color/button_orange"
+                android:textColor="@android:color/white"/>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/button_update_manager"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/manage_manager_button"
-            android:background="@color/button_orange"
-            android:textColor="@android:color/white"/>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>
