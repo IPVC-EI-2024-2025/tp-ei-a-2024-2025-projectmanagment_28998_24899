@@ -441,5 +441,8 @@
     <string name="toast_invalid_token">Signup error: invalid token or authId</string>
     <string name="toast_signup_error">Signup error</string>
 
+    <string name="task_updates">Task Updates</string>
+
+
 
 </resources>

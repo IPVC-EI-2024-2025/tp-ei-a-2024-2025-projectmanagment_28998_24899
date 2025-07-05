@@ -446,5 +446,7 @@
     <string name="toast_invalid_token">Erro no registo: token ou authId inválidos</string>
     <string name="toast_signup_error">Erro no registo</string>
 
+    <string name="task_updates">Atualizações da Tarefa</string>
+
 
 </resources>

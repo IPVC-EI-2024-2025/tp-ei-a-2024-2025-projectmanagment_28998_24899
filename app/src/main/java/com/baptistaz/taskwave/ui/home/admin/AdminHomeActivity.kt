@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProvider
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.ui.home.admin.assignmanager.AssignManagerActivity
 import com.baptistaz.taskwave.ui.home.admin.exportstatistics.ExportStatisticsActivity
@@ -14,20 +15,26 @@ import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 
 class AdminHomeActivity : BaseLocalizedActivity() {
+
+    private lateinit var viewModel: AdminDashboardViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_home)
 
-        // Estatísticas simuladas (podem ser dinâmicas mais tarde)
-        val numProjects = 12
-        val numUsers = 8
-        val numTasks = 24
+        val textProjects = findViewById<TextView>(R.id.text_projects)
+        val textUsers = findViewById<TextView>(R.id.text_users)
+        val textTasks = findViewById<TextView>(R.id.text_tasks)
 
-        findViewById<TextView>(R.id.text_projects).text = numProjects.toString()
-        findViewById<TextView>(R.id.text_users).text = numUsers.toString()
-        findViewById<TextView>(R.id.text_tasks).text = numTasks.toString()
+        val token = SessionManager.getAccessToken(this) ?: ""
+        viewModel = ViewModelProvider(this, AdminDashboardViewModelFactory(token))[AdminDashboardViewModel::class.java]
 
-        // Botões personalizados
+        viewModel.projectCount.observe(this) { textProjects.text = it.toString() }
+        viewModel.userCount.observe(this) { textUsers.text = it.toString() }
+        viewModel.taskCount.observe(this) { textTasks.text = it.toString() }
+
+        viewModel.loadDashboardData(token)
+
         findViewById<LinearLayout>(R.id.button_manage_projects).setOnClickListener {
             startActivity(Intent(this, ManageProjectsActivity::class.java))
         }
@@ -54,5 +61,11 @@ class AdminHomeActivity : BaseLocalizedActivity() {
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val token = SessionManager.getAccessToken(this) ?: return
+        viewModel.loadDashboardData(token)
     }
 }

@@ -5,45 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Toolbar personalizada -->
-    <LinearLayout
-        android:id="@+id/custom_toolbar"
+    <!-- Toolbar tradicional -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="56dp"
-        android:background="@color/button_orange"
-        android:orientation="horizontal"
-        android:paddingHorizontal="8dp"
-        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:background="@color/stroke_orange"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <ImageView
-            android:id="@+id/back_button"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_arrow_right"
-            android:contentDescription="Voltar"
-            app:tint="@android:color/white" />
-
-        <TextView
-            android:id="@+id/text_toolbar_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/history"
-            android:textColor="@android:color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginStart="16dp"
-            android:layout_weight="1"/>
-
-        <Spinner
-            android:id="@+id/spinner_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown"
-            android:backgroundTint="@android:color/white"/>
-    </LinearLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
@@ -51,8 +22,9 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:padding="16dp"
-        app:layout_constraintTop_toBottomOf="@id/custom_toolbar"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

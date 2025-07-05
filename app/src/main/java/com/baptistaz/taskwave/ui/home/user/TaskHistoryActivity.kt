@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.user
 
 import TaskAdapter
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
@@ -36,7 +37,16 @@ class TaskHistoryActivity : BaseLocalizedActivity() {
 
         recycler = findViewById(R.id.recycler_history)
         recycler.layoutManager = LinearLayoutManager(this)
-        adapter = TaskAdapter(emptyList(), onClick = {}, onDelete = null)
+        adapter = TaskAdapter(
+            emptyList(),
+            onClick = { task ->
+                val intent = Intent(this, UserTaskUpdatesReadonlyActivity::class.java)
+                intent.putExtra("TASK_ID", task.idTask)
+                startActivity(intent)
+            },
+            onDelete = null
+        )
+
         recycler.adapter = adapter
 
         carregarHistorico()
