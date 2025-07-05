@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.baptistaz.taskwave.R
 
 open class BaseLocalizedActivity : AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context) {
-        val lang = newBase.getSharedPreferences("prefs", MODE_PRIVATE)
-            .getString("language", "pt") ?: "pt"
+        val lang = SessionManager.getLanguage(newBase)
         val context = LocaleHelper.setLocale(newBase, lang)
         super.attachBaseContext(context)
     }
@@ -24,8 +24,7 @@ open class BaseLocalizedActivity : AppCompatActivity() {
         findViewById<Spinner?>(R.id.spinner_language)?.let { spinner ->
             val languages = listOf("PT", "EN")
             val codes = listOf("pt", "en")
-            val currentLang = getSharedPreferences("prefs", MODE_PRIVATE)
-                .getString("language", "pt")
+            val currentLang = SessionManager.getLanguage(this)
 
             spinner.adapter = ArrayAdapter(
                 this,
@@ -39,10 +38,7 @@ open class BaseLocalizedActivity : AppCompatActivity() {
                 override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
                     val selectedLang = codes[position]
                     if (selectedLang != currentLang) {
-                        getSharedPreferences("prefs", MODE_PRIVATE)
-                            .edit()
-                            .putString("language", selectedLang)
-                            .apply()
+                        SessionManager.setLanguage(this@BaseLocalizedActivity, selectedLang)
                         recreate()
                     }
                 }
@@ -50,5 +46,26 @@ open class BaseLocalizedActivity : AppCompatActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
         }
+    }
+
+    // ✅ Método extra para ser usado nas Settings (sem mexer no spinner)
+    fun showLanguageDialog() {
+        val languages = arrayOf("Português", "English")
+        val codes = arrayOf("pt", "en")
+        val current = SessionManager.getLanguage(this)
+        val selected = codes.indexOf(current)
+
+        AlertDialog.Builder(this)
+            .setTitle(getString(R.string.change_language))
+            .setSingleChoiceItems(languages, selected) { dialog, which ->
+                val newLang = codes[which]
+                if (newLang != current) {
+                    SessionManager.setLanguage(this, newLang)
+                    recreate()
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton(R.string.cancelar, null)
+            .show()
     }
 }

@@ -386,6 +386,9 @@
     <string name="btn_history">Histórico de Tarefas</string>
     <string name="no_date">Sem data</string>
     <string name="toast_missing_user_id">Utilizador sem ID!</string>
+    <string name="projects_active">Projetos Ativos</string>
+    <string name="projects_completed">Projetos Concluídos</string>
+
 
 
     <!-- UserProjectDetailsActivity -->
@@ -448,5 +451,7 @@
 
     <string name="task_updates">Atualizações da Tarefa</string>
 
+    <string name="change_language">Mudar Idioma</string>
+    <string name="cancelar">Cancelar</string>
 
 </resources>

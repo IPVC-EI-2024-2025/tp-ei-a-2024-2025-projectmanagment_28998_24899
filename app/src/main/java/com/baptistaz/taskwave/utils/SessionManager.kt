@@ -39,6 +39,21 @@ object SessionManager {
             .edit().clear().apply()
     }
 
+    fun getLanguage(context: Context): String {
+        return context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+            .getString("language", "pt") ?: "pt"
+    }
+
+    fun setLanguage(context: Context, langCode: String) {
+        context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+            .edit()
+            .putString("language", langCode)
+            .apply()
+    }
+
+
     private fun Context.prefs() =
         getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+
 }

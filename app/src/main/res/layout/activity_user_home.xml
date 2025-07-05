@@ -6,7 +6,6 @@
     android:background="@color/background_white"
     android:orientation="vertical">
 
-    <!-- Spinner de idioma no topo -->
     <Spinner
         android:id="@+id/spinner_language"
         android:layout_width="wrap_content"
@@ -16,7 +15,6 @@
         android:spinnerMode="dropdown"
         android:backgroundTint="@color/button_orange" />
 
-    <!-- Conteúdo principal -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -29,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Profile + Greeting -->
+            <!-- Profile -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,7 +50,7 @@
                     android:paddingStart="16dp" />
             </LinearLayout>
 
-            <!-- Projetos -->
+            <!-- Projects Section -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,13 +60,45 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"/>
 
-            <LinearLayout
-                android:id="@+id/layout_projects"
+            <!-- Active Projects -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/projects_active"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"/>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/layout_projects_active"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal" />
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start"
+                app:alignItems="center"
+                android:padding="4dp" />
 
-            <!-- Tarefas -->
+            <!-- Completed Projects -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/projects_completed"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="4dp"/>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/layout_projects_completed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                app:justifyContent="flex_start"
+                app:alignItems="center"
+                android:padding="4dp" />
+
+            <!-- Tasks -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -104,7 +134,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation Bar -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

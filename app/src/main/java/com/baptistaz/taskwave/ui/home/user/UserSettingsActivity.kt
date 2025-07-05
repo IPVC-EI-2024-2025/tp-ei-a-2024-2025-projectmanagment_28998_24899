@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class UserSettingsActivity : BaseBottomNavActivity() {
+
     override fun getSelectedMenuId() = R.id.nav_settings
 
     // Campos da Activity
@@ -52,9 +53,9 @@ class UserSettingsActivity : BaseBottomNavActivity() {
             ).show()
         }
 
-        // Placeholder - mudar idioma
+        // ✅ Agora chama o diálogo de idioma
         findViewById<LinearLayout>(R.id.option_change_language).setOnClickListener {
-            // A troca de idioma é feita pelo Spinner (não aqui)
+            showLanguageDialog() // método herdado do BaseLocalizedActivity
         }
 
         // Placeholder - toggle notificações
@@ -75,7 +76,6 @@ class UserSettingsActivity : BaseBottomNavActivity() {
     }
 
     private fun loadCurrentUser() {
-        // Mostra spinner
         progress.visibility = View.VISIBLE
         contentLayout.visibility = View.GONE
 

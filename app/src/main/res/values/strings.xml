@@ -380,6 +380,9 @@
     <string name="btn_history">Task History</string>
     <string name="no_date">No Date</string>
     <string name="toast_missing_user_id">User without ID!</string>
+    <string name="projects_active">Active Projects</string>
+    <string name="projects_completed">Completed Projects</string>
+
 
     <!-- UserProjectDetailsActivity -->
     <string name="project_details">Project Details</string>
@@ -443,6 +446,8 @@
 
     <string name="task_updates">Task Updates</string>
 
+    <string name="change_language">Change Language</string>
+    <string name="cancelar">Cancel</string>
 
 
 </resources>

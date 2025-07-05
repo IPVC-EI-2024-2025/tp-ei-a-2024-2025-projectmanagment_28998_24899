@@ -11,10 +11,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.Project
 import com.baptistaz.taskwave.data.remote.RetrofitInstance
 import com.baptistaz.taskwave.data.remote.UserRepository
 import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
 import com.baptistaz.taskwave.utils.SessionManager
+import com.google.android.flexbox.FlexboxLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,7 +25,8 @@ class UserHomeActivity : BaseBottomNavActivity() {
 
     override fun getSelectedMenuId() = R.id.nav_home
 
-    private lateinit var layoutProjects: LinearLayout
+    private lateinit var layoutProjectsActive: FlexboxLayout
+    private lateinit var layoutProjectsCompleted: FlexboxLayout
     private lateinit var layoutTasks: LinearLayout
     private lateinit var imageUser: ImageView
     private lateinit var textGreeting: TextView
@@ -36,7 +39,8 @@ class UserHomeActivity : BaseBottomNavActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_home)
 
-        layoutProjects = findViewById(R.id.layout_projects)
+        layoutProjectsActive = findViewById(R.id.layout_projects_active)
+        layoutProjectsCompleted = findViewById(R.id.layout_projects_completed)
         layoutTasks = findViewById(R.id.layout_tasks)
         imageUser = findViewById(R.id.image_user)
         textGreeting = findViewById(R.id.text_greeting)
@@ -45,9 +49,7 @@ class UserHomeActivity : BaseBottomNavActivity() {
 
         btnHistory.setOnClickListener {
             currentUser?.id_user?.let { id ->
-                Intent(this, TaskHistoryActivity::class.java)
-                    .putExtra("USER_ID", id)
-                    .also { startActivity(it) }
+                startActivity(Intent(this, TaskHistoryActivity::class.java).putExtra("USER_ID", id))
             } ?: Toast.makeText(this, getString(R.string.toast_missing_user_id), Toast.LENGTH_SHORT).show()
         }
 
@@ -81,23 +83,21 @@ class UserHomeActivity : BaseBottomNavActivity() {
         val utRepo = UserTaskRepository(RetrofitInstance.getUserTaskService(token))
         val allUserTasks = utRepo.getTasksOfUser(userId, token) ?: emptyList()
 
-        // --- Projetos ---
         val projects = allUserTasks.mapNotNull { it.task?.project }
             .distinctBy { it.idProject }
 
-        layoutProjects.removeAllViews()
-        projects.forEach { proj ->
-            val btn = Button(this).apply {
-                text = proj.name
-                setBackgroundResource(R.drawable.card_bg)
-                setTextColor(ContextCompat.getColor(context, R.color.button_orange))
-                setOnClickListener {
-                    Intent(context, UserProjectDetailsActivity::class.java)
-                        .putExtra("PROJECT_ID", proj.idProject)
-                        .also { startActivity(it) }
-                }
-            }
-            layoutProjects.addView(btn)
+        val projetosAtivos = projects.filter { it.status.equals("ACTIVE", true) }
+        val projetosConcluidos = projects.filter { it.status.equals("COMPLETED", true) }
+
+        layoutProjectsActive.removeAllViews()
+        layoutProjectsCompleted.removeAllViews()
+
+        projetosAtivos.forEach { proj ->
+            layoutProjectsActive.addView(createProjectButton(proj))
+        }
+
+        projetosConcluidos.forEach { proj ->
+            layoutProjectsCompleted.addView(createProjectButton(proj))
         }
 
         // --- Tarefas em progresso ---
@@ -115,9 +115,7 @@ class UserHomeActivity : BaseBottomNavActivity() {
                 isClickable = true
                 isFocusable = true
                 setOnClickListener {
-                    Intent(context, UserTaskDetailsActivity::class.java)
-                        .putExtra("TASK_ID", task.idTask)
-                        .also { startActivity(it) }
+                    startActivity(Intent(context, UserTaskDetailsActivity::class.java).putExtra("TASK_ID", task.idTask))
                 }
             }
 
@@ -155,6 +153,17 @@ class UserHomeActivity : BaseBottomNavActivity() {
             card.addView(LinearLayout(this).apply { addView(badge) })
 
             layoutTasks.addView(card)
+        }
+    }
+
+    private fun createProjectButton(proj: Project): Button {
+        return Button(this).apply {
+            text = proj.name
+            setBackgroundResource(R.drawable.card_bg)
+            setTextColor(ContextCompat.getColor(context, R.color.button_orange))
+            setOnClickListener {
+                startActivity(Intent(context, UserProjectDetailsActivity::class.java).putExtra("PROJECT_ID", proj.idProject))
+            }
         }
     }
 }

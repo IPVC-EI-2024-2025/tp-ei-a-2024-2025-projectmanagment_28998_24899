@@ -77,4 +77,6 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
     implementation ("androidx.cardview:cardview:1.0.0")
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation ("com.google.android.flexbox:flexbox:3.0.0")
+
 }
