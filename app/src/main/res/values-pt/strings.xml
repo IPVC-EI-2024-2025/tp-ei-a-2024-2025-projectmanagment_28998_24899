@@ -454,4 +454,6 @@
     <string name="change_language">Mudar Idioma</string>
     <string name="cancelar">Cancelar</string>
 
+    <string name="btn_back">Go back</string>
+
 </resources>

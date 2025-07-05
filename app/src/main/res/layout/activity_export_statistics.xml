@@ -11,6 +11,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
+
+        <include layout="@layout/toolbar_back" />
+
         <Spinner
             android:id="@+id/spinner_language"
             android:layout_width="wrap_content"
@@ -20,17 +24,6 @@
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/button_orange"
             android:spinnerMode="dropdown" />
-
-        <include layout="@layout/toolbar_back" />
-
-        <TextView
-            android:text="@string/export_statistics_title"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="24dp"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
         <CheckBox
             android:id="@+id/checkbox_projects"

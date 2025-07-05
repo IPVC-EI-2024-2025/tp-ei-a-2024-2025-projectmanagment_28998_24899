@@ -7,6 +7,10 @@
     android:background="@color/background_white"
     tools:context=".ui.home.admin.manageprojects.ManageProjectsActivity">
 
+
+
+    <include layout="@layout/toolbar_back" />
+
     <Spinner
         android:id="@+id/spinner_language"
         android:layout_width="wrap_content"
@@ -16,19 +20,6 @@
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/button_orange"
         android:spinnerMode="dropdown" />
-
-    <include layout="@layout/toolbar_back" />
-
-    <!-- Título -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/manage_projects_title"
-        android:gravity="center"
-        android:padding="16dp"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
 
     <!-- Cards estatísticos -->
     <LinearLayout

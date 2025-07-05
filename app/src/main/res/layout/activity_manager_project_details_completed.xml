@@ -5,6 +5,11 @@
     android:layout_height="match_parent"
     android:background="@color/background_white">
 
+
+
+    <!-- Toolbar em cima, fora do ScrollView -->
+    <include layout="@layout/toolbar_back" />
+
     <Spinner
         android:id="@+id/spinner_language"
         android:layout_width="wrap_content"
@@ -14,14 +19,6 @@
         android:layout_marginEnd="16dp"
         android:spinnerMode="dropdown"
         android:backgroundTint="@color/button_orange" />
-
-    <!-- Toolbar em cima, fora do ScrollView -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/button_orange"
-        android:elevation="4dp" />
 
     <!-- Conteúdo scrollável -->
     <ScrollView

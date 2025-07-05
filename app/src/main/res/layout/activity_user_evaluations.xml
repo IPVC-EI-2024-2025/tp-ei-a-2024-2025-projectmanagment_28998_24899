@@ -10,22 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/button_orange"
-            app:title="@string/title_user_evaluations"
-            app:titleTextColor="@android:color/white" />
+        <include layout="@layout/toolbar_back" />
 
         <Spinner
             android:id="@+id/spinner_language"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="end|center_vertical"
-            android:layout_marginEnd="12dp"
+            android:layout_gravity="end"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:spinnerMode="dropdown"
-            android:backgroundTint="@color/background_white" />
+            android:backgroundTint="@color/button_orange" />
     </FrameLayout>
 
     <!-- Lista de Avaliações -->

@@ -7,6 +7,10 @@
     android:background="@color/background_white"
     android:padding="24dp">
 
+
+
+    <include layout="@layout/toolbar_back" />
+
     <Spinner
         android:id="@+id/spinner_language"
         android:layout_width="wrap_content"
@@ -17,20 +21,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:backgroundTint="@color/button_orange"
         android:spinnerMode="dropdown"/>
-
-    <include layout="@layout/toolbar_back" />
-
-    <TextView
-        android:id="@+id/text_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/assign_manager_title"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
-        android:layout_marginBottom="12dp"/>
 
     <ScrollView
         android:layout_width="match_parent"

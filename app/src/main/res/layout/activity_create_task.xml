@@ -9,6 +9,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
+
+        <include layout="@layout/toolbar_back" />
+
         <Spinner
             android:id="@+id/spinner_language"
             android:layout_width="wrap_content"
@@ -18,12 +22,6 @@
             android:layout_marginEnd="16dp"
             android:backgroundTint="@color/button_orange"
             android:spinnerMode="dropdown" />
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
         <TextView
             android:text="@string/create_task_title"

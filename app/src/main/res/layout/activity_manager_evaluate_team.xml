@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    
+    <include layout="@layout/toolbar_back" />
+
     <Spinner
         android:id="@+id/spinner_language"
         android:layout_width="wrap_content"
@@ -15,19 +19,6 @@
         android:backgroundTint="@color/button_orange"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/button_orange"
-        android:elevation="4dp"
-        app:title="@string/title_evaluate_team"
-        app:titleTextColor="@android:color/white"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTeam"
