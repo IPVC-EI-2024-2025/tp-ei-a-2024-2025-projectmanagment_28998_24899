@@ -41,7 +41,7 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
         }
 
         findViewById<LinearLayout>(R.id.option_change_language).setOnClickListener {
-            // O Spinner já trata da mudança
+            showLanguageDialog()
         }
 
         findViewById<Switch>(R.id.switch_notifications).setOnCheckedChangeListener { _, isChecked ->
