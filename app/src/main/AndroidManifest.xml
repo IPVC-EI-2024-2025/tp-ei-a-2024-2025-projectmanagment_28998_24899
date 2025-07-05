@@ -136,6 +136,10 @@
                   android:theme="@style/Theme.TaskWave.NoActionBar" />
         <activity android:name=".ui.home.manager.ManagerEvaluateTeamActivity"
                   android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <activity android:name=".ui.home.manager.ManagerTaskUpdatesReadonlyActivity"
+                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+
+
 
 
 

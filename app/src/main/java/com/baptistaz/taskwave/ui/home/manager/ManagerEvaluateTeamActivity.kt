@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.manager
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -125,7 +126,11 @@ class ManagerEvaluateTeamActivity : BaseLocalizedActivity() {
                             getString(R.string.evaluation_submitted),
                             Toast.LENGTH_SHORT
                         ).show()
-                        finish()
+
+                        // Redirecionar para a lista de projetos após a avaliação
+                        val intent = Intent(this@ManagerEvaluateTeamActivity, ManagerProjectsAreaActivity::class.java)
+                        startActivity(intent)
+                        finish()  // Finaliza a Activity atual
                     } else {
                         Toast.makeText(
                             this@ManagerEvaluateTeamActivity,
@@ -143,6 +148,7 @@ class ManagerEvaluateTeamActivity : BaseLocalizedActivity() {
                 }
             }
         }
+
     }
 }
 

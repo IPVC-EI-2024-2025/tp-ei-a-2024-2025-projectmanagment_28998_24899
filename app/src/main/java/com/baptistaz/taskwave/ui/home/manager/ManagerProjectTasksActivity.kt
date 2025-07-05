@@ -88,10 +88,16 @@ class ManagerProjectTasksActivity : BaseLocalizedActivity() {
 
             adapterCompleted = TaskAdapter(
                 emptyList(),
-                onClick = { /* apenas visualizar */ },
-                onDelete = null,
-                canEdit = false
+                onClick = { task ->
+                    val intent = Intent(this@ManagerProjectTasksActivity, ManagerTaskDetailsActivity::class.java)
+                    intent.putExtra("TASK_ID", task.idTask) // Passa o ID da tarefa
+                    intent.putExtra("CAN_EDIT", false)  // Não edita tarefas concluídas
+                    startActivity(intent)
+                },
+                onDelete = null,  // Não permite a exclusão de tarefas concluídas
+                canEdit = false    // Não permite editar tarefas concluídas
             )
+
 
             recyclerActive.layoutManager = LinearLayoutManager(this@ManagerProjectTasksActivity)
             recyclerActive.adapter = adapterActive

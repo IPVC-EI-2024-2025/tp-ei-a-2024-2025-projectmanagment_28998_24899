@@ -9,7 +9,8 @@ import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.Task
 
 class ManagerProjectTasksReadOnlyAdapter(
-    private val tasks: List<Task>
+    private val tasks: List<Task>,
+    private val onItemClick: (Task) -> Unit // Listener para clique na tarefa
 ) : RecyclerView.Adapter<ManagerProjectTasksReadOnlyAdapter.Holder>() {
 
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
@@ -27,6 +28,11 @@ class ManagerProjectTasksReadOnlyAdapter(
         val task = tasks[position]
         holder.tvTitle.text = task.title
         holder.tvStatus.text = task.state
+
+        // Definindo o clique para abrir os detalhes dos updates
+        holder.itemView.setOnClickListener {
+            onItemClick(task)
+        }
     }
 
     override fun getItemCount(): Int = tasks.size

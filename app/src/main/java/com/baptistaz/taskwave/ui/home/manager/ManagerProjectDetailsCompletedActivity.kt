@@ -1,5 +1,6 @@
 package com.baptistaz.taskwave.ui.home.manager
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,7 @@ class ManagerProjectDetailsCompletedActivity : BaseLocalizedActivity() {
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "" // podes definir depois o nome do projeto
+        supportActionBar?.title = "" // Podes definir depois o nome do projeto
 
         // Obter ID do projeto
         val projectId = intent.getStringExtra("PROJECT_ID") ?: return finish()
@@ -54,11 +55,16 @@ class ManagerProjectDetailsCompletedActivity : BaseLocalizedActivity() {
                     getString(R.string.label_manager_with_value, managerName)
             }
 
-            // Lista de tarefas (read-only)
+            // Lista de tarefas (com clique para ver os updates)
             val rvTasks = findViewById<RecyclerView>(R.id.rvProjectTasks)
             rvTasks.layoutManager = LinearLayoutManager(this@ManagerProjectDetailsCompletedActivity)
             val tasks = taskRepo.getTasksByProject(projectId)
-            rvTasks.adapter = ManagerProjectTasksReadOnlyAdapter(tasks)
+
+            // Adicionando listener para cada item (tarefa) no RecyclerView
+            val adapter = ManagerProjectTasksReadOnlyAdapter(tasks) { task ->
+                openTaskUpdates(task.idTask)  // Método para abrir os updates de uma tarefa
+            }
+            rvTasks.adapter = adapter
 
             // Lista de avaliações
             val rvEvaluations = findViewById<RecyclerView>(R.id.rvEvaluations)
@@ -73,6 +79,13 @@ class ManagerProjectDetailsCompletedActivity : BaseLocalizedActivity() {
 
             rvEvaluations.adapter = EvaluationAdapter(evaluationsWithUserNames)
         }
+    }
+
+    // Método para abrir detalhes das atualizações de uma tarefa
+    private fun openTaskUpdates(taskId: String) {
+        val intent = Intent(this, ManagerTaskUpdatesReadonlyActivity::class.java)
+        intent.putExtra("TASK_ID", taskId)
+        startActivity(intent)
     }
 
     override fun onSupportNavigateUp(): Boolean {
