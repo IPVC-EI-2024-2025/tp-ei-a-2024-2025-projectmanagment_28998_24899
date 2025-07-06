@@ -101,7 +101,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Secção Tarefas (apenas visível para 'User') -->
+            <!-- Secção Tarefas (apenas visível para 'com.baptistaz.taskwave.data.model.auth.User') -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/section_tasks"
                 android:layout_width="match_parent"

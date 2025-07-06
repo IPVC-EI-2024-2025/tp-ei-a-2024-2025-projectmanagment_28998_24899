@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.baptistaz.taskwave.data.remote.UserRepository
-import com.baptistaz.taskwave.data.remote.project.ProjectRepository
-import com.baptistaz.taskwave.data.remote.project.TaskRepository
+import com.baptistaz.taskwave.data.remote.project.repository.ProjectRepository
+import com.baptistaz.taskwave.data.remote.project.repository.TaskRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import kotlinx.coroutines.launch
 
 class AdminDashboardViewModel(

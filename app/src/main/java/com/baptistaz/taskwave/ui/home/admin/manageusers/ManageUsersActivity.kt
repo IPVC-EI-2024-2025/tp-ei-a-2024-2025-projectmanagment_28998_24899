@@ -1,6 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageusers
 
-import User
+import com.baptistaz.taskwave.data.model.auth.User
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -16,7 +16,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.remote.UserRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope

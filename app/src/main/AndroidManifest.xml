@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.baptistaz.taskwave">
 
+    <!-- Permissões -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
-
-
 
     <application
         android:allowBackup="true"
@@ -19,10 +18,8 @@
         android:localeConfig="@xml/locales_config"
         tools:targetApi="31">
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" />
-
+        <!-- MAIN/INTRO -->
+        <activity android:name=".MainActivity" android:exported="false" />
         <activity
             android:name=".ui.intro.IntroActivity"
             android:exported="true"
@@ -33,125 +30,72 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".ui.auth.LoginActivity"
-            android:exported="false" />
+        <!-- AUTH -->
+        <activity android:name=".ui.auth.view.LoginActivity" android:exported="false" />
+        <activity android:name=".ui.auth.view.SignupActivity" android:exported="false" />
 
-        <activity
-            android:name=".ui.auth.SignupActivity"
-            android:exported="false" />
-
+        <!-- ADMIN -->
         <activity android:name=".ui.home.admin.AdminHomeActivity" android:exported="false" />
-        <activity android:name=".ui.home.admin.AdminProfileActivity"
+        <activity
+            android:name=".ui.home.admin.AdminProfileActivity"
             android:label="Meu Perfil"
             android:parentActivityName=".ui.home.admin.AdminHomeActivity">
-            <!-- Permite o botão “up” voltar ao AdminHomeActivity -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.home.admin.AdminHomeActivity"/>
+                android:value=".ui.home.admin.AdminHomeActivity" />
         </activity>
 
+        <!-- ADMIN - Manage Projects -->
+        <activity android:name=".ui.home.admin.manageprojects.overview.ManageProjectsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageprojects.project.CreateProjectActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageprojects.project.EditProjectActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageprojects.project.ProjectDetailsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageprojects.project.ProjectTasksActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageprojects.task.CreateTaskActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageprojects.task.EditTaskActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageprojects.task.TaskDetailActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageprojects.overview.ManageManagerActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
 
-        <activity android:name=".ui.home.user.UserHomeActivity" android:exported="false" />
-        <activity android:name=".ui.home.user.UserProfileActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.user.UserSettingsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.user.UserProjectDetailsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.user.UserProjectTasksActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.user.UserTaskDetailsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"
-                  android:exported="false"/>
-        <activity android:name=".ui.home.user.AddUpdateActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.user.UpdateDetailsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.user.EditUpdateActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.user.UserEvaluationsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <!-- ADMIN - Manage Users -->
+        <activity android:name=".ui.home.admin.manageusers.ManageUsersActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageusers.CreateUserActivity" android:theme="@style/Theme.TaskWave.NoActionBar" android:exported="false" />
+        <activity android:name=".ui.home.admin.manageusers.EditUserActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.manageusers.UserDetailsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
 
+        <!-- ADMIN - Assign Manager & Export Stats -->
+        <activity android:name=".ui.home.admin.assignmanager.AssignManagerActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.admin.exportstatistics.ExportStatisticsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
 
-        <activity android:name=".ui.home.user.TaskHistoryActivity"
-                  android:exported="false"
-                  android:theme="@style/Theme.TaskWave.NoActionBar" />
-        <activity android:name=".ui.home.user.UserTaskUpdatesReadonlyActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.user.UpdateDetailsReadonlyActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <!-- MANAGER -->
+        <activity android:name=".ui.home.manager.settings.ManagerProfileActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.settings.ManagerSettingsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.evaluations.ManagerEvaluateTeamActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.project.ManagerEditProjectActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.project.list.ManagerProjectsAreaActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.project.details.ManagerProjectDetailsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.project.details.ManagerProjectDetailsCompletedActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.tasks.ManagerCreateTaskActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.tasks.ManagerEditTaskActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.tasks.list.ManagerProjectTasksActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.tasks.details.ManagerTaskDetailsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.manager.tasks.details.ManagerTaskUpdatesReadonlyActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
 
-        <activity android:name=".ui.home.admin.manageprojects.ManageProjectsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageprojects.CreateProjectActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageprojects.EditProjectActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageprojects.ProjectDetailsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageprojects.ProjectTasksActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageprojects.CreateTaskActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageprojects.TaskDetailActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageprojects.EditTaskActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageprojects.ManageManagerActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
+        <!-- USER -->
+        <activity android:name=".ui.home.user.home.UserHomeActivity" android:exported="false" />
+        <activity android:name=".ui.home.user.home.UserEvaluationsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.settings.UserProfileActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.settings.UserSettingsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.projects.UserProjectDetailsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.projects.UserProjectTasksActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.tasks.TaskHistoryActivity" android:exported="false" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.tasks.details.UserTaskDetailsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.tasks.details.UserTaskUpdatesReadonlyActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
 
-
-        <activity android:name=".ui.home.admin.manageusers.ManageUsersActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.admin.manageusers.EditUserActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar" />
-        <activity android:name=".ui.home.admin.manageusers.CreateUserActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"
-                  android:exported="false" />
-        <activity android:name=".ui.home.admin.manageusers.UserDetailsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar" />
-
-
-
-        <activity android:name=".ui.home.manager.ManagerProfileActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerSettingsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerTaskDetailsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerProjectDetailsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerProjectTasksActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerCreateTaskActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerEditTaskActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerEditProjectActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerProjectsAreaActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar" />
-        <activity android:name=".ui.home.manager.ManagerProjectDetailsCompletedActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar" />
-        <activity android:name=".ui.home.manager.ManagerEvaluateTeamActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-        <activity android:name=".ui.home.manager.ManagerTaskUpdatesReadonlyActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-
-
-
-
-
-
-        <activity android:name=".ui.home.admin.assignmanager.AssignManagerActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-
-
-
-        <activity android:name=".ui.home.admin.exportstatistics.ExportStatisticsActivity"
-                  android:theme="@style/Theme.TaskWave.NoActionBar"/>
-
+        <!-- USER - Updates -->
+        <activity android:name=".ui.home.user.updates.AddUpdateActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.updates.EditUpdateActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.updates.details.UpdateDetailsActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
+        <activity android:name=".ui.home.user.updates.details.UpdateDetailsReadonlyActivity" android:theme="@style/Theme.TaskWave.NoActionBar" />
 
     </application>
 

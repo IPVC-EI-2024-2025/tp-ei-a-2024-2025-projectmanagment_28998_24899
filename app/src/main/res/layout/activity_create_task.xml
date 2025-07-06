@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- Assign User Spinner -->
+            <!-- Assign com.baptistaz.taskwave.data.model.auth.User Spinner -->
             <Spinner
                 android:id="@+id/spinner_assign_user"
                 android:layout_width="match_parent"

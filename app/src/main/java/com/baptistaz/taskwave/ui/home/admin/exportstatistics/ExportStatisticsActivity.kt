@@ -12,10 +12,10 @@ import android.widget.CheckBox
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.remote.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.UserRepository
-import com.baptistaz.taskwave.data.remote.project.ProjectRepository
-import com.baptistaz.taskwave.data.remote.project.TaskRepository
+import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
+import com.baptistaz.taskwave.data.remote.user.UserRepository
+import com.baptistaz.taskwave.data.remote.project.repository.ProjectRepository
+import com.baptistaz.taskwave.data.remote.project.repository.TaskRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope

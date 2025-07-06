@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background_white"
-    tools:context=".ui.home.admin.manageprojects.ManageProjectsActivity">
+    tools:context=".ui.home.admin.manageprojects.overview.ManageProjectsActivity">
 
     <!-- Toolbar com spinner -->
     <androidx.appcompat.widget.Toolbar

@@ -473,5 +473,8 @@
 
     <string name="user_home_subtitle">Organiza as tuas tarefas e projetos</string>
 
+    <string name="role_admin">Administrador</string>
+    <string name="role_manager">Gestor</string>
+    <string name="role_user">Utilizador</string>
 
 </resources>

@@ -1,6 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.assignmanager
 
-import User
+import com.baptistaz.taskwave.data.model.auth.User
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.ArrayAdapter
@@ -10,11 +10,11 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.Project
-import com.baptistaz.taskwave.data.model.ProjectUpdate
-import com.baptistaz.taskwave.data.remote.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.UserRepository
-import com.baptistaz.taskwave.data.remote.project.ProjectRepository
+import com.baptistaz.taskwave.data.model.project.Project
+import com.baptistaz.taskwave.data.model.project.ProjectUpdate
+import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
+import com.baptistaz.taskwave.data.remote.user.UserRepository
+import com.baptistaz.taskwave.data.remote.project.repository.ProjectRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope

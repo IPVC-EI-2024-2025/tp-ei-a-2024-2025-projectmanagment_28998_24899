@@ -6,8 +6,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.remote.UserRepository
-import com.baptistaz.taskwave.ui.auth.LoginActivity
+import com.baptistaz.taskwave.data.remote.user.UserRepository
+import com.baptistaz.taskwave.ui.auth.view.LoginActivity
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch

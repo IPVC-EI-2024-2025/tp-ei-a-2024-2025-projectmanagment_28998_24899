@@ -1,6 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageusers
 
-import User
+import com.baptistaz.taskwave.data.model.auth.User
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -10,8 +10,8 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.remote.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.UserRepository
+import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.auth.AuthRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.ProfileType
@@ -49,7 +49,7 @@ class CreateUserActivity : BaseLocalizedActivity() {
         spinnerRole = findViewById(R.id.spinner_role)
         createBtn = findViewById(R.id.btn_create)
 
-        val roles = arrayOf("Gestor", "User") // Podes internacionalizar se quiseres
+        val roles = arrayOf("Gestor", "com.baptistaz.taskwave.data.model.auth.User") // Podes internacionalizar se quiseres
         spinnerRole.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
 
         createBtn.setOnClickListener {
@@ -73,7 +73,7 @@ class CreateUserActivity : BaseLocalizedActivity() {
                     val authResp = authRepo.signup(email, password)
                     if (authResp.isSuccessful && authResp.body()?.user?.id != null) {
                         val authId = authResp.body()!!.user.id
-                        Log.d("CREATE_USER", "User criado no Auth com id: $authId")
+                        Log.d("CREATE_USER", "com.baptistaz.taskwave.data.model.auth.User criado no Auth com id: $authId")
 
                         val newUser = User(
                             id_user = null,

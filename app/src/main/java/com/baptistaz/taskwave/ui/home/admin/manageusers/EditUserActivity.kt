@@ -1,6 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageusers
 
-import User
+import com.baptistaz.taskwave.data.model.auth.User
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -9,8 +9,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.UserUpdate
-import com.baptistaz.taskwave.data.remote.UserRepository
+import com.baptistaz.taskwave.data.model.auth.UserUpdate
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
@@ -82,7 +82,7 @@ class EditUserActivity : BaseLocalizedActivity() {
                 email       = emailEdit.text.toString(),
                 username    = usernameEdit.text.toString(),
                 phonenumber = phoneEdit.text.toString(),
-                profiletype = loadedUser?.profileType ?: "User"
+                profiletype = loadedUser?.profileType ?: "com.baptistaz.taskwave.data.model.auth.User"
             )
 
             CoroutineScope(Dispatchers.Main).launch {

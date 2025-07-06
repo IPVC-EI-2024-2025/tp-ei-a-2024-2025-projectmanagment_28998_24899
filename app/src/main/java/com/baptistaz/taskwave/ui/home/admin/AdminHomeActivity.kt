@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.ui.home.admin.assignmanager.AssignManagerActivity
 import com.baptistaz.taskwave.ui.home.admin.exportstatistics.ExportStatisticsActivity
-import com.baptistaz.taskwave.ui.home.admin.manageprojects.ManageProjectsActivity
+import com.baptistaz.taskwave.ui.home.admin.manageprojects.overview.ManageProjectsActivity
 import com.baptistaz.taskwave.ui.home.admin.manageusers.ManageUsersActivity
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager

@@ -1,6 +1,6 @@
 package com.baptistaz.taskwave.ui.home.admin.manageusers
 
-import User
+import com.baptistaz.taskwave.data.model.auth.User
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.View
@@ -9,10 +9,11 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.UserTask
-import com.baptistaz.taskwave.data.remote.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.UserRepository
-import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
+import com.baptistaz.taskwave.data.model.auth.UserTask
+import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
+import com.baptistaz.taskwave.data.remote.user.UserRepository
+import com.baptistaz.taskwave.data.remote.project.repository.UserTaskRepository
+import com.baptistaz.taskwave.data.remote.project.repository.ProjectRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
@@ -167,7 +168,7 @@ class UserDetailsActivity : BaseLocalizedActivity() {
         val taskProjects = tasks.mapNotNull { it.task?.project }.distinctBy { it.idProject }.toMutableList()
 
         /* + projectos onde é gestor */
-        val allProjects = com.baptistaz.taskwave.data.remote.project.ProjectRepository(
+        val allProjects = ProjectRepository(
             RetrofitInstance.getProjectService(token)
         ).getAllProjects()
         val managed = allProjects.filter { it.idManager == userId }
@@ -197,7 +198,7 @@ class UserDetailsActivity : BaseLocalizedActivity() {
             ?.distinctBy { it.idProject }
             ?.toMutableList() ?: mutableListOf()
 
-        val allProjects = com.baptistaz.taskwave.data.remote.project.ProjectRepository(
+        val allProjects = ProjectRepository(
             RetrofitInstance.getProjectService(token)
         ).getAllProjects()
         val managed = allProjects.filter { it.idManager == userId }

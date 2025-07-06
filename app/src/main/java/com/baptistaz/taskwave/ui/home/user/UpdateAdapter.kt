@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.TaskUpdate
+import com.baptistaz.taskwave.data.model.task.TaskUpdate
 
 private const val TYPE_ITEM   = 0
 private const val TYPE_FOOTER = 1

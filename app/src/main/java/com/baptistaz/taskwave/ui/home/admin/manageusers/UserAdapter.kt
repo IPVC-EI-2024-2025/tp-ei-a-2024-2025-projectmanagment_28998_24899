@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.admin.manageusers
 
-import User
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.auth.User
 
 class UserAdapter(
     private val users: List<User>,
@@ -65,24 +65,25 @@ class UserAdapter(
             }
         }
 
-        // Badge de perfil (Admin, Manager, User)
+        val context = holder.itemView.context
+
         when (user.profileType.lowercase()) {
             "admin" -> {
-                holder.role.text = "Admin"
+                holder.role.text = context.getString(R.string.role_admin)
                 holder.role.setBackgroundResource(R.drawable.role_badge_admin)
-                holder.role.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.background_white))
             }
             "gestor" -> {
-                holder.role.text = "GESTOR"
+                holder.role.text = context.getString(R.string.role_manager)
                 holder.role.setBackgroundResource(R.drawable.role_badge_manager)
-                holder.role.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.background_white))
             }
             "user" -> {
-                holder.role.text = "User"
+                holder.role.text = context.getString(R.string.role_user)
                 holder.role.setBackgroundResource(R.drawable.role_badge_user)
-                holder.role.setTextColor(ContextCompat.getColor(holder.itemView.context, R.color.background_white))
             }
         }
+
+        holder.role.setTextColor(ContextCompat.getColor(context, R.color.background_white))
+
 
         holder.itemView.setOnClickListener {
             onItemClick?.invoke(user)

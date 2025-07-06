@@ -4,11 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.lifecycle.lifecycleScope
-import com.baptistaz.taskwave.data.remote.UserRepository
-import com.baptistaz.taskwave.ui.auth.LoginActivity
+import com.baptistaz.taskwave.data.remote.user.UserRepository
+import com.baptistaz.taskwave.ui.auth.view.LoginActivity
 import com.baptistaz.taskwave.ui.home.admin.AdminHomeActivity
-import com.baptistaz.taskwave.ui.home.manager.ManagerProjectsAreaActivity
-import com.baptistaz.taskwave.ui.home.user.UserHomeActivity
+import com.baptistaz.taskwave.ui.home.manager.project.list.ManagerProjectsAreaActivity
+import com.baptistaz.taskwave.ui.home.user.home.UserHomeActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
