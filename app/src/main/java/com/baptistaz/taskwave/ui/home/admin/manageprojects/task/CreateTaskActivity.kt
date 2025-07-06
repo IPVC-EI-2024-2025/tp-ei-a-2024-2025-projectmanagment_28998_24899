@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects.task
 
-import com.baptistaz.taskwave.data.model.auth.User
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -10,18 +9,23 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.task.Task
+import com.baptistaz.taskwave.data.model.auth.User
 import com.baptistaz.taskwave.data.model.auth.UserTask
+import com.baptistaz.taskwave.data.model.task.Task
 import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.repository.UserTaskRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
 
+/**
+ * Admin screen for creating a new task within a specific project.
+ * Upon creation, both the task and user-task link are saved in the backend.
+ */
 class CreateTaskActivity : BaseLocalizedActivity() {
 
     private lateinit var inputTitle: EditText
@@ -39,12 +43,15 @@ class CreateTaskActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_task)
 
+        // Toolbar setup
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.create_task_title)
 
+        // Retrieve project ID from intent
         projectId = intent.getStringExtra("project_id") ?: return finish()
 
+        // Bind UI elements
         inputTitle = findViewById(R.id.input_title)
         inputDescription = findViewById(R.id.input_description)
         inputCreationDate = findViewById(R.id.input_creation_date)
@@ -53,32 +60,28 @@ class CreateTaskActivity : BaseLocalizedActivity() {
         spinnerAssignUser = findViewById(R.id.spinner_assign_user)
         buttonCreate = findViewById(R.id.button_create_task)
 
-        // Ativar DatePicker nos campos de data
+        // Enable calendar picker for date fields
         inputCreationDate.setOnClickListener {
-            showDatePicker { selectedDate ->
-                inputCreationDate.setText(selectedDate)
-            }
+            showDatePicker { selectedDate -> inputCreationDate.setText(selectedDate) }
         }
-
         inputConclusion.setOnClickListener {
-            showDatePicker { selectedDate ->
-                inputConclusion.setText(selectedDate)
-            }
+            showDatePicker { selectedDate -> inputConclusion.setText(selectedDate) }
         }
 
+        // Set priority options
         spinnerPriority.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item,
             listOf("LOW", "MEDIUM", "HIGH")
         )
 
+        // Load assignable users (exclude Admins and Managers)
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
-            users = (UserRepository().getAllUsers(token) ?: emptyList())
-                .filterNot {
-                    it.profileType.equals("ADMIN", true) ||
-                            it.profileType.equals("GESTOR", true) ||
-                            it.profileType.equals("MANAGER", true)
-                }
+            users = (UserRepository().getAllUsers(token) ?: emptyList()).filterNot {
+                it.profileType.equals("ADMIN", true) ||
+                        it.profileType.equals("GESTOR", true) ||
+                        it.profileType.equals("MANAGER", true)
+            }
 
             spinnerAssignUser.adapter = ArrayAdapter(
                 this@CreateTaskActivity,
@@ -87,6 +90,7 @@ class CreateTaskActivity : BaseLocalizedActivity() {
             )
         }
 
+        // Handle task creation
         buttonCreate.setOnClickListener {
             val title = inputTitle.text.toString().trim()
             val created = inputCreationDate.text.toString().trim()
@@ -101,6 +105,7 @@ class CreateTaskActivity : BaseLocalizedActivity() {
                 return@setOnClickListener
             }
 
+            // Create task object
             val taskId = UUID.randomUUID().toString()
             val task = Task(
                 idTask = taskId,
@@ -113,6 +118,7 @@ class CreateTaskActivity : BaseLocalizedActivity() {
                 priority = spinnerPriority.selectedItem.toString()
             )
 
+            // Create assignment link
             val assignee = users[spinnerAssignUser.selectedItemPosition]
             val link = UserTask(
                 idUserTask = UUID.randomUUID().toString(),
@@ -122,6 +128,7 @@ class CreateTaskActivity : BaseLocalizedActivity() {
                 status = "ASSIGNED"
             )
 
+            // Send data to repositories
             val tRepo = TaskRepository(RetrofitInstance.taskService)
             val utRepo = UserTaskRepository(RetrofitInstance.userTaskService)
 
@@ -138,6 +145,9 @@ class CreateTaskActivity : BaseLocalizedActivity() {
         }
     }
 
+    /**
+     * Opens a DatePickerDialog and returns the selected date.
+     */
     private fun showDatePicker(onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -145,13 +155,16 @@ class CreateTaskActivity : BaseLocalizedActivity() {
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePicker = DatePickerDialog(this, { _, y, m, d ->
-            val formatted = "%04d-%02d-%02d".format(y, m + 1, d) // AAAA-MM-DD
+            val formatted = "%04d-%02d-%02d".format(y, m + 1, d)
             onDateSelected(formatted)
         }, year, month, day)
 
         datePicker.show()
     }
 
+    /**
+     * Utility function to display a toast.
+     */
     private fun toast(msg: String) =
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
 

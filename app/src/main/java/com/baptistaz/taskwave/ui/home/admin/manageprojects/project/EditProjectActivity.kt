@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects.project
 
-import com.baptistaz.taskwave.data.model.auth.User
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
@@ -11,11 +10,12 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.auth.User
 import com.baptistaz.taskwave.data.model.project.Project
 import com.baptistaz.taskwave.data.model.project.ProjectUpdate
 import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.ProjectRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
@@ -23,6 +23,10 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
+/**
+ * Admin screen to edit an existing project.
+ * Submits the updated information to the backend via PATCH request.
+ */
 class EditProjectActivity : BaseLocalizedActivity() {
 
     private lateinit var inputName: EditText
@@ -39,11 +43,13 @@ class EditProjectActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_project)
 
+        // Set up toolbar
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_edit_project)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.edit_project_toolbar_title)
 
+        // Bind views
         inputName = findViewById(R.id.input_name)
         inputDescription = findViewById(R.id.input_description)
         inputStartDate = findViewById(R.id.input_start_date)
@@ -51,14 +57,16 @@ class EditProjectActivity : BaseLocalizedActivity() {
         buttonEdit = findViewById(R.id.button_edit)
         spinnerManager = findViewById(R.id.spinner_manager)
 
+        // Get project passed via intent
         project = intent.getSerializableExtra("project") as Project
 
+        // Populate fields with existing project data
         inputName.setText(project.name)
         inputDescription.setText(project.description)
         inputStartDate.setText(project.startDate)
         inputEndDate.setText(project.endDate)
 
-        // 👉 Ativar seleção de datas com DatePicker
+        // Enable date pickers
         inputStartDate.setOnClickListener {
             showDatePicker(inputStartDate.text.toString()) { selected ->
                 inputStartDate.setText(selected)
@@ -71,6 +79,7 @@ class EditProjectActivity : BaseLocalizedActivity() {
             }
         }
 
+        // Load manager list into spinner
         val token = SessionManager.getAccessToken(this) ?: return
         lifecycleScope.launch {
             managers = UserRepository().getAllManagers(token) ?: emptyList()
@@ -85,6 +94,7 @@ class EditProjectActivity : BaseLocalizedActivity() {
             if (index >= 0) spinnerManager.setSelection(index)
         }
 
+        // Handle update button click
         buttonEdit.setOnClickListener {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val repo = ProjectRepository(RetrofitInstance.projectService)
@@ -94,9 +104,11 @@ class EditProjectActivity : BaseLocalizedActivity() {
 
             lifecycleScope.launch {
                 try {
+                    // Validate date format
                     LocalDate.parse(inputStartDate.text.toString(), formatter)
                     LocalDate.parse(inputEndDate.text.toString(), formatter)
 
+                    // Create update object
                     val updatedProject = ProjectUpdate(
                         id_project = project.idProject,
                         name = inputName.text.toString(),
@@ -107,9 +119,11 @@ class EditProjectActivity : BaseLocalizedActivity() {
                         id_manager = idManager
                     )
 
+                    // Log JSON
                     val gson = com.google.gson.Gson()
-                    Log.d("PATCH_DEBUG", "JSON enviado: ${gson.toJson(updatedProject)}")
+                    Log.d("PATCH_DEBUG", "JSON sent: ${gson.toJson(updatedProject)}")
 
+                    // Send update
                     repo.updateProject(project.idProject, updatedProject)
 
                     Toast.makeText(
@@ -119,10 +133,10 @@ class EditProjectActivity : BaseLocalizedActivity() {
                     ).show()
                     finish()
                 } catch (e: Exception) {
-                    Log.e("EDIT_PROJECT_ERROR", "Erro ao atualizar: ${e.message}", e)
+                    Log.e("EDIT_PROJECT_ERROR", "Error updating: ${e.message}", e)
                     Toast.makeText(
                         this@EditProjectActivity,
-                        getString(R.string.edit_project_error, e.message ?: "Erro desconhecido"),
+                        getString(R.string.edit_project_error, e.message ?: "Unknown error"),
                         Toast.LENGTH_LONG
                     ).show()
                 }
@@ -130,6 +144,9 @@ class EditProjectActivity : BaseLocalizedActivity() {
         }
     }
 
+    /**
+     * Shows a DatePickerDialog and returns selected date as yyyy-MM-dd.
+     */
     private fun showDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
         if (!initialDate.isNullOrBlank()) {

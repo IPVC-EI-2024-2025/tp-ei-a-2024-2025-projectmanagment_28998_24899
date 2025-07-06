@@ -18,9 +18,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Provides configured Retrofit service instances.
+ */
 object RetrofitInstance {
 
-    /* ---------- Gson ---------- */
+    /* ---------- Gson config with LocalDate adapters ---------- */
     private val gson = GsonBuilder()
         .registerTypeAdapter(
             LocalDate::class.java,
@@ -34,11 +37,14 @@ object RetrofitInstance {
             })
         .create()
 
-    /* ---------- OkHttp ---------- */
+    /* ---------- OkHttp logging interceptor ---------- */
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
+    /**
+     * Client used for Supabase Auth API (uses service key only).
+     */
     private val authClient: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(logging)
         .addInterceptor { chain ->
@@ -52,8 +58,10 @@ object RetrofitInstance {
         }
         .build()
 
-    /** Cliente com token de sessão (Bearer <token-jwt>) */
-    private fun restClient(token: String) = OkHttpClient.Builder()
+    /**
+     * Builds an OkHttpClient with JWT session token for authenticated requests.
+     */
+    private fun restClient(token: String): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(logging)
         .addInterceptor { chain ->
             chain.proceed(
@@ -67,7 +75,8 @@ object RetrofitInstance {
         }
         .build()
 
-    /* ---------- Helpers ---------- */
+    /* ---------- Generic Retrofit builders ---------- */
+
     private fun <T> buildRest(token: String, svc: Class<T>): T =
         Retrofit.Builder()
             .baseUrl("${BuildConfig.SUPABASE_URL}/rest/v1/")
@@ -84,7 +93,7 @@ object RetrofitInstance {
             .build()
             .create(svc)
 
-    /* ---------- AUTH ---------- */
+    /* ---------- Auth API (public) ---------- */
     val auth: AuthService by lazy {
         Retrofit.Builder()
             .baseUrl("${BuildConfig.SUPABASE_URL}/auth/v1/")
@@ -94,19 +103,18 @@ object RetrofitInstance {
             .create(AuthService::class.java)
     }
 
-    /* ---------- SINGLETONS com service-key ---------- */
+    /* ---------- REST APIs using service key (admin-level) ---------- */
     val projectService: ProjectService by lazy { buildRestWithServiceKey(ProjectService::class.java) }
     val taskService: TaskService by lazy { buildRestWithServiceKey(TaskService::class.java) }
     val userTaskService: UserTaskService by lazy { buildRestWithServiceKey(UserTaskService::class.java) }
     val taskUpdateService: TaskUpdateService by lazy { buildRestWithServiceKey(TaskUpdateService::class.java) }
 
-    /* ---------- Dinâmicos (jwt) ---------- */
-    fun getApiService(token: String)        = buildRest(token, ApiService::class.java)
-    fun getProjectService(token: String)    = buildRest(token, ProjectService::class.java)
-    fun getTaskService(token: String)       = buildRest(token, TaskService::class.java)
-    fun getUserTaskService(token: String)   = buildRest(token, UserTaskService::class.java)
+    /* ---------- REST APIs using dynamic JWT token (per session) ---------- */
+    fun getApiService(token: String) = buildRest(token, ApiService::class.java)
+    fun getProjectService(token: String) = buildRest(token, ProjectService::class.java)
+    fun getTaskService(token: String) = buildRest(token, TaskService::class.java)
+    fun getUserTaskService(token: String) = buildRest(token, UserTaskService::class.java)
     fun getTaskUpdateService(token: String) = buildRest(token, TaskUpdateService::class.java)
     fun getEvaluationService(token: String): EvaluationService = buildRest(token, EvaluationService::class.java)
     fun getProjectTeamService(token: String): ProjectTeamService = buildRest(token, ProjectTeamService::class.java)
-
 }

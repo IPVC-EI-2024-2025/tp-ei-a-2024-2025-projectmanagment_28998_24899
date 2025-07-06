@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.admin.manageusers
 
-import com.baptistaz.taskwave.data.model.auth.User
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -16,6 +15,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.auth.User
 import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
@@ -23,14 +23,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Admin screen for managing users.
+ */
 class ManageUsersActivity : BaseLocalizedActivity() {
 
+    // UI components
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: UserAdapter
     private lateinit var btnNewUser: Button
     private lateinit var inputSearch: EditText
     private lateinit var spinnerFilter: Spinner
 
+    // Statistic cards
     private lateinit var cardTotal: View
     private lateinit var cardAdmins: View
     private lateinit var cardManagers: View
@@ -49,18 +54,19 @@ class ManageUsersActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_users)
 
+        // Toolbar
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_users)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_manage_users)
 
-        // Views
+        // Bind views
         recyclerView = findViewById(R.id.recycler_users)
         btnNewUser = findViewById(R.id.btn_new_user)
         inputSearch = findViewById(R.id.input_search)
         spinnerFilter = findViewById(R.id.spinner_filter)
 
-        // Cards
+        // Statistic cards setup
         cardTotal = findViewById(R.id.card_total)
         cardAdmins = findViewById(R.id.card_admins)
         cardManagers = findViewById(R.id.card_managers)
@@ -76,7 +82,7 @@ class ManageUsersActivity : BaseLocalizedActivity() {
         statManagers = cardManagers.findViewById(R.id.text_stat_value)
         statUsers = cardUsers.findViewById(R.id.text_stat_value)
 
-        // Adapter
+        // Recycler setup
         adapter = UserAdapter(filteredUsers, { userId -> deleteUser(userId) }) { user ->
             val intent = Intent(this, UserDetailsActivity::class.java)
             intent.putExtra("userId", user.id_user)
@@ -86,7 +92,7 @@ class ManageUsersActivity : BaseLocalizedActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        // Filtro
+        // Role filter dropdown
         val roles = listOf(
             getString(R.string.stat_total),
             getString(R.string.stat_admins),
@@ -99,16 +105,17 @@ class ManageUsersActivity : BaseLocalizedActivity() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 applyFilters()
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
+        // Search listener
         inputSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) = applyFilters()
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        // Add new user
         btnNewUser.setOnClickListener {
             val intent = Intent(this, CreateUserActivity::class.java)
             startActivity(intent)
@@ -117,27 +124,35 @@ class ManageUsersActivity : BaseLocalizedActivity() {
         fetchUsers()
     }
 
+    /**
+     * Fetches all users from the backend and updates UI
+     */
     private fun fetchUsers() {
         CoroutineScope(Dispatchers.Main).launch {
             val token = SessionManager.getAccessToken(this@ManageUsersActivity) ?: return@launch
             val result = userRepository.getAllUsers(token)
             if (result != null) {
                 allUsers.clear()
-                allUsers.addAll(result.sortedWith(
-                    compareBy<User> {
-                        when (it.profileType.uppercase()) {
-                            "ADMIN" -> 0
-                            "GESTOR" -> 1
-                            else -> 2
-                        }
-                    }.thenBy { it.name }
-                ))
+                allUsers.addAll(
+                    result.sortedWith(
+                        compareBy<User> {
+                            when (it.profileType.uppercase()) {
+                                "ADMIN" -> 0
+                                "GESTOR" -> 1
+                                else -> 2
+                            }
+                        }.thenBy { it.name }
+                    )
+                )
                 updateStats()
                 applyFilters()
             }
         }
     }
 
+    /**
+     * Applies search and role filters to the user list
+     */
     private fun applyFilters() {
         val query = inputSearch.text.toString().trim().lowercase()
         val selectedFilter = spinnerFilter.selectedItem.toString()
@@ -158,6 +173,9 @@ class ManageUsersActivity : BaseLocalizedActivity() {
         adapter.notifyDataSetChanged()
     }
 
+    /**
+     * Updates the counts in each statistics card
+     */
     private fun updateStats() {
         statTotal.text = allUsers.size.toString()
         statAdmins.text = allUsers.count { it.profileType.equals("ADMIN", true) }.toString()
@@ -165,6 +183,9 @@ class ManageUsersActivity : BaseLocalizedActivity() {
         statUsers.text = allUsers.count { it.profileType.equals("USER", true) }.toString()
     }
 
+    /**
+     * Deletes a user by ID and refreshes the list
+     */
     fun deleteUser(userId: String) {
         val token = SessionManager.getAccessToken(this) ?: ""
         CoroutineScope(Dispatchers.Main).launch {

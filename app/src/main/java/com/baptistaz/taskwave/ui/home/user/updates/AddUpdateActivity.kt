@@ -13,6 +13,9 @@ import com.baptistaz.taskwave.utils.SessionManager
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
+/**
+ * Screen where a user can add a new task update.
+ */
 class AddUpdateActivity : BaseLocalizedActivity() {
 
     private lateinit var repo: TaskUpdateRepository
@@ -22,26 +25,32 @@ class AddUpdateActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_update)
 
+        // Toolbar setup
         setSupportActionBar(findViewById(R.id.toolbar_add_update))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // Get required task ID and access token
         taskId = intent.getStringExtra("TASK_ID") ?: return finish()
         val token = SessionManager.getAccessToken(this) ?: return finish()
         repo = TaskUpdateRepository(RetrofitInstance.getTaskUpdateService(token))
 
+        // UI input fields
         val inputTitle = findViewById<TextInputEditText>(R.id.input_title)
         val inputNotes = findViewById<TextInputEditText>(R.id.input_notes)
         val inputLoc   = findViewById<TextInputEditText>(R.id.input_location)
         val inputTime  = findViewById<TextInputEditText>(R.id.input_time)
 
+        // Submit button
         findViewById<Button>(R.id.button_add_update).setOnClickListener {
             val newUpd = TaskUpdate(
-                idTask = taskId,
-                title = inputTitle.text.toString(),
-                notes = inputNotes.text?.toString(),
-                location = inputLoc.text?.toString(),
+                idTask    = taskId,
+                title     = inputTitle.text.toString(),
+                notes     = inputNotes.text?.toString(),
+                location  = inputLoc.text?.toString(),
                 timeSpent = inputTime.text?.toString()
             )
+
+            // Send update to backend
             lifecycleScope.launch {
                 try {
                     repo.create(newUpd)

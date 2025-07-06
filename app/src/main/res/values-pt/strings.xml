@@ -45,7 +45,6 @@
     <string name="export_button_csv">Exportar como CSV</string>
     <string name="export_button_pdf">Exportar como PDF</string>
 
-
     <!-- CreateProjectActivity -->
     <string name="create_project_title">Criar Projeto</string>
     <string name="create_project_name_hint">Nome do Projeto</string>
@@ -57,7 +56,6 @@
     <string name="create_project_success">Projeto criado com sucesso!</string>
     <string name="create_project_error">Erro: %1$s</string>
     <string name="create_project_toolbar_title">Criar Projeto</string>
-
 
     <!-- CreateTaskActivity -->
     <string name="create_task_title">Nova Tarefa</string>
@@ -72,7 +70,6 @@
     <string name="create_task_missing_fields">Título e data de criação são obrigatórios</string>
     <string name="create_task_no_user_selected">Seleciona um utilizador (admins não aparecem)</string>
 
-
     <!-- EditProjectActivity -->
     <string name="edit_project_title">Editar Projeto</string>
     <string name="edit_project_name_hint">Nome do Projeto</string>
@@ -85,7 +82,6 @@
     <string name="edit_project_error">Erro ao atualizar: %1$s</string>
     <string name="edit_project_toolbar_title">Editar Projeto</string>
 
-
     <!-- EditTaskActivity -->
     <string name="edit_task_hint_title">Título</string>
     <string name="edit_task_hint_description">Descrição</string>
@@ -96,7 +92,6 @@
     <string name="edit_task_success">Tarefa atualizada!</string>
     <string name="edit_task_error">Erro: %1$s</string>
     <string name="edit_task_toolbar_title">Editar Tarefa</string>
-
 
     <!-- ManageManagerActivity -->
     <string name="manage_manager_title">Atribuir Novo Gestor</string>
@@ -109,7 +104,6 @@
     <string name="manage_manager_already_assigned">Já está atribuído a esse gestor.</string>
     <string name="manage_manager_success">Gestor atualizado com sucesso!</string>
     <string name="manage_manager_error">Erro: %1$s</string>
-
 
     <!-- ManageProjectsActivity -->
     <string name="manage_projects_title">Gerir Projetos</string>
@@ -129,7 +123,6 @@
     <string name="delete_project_confirm_no">Cancelar</string>
     <string name="manage_projects_toolbar_title">Gerir Projetos</string>
 
-
     <!-- ProjectDetailsActivity -->
     <string name="project_details_name">Nome do Projeto</string>
     <string name="project_details_description">Descrição do Projeto</string>
@@ -145,7 +138,6 @@
     <string name="project_details_completed_success">Projeto concluído com sucesso!</string>
     <string name="project_details_completed_error">Erro ao concluir projeto: %1$s</string>
 
-
     <!-- ProjectTasksActivity -->
     <string name="project_tasks_create">CRIAR TAREFA</string>
     <string name="project_tasks_delete_title">Eliminar Tarefa</string>
@@ -154,7 +146,6 @@
     <string name="project_tasks_loading_error">Erro ao carregar tarefas: %1$s</string>
     <string name="project_tasks_not_assigned">Não atribuído</string>
     <string name="title_project_tasks">Tarefas</string>
-
 
     <!-- TaskDetailActivity -->
     <string name="task_detail_responsible">Responsável: </string>
@@ -167,7 +158,6 @@
     <string name="task_detail_loading_error">Responsável: Erro ao carregar</string>
     <string name="task_detail_responsible_named">Responsável: %1$s</string>
     <string name="title_task_detail">Detalhes da Tarefa</string>
-
 
     <!-- CreateUserActivity -->
     <string name="title_create_user">Criar Utilizador</string>
@@ -183,7 +173,6 @@
     <string name="error_user_auth">Erro ao criar utilizador na autenticação!</string>
     <string name="error_unexpected">Erro inesperado</string>
 
-
     <!-- EditUserActivity -->
     <string name="title_edit_user">Editar Utilizador</string>
     <string name="label_profile_type">Tipo de Perfil</string>
@@ -197,7 +186,6 @@
     <!-- EditUpdateActivity -->
     <string name="title_edit_update">Editar Update</string>
     <string name="toast_update_saved">Update guardado com sucesso!</string>
-
 
     <!-- ManageUsersActivity -->
     <string name="title_manage_users">Gestão de Utilizadores</string>
@@ -225,7 +213,6 @@
     <string name="desc_admin">Tem permissões totais no sistema. Pode gerir projetos, utilizadores, tarefas e exportar estatísticas.</string>
     <string name="desc_manager">Responsável por projetos atribuídos. Pode criar tarefas, distribuir utilizadores, acompanhar progresso e exportar estatísticas.</string>
     <string name="desc_user">Participa ativamente nos projetos. Regista progresso, observações, fotos e conclui tarefas atribuídas.</string>
-
 
     <!-- AdminHomeActivity -->
     <string name="title_admin_dashboard">Painel do Administrador</string>
@@ -266,7 +253,6 @@
     <string name="title_edit_project">Editar Projeto</string>
     <string name="project_updated_success">Projeto atualizado!</string>
 
-
     <!-- ManagerEvaluateTeamActivity -->
     <string name="title_evaluate_team">Avaliação da Equipa</string>
     <string name="btn_submit_evaluation">Submeter Avaliação</string>
@@ -281,11 +267,9 @@
     <string name="error_submitting_evaluation">Erro ao submeter avaliações!</string>
     <string name="error_generic_with_message">ERRO: %1$s</string>
 
-
     <!-- ManagerProfileActivity -->
     <string name="label_phone">Telemóvel:</string>
     <string name="text_placeholder">…</string>
-
 
     <!-- ManagerProjectDetailsActivity -->
     <string name="project_name">Nome do Projeto</string>
@@ -306,21 +290,17 @@
     <string name="error_checking_tasks">Erro ao verificar tarefas: %1$s</string>
     <string name="error_loading_data">Erro ao carregar dados: %1$s</string>
 
-
-
     <!-- ManagerProjectDetailsCompletedActivity -->
     <string name="project_tasks">Tarefas do Projeto</string>
     <string name="evaluations">Avaliações</string>
     <string name="label_manager_with_value">Gestor: %1$s</string>
     <string name="unknown_user">Utilizador desconhecido</string>
 
-
     <!-- ManagerProjectsAreaActivity -->
     <string name="title_my_projects">Os Meus Projetos</string>
     <string name="btn_in_progress">Em Progresso</string>
     <string name="btn_completed">Concluídos</string>
     <string name="error_loading_projects">Erro ao carregar projetos: %1$s</string>
-
 
     <!-- ManagerProjectTasksActivity -->
     <string name="label_active_tasks">Tarefas Ativas</string>
@@ -335,7 +315,6 @@
     <string name="error_loading_tasks">Erro ao carregar tarefas: %1$s</string>
     <string name="unassigned">Não atribuído</string>
     <string name="title_user_tasks">Tasks</string>
-
 
     <!-- ManagerSettingsActivity -->
     <string name="option_edit_profile">Editar Perfil</string>
@@ -359,7 +338,6 @@
     <string name="toast_task_completed">Tarefa marcada como concluída!</string>
     <string name="task_responsible_default">Não atribuído</string>
 
-
     <!-- AddUpdateActivity -->
     <string name="hint_update_title">Introduz o título do update…</string>
     <string name="hint_update_notes">Escreve as tuas notas…</string>
@@ -369,7 +347,6 @@
     <string name="btn_add_update">+ Adicionar Update</string>
     <string name="error_creating_update">Erro ao criar update: %1$s</string>
     <string name="title_add_update">Novo Update</string>
-
 
     <!-- TaskHistoryActivity -->
     <string name="history">Histórico de Tarefas</string>
@@ -383,11 +360,9 @@
     <string name="btn_delete">Eliminar</string>
     <string name="toast_update_deleted">Update eliminado com sucesso</string>
 
-
     <!-- UserEvaluationsActivity -->
     <string name="title_user_evaluations">As Minhas Avaliações</string>
     <string name="error_loading_evaluations">Não foi possível carregar avaliações: %1$s</string>
-
 
     <!-- UserHomeActivity -->
     <string name="greeting_user">Olá, %1$s 👋</string>
@@ -399,15 +374,12 @@
     <string name="projects_active">Projetos Ativos</string>
     <string name="projects_completed">Projetos Concluídos</string>
 
-
-
     <!-- UserProjectDetailsActivity -->
     <string name="project_details">Detalhes do Projeto</string>
     <string name="label_start_date">Início: </string>
     <string name="label_end_date">Fim: </string>
     <string name="placeholder_date">AAAA-MM-DD</string>
     <string name="placeholder_name">Nome</string>
-
 
     <!-- UserProjectTasksActivity -->
     <string name="not_assigned">Não atribuído</string>
@@ -416,12 +388,10 @@
     <!-- UserSettingsActivity -->
     <string name="title_account_settings">Definições da Conta</string>
 
-
     <!-- UserTaskDetailsActivity -->
     <string name="mark_completed">Marcar Concluída</string>
     <string name="toast_mark_failed">Falha ao marcar tarefa: %1$s</string>
     <string name="error_loading_updates">Erro ao carregar updates: %1$s</string>
-
 
     <!-- IntroActivity -->
     <string name="next">Seguinte</string>
@@ -459,20 +429,16 @@
     <string name="toast_invalid_token">Erro no registo: token ou authId inválidos</string>
     <string name="toast_signup_error">Erro no registo</string>
 
+    <!-- Geral -->
     <string name="task_updates">Atualizações da Tarefa</string>
-
     <string name="change_language">Mudar Idioma</string>
     <string name="cancelar">Cancelar</string>
-
     <string name="btn_back">Voltar Atrás</string>
     <string name="person_icon">Icon Pessoa</string>
-
     <string name="projects">Projetos</string>
     <string name="active">Ativos</string>
     <string name="completed">Concluídos</string>
-
     <string name="user_home_subtitle">Organiza as tuas tarefas e projetos</string>
-
     <string name="role_admin">Administrador</string>
     <string name="role_manager">Gestor</string>
     <string name="role_user">Utilizador</string>

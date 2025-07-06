@@ -23,7 +23,7 @@ class UserSettingsActivity : BaseBottomNavActivity() {
 
     override fun getSelectedMenuId() = R.id.nav_settings
 
-    // Campos da Activity
+    // UI references
     private lateinit var progress      : ProgressBar
     private lateinit var contentLayout : LinearLayout
     private lateinit var txtName       : TextView
@@ -35,13 +35,13 @@ class UserSettingsActivity : BaseBottomNavActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_settings)
 
-        // Liga views
+        // Bind views
         progress       = findViewById(R.id.progress_loading)
         contentLayout  = findViewById(R.id.layout_user_settings)
         txtName        = findViewById(R.id.text_name)
         imgProfile     = findViewById(R.id.image_profile)
 
-        // Editar perfil
+        // Edit profile action
         findViewById<LinearLayout>(R.id.option_edit_profile).setOnClickListener {
             currentUserId?.let { id ->
                 Intent(this, EditUserActivity::class.java)
@@ -54,18 +54,18 @@ class UserSettingsActivity : BaseBottomNavActivity() {
             ).show()
         }
 
-        // ✅ Agora chama o diálogo de idioma
+        // Change language
         findViewById<LinearLayout>(R.id.option_change_language).setOnClickListener {
-            showLanguageDialog() // método herdado do BaseLocalizedActivity
+            showLanguageDialog()
         }
 
-        // Placeholder - toggle notificações
+        // Notification toggle (not implemented)
         findViewById<Switch>(R.id.switch_notifications)
             .setOnCheckedChangeListener { _, isChecked ->
-                // TODO: guardar estado
+                // TODO: save state of notification preference
             }
 
-        // Bottom nav (opcional aqui, já é tratado pela BaseBottomNavActivity)
+        // Bottom navigation
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.selectedItemId = R.id.nav_settings
         bottomNav.setOnItemSelectedListener { true }
@@ -76,6 +76,9 @@ class UserSettingsActivity : BaseBottomNavActivity() {
         loadCurrentUser()
     }
 
+    /**
+     * Loads the current user's data and updates the UI.
+     */
     private fun loadCurrentUser() {
         progress.visibility = View.VISIBLE
         contentLayout.visibility = View.GONE

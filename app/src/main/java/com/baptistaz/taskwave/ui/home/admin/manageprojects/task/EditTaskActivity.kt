@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects.task
 
-import com.baptistaz.taskwave.data.model.auth.User
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -11,18 +10,23 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.task.Task
+import com.baptistaz.taskwave.data.model.auth.User
 import com.baptistaz.taskwave.data.model.auth.UserTask
+import com.baptistaz.taskwave.data.model.task.Task
 import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.repository.UserTaskRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
 
+/**
+ * Admin screen for editing an existing task.
+ * Existing user-task links are removed and replaced with the new assignment.
+ */
 class EditTaskActivity : BaseLocalizedActivity() {
 
     private lateinit var inputTitle: EditText
@@ -41,55 +45,54 @@ class EditTaskActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_task)
 
+        // Toolbar setup
         setSupportActionBar(findViewById(R.id.toolbar_edit_task))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.edit_task_toolbar_title)
 
+        // Retrieve the task object from intent
         task = intent.getSerializableExtra("task") as? Task ?: return finish()
 
-        inputTitle = findViewById(R.id.input_title)
+        // Bind UI elements
+        inputTitle       = findViewById(R.id.input_title)
         inputDescription = findViewById(R.id.input_description)
-        inputCreation = findViewById(R.id.input_creation_date)
-        inputConclusion = findViewById(R.id.input_conclusion_date)
-        spinnerPriority = findViewById(R.id.spinner_priority)
-        spinnerAssign = findViewById(R.id.spinner_assign_user)
-        txtState = findViewById(R.id.text_state)
-        buttonSave = findViewById(R.id.button_save_edit)
+        inputCreation    = findViewById(R.id.input_creation_date)
+        inputConclusion  = findViewById(R.id.input_conclusion_date)
+        spinnerPriority  = findViewById(R.id.spinner_priority)
+        spinnerAssign    = findViewById(R.id.spinner_assign_user)
+        txtState         = findViewById(R.id.text_state)
+        buttonSave       = findViewById(R.id.button_save_edit)
 
+        // Fill current task data
         txtState.text = getString(R.string.edit_task_state_prefix, task.state)
-
         inputTitle.setText(task.title)
         inputDescription.setText(task.description)
         inputCreation.setText(task.creationDate)
         inputConclusion.setText(task.conclusionDate ?: "")
 
-        // 👉 Ativar calendários
+        // Enable date picker for both date fields
         inputCreation.setOnClickListener {
-            showDatePicker(inputCreation.text.toString()) { selected ->
-                inputCreation.setText(selected)
-            }
+            showDatePicker(inputCreation.text.toString()) { selected -> inputCreation.setText(selected) }
         }
 
         inputConclusion.setOnClickListener {
-            showDatePicker(inputConclusion.text.toString()) { selected ->
-                inputConclusion.setText(selected)
-            }
+            showDatePicker(inputConclusion.text.toString()) { selected -> inputConclusion.setText(selected) }
         }
 
+        // Priority spinner
         spinnerPriority.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item,
             listOf("LOW", "MEDIUM", "HIGH")
         )
         spinnerPriority.setSelection(
-            (spinnerPriority.adapter as ArrayAdapter<String>)
-                .getPosition(task.priority ?: "LOW")
+            (spinnerPriority.adapter as ArrayAdapter<String>).getPosition(task.priority ?: "LOW")
         )
 
+        // Load users and populate spinner
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
             users = (UserRepository().getAllUsers(token) ?: emptyList())
                 .filter { it.profileType.equals("USER", true) }
-
 
             spinnerAssign.adapter = ArrayAdapter(
                 this@EditTaskActivity,
@@ -97,6 +100,7 @@ class EditTaskActivity : BaseLocalizedActivity() {
                 users.map { it.name }
             )
 
+            // Preselect assigned user
             val utRepo = UserTaskRepository(RetrofitInstance.userTaskService)
             utRepo.getUserTasksByTask(task.idTask).firstOrNull()?.let { ut ->
                 val idx = users.indexOfFirst { it.id_user == ut.idUser }
@@ -104,6 +108,7 @@ class EditTaskActivity : BaseLocalizedActivity() {
             }
         }
 
+        // Save button logic
         buttonSave.setOnClickListener {
             val updated = task.copy(
                 title = inputTitle.text.toString(),
@@ -118,11 +123,15 @@ class EditTaskActivity : BaseLocalizedActivity() {
 
             lifecycleScope.launch {
                 try {
+                    // Update task
                     tRepo.updateTask(updated.idTask, updated)
 
-                    utRepo.getUserTasksByTask(updated.idTask)
-                        .forEach { utRepo.deleteUserTask(it.idUserTask) }
+                    // Remove old assignments
+                    utRepo.getUserTasksByTask(updated.idTask).forEach {
+                        utRepo.deleteUserTask(it.idUserTask)
+                    }
 
+                    // Assign selected user
                     val selectedUser = users[spinnerAssign.selectedItemPosition]
                     utRepo.assignUserToTask(
                         UserTask(
@@ -152,6 +161,9 @@ class EditTaskActivity : BaseLocalizedActivity() {
         }
     }
 
+    /**
+     * Opens a DatePicker prefilled with the given date (if valid)
+     */
     private fun showDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
         if (!initialDate.isNullOrBlank()) {

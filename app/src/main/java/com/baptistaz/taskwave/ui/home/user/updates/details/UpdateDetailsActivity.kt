@@ -15,6 +15,10 @@ import com.baptistaz.taskwave.utils.SessionManager
 import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.launch
 
+/**
+ * Displays the details of a specific task update.
+ * Allows the user to edit or delete the update.
+ */
 class UpdateDetailsActivity : BaseLocalizedActivity() {
 
     private lateinit var repo: TaskUpdateRepository
@@ -24,10 +28,12 @@ class UpdateDetailsActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_details)
 
+        // Setup toolbar
         setSupportActionBar(findViewById(R.id.toolbar_update_detail))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.update_details)
 
+        // Retrieve update object and repository
         upd = intent.getSerializableExtra("UPDATE") as TaskUpdate
         val token = SessionManager.getAccessToken(this) ?: return finish()
         repo = TaskUpdateRepository(RetrofitInstance.getTaskUpdateService(token))
@@ -38,6 +44,7 @@ class UpdateDetailsActivity : BaseLocalizedActivity() {
 
     override fun onResume() {
         super.onResume()
+        // Refresh update info in case of edits
         lifecycleScope.launch {
             upd = repo.getById(upd.idUpdate!!)
             bind(upd)
@@ -45,6 +52,7 @@ class UpdateDetailsActivity : BaseLocalizedActivity() {
         }
     }
 
+    /** Populates the UI with update details */
     private fun bind(u: TaskUpdate) = with(u) {
         findViewById<TextView>(R.id.text_title).text = title
         findViewById<TextView>(R.id.text_date).text = date?.take(10) ?: ""
@@ -53,7 +61,9 @@ class UpdateDetailsActivity : BaseLocalizedActivity() {
         findViewById<TextView>(R.id.text_time).text = timeSpent ?: "-"
     }
 
+    /** Initializes the edit and delete buttons */
     private fun initButtons() {
+        // Edit button
         findViewById<MaterialButton>(R.id.btn_edit).apply {
             text = getString(R.string.btn_edit_update)
             setOnClickListener {
@@ -64,6 +74,7 @@ class UpdateDetailsActivity : BaseLocalizedActivity() {
             }
         }
 
+        // Delete button
         findViewById<MaterialButton>(R.id.btn_delete).apply {
             text = getString(R.string.btn_delete)
             setOnClickListener {

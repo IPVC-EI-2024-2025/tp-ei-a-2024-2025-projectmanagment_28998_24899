@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects.project
 
-import com.baptistaz.taskwave.data.model.auth.User
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,8 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.auth.User
 import com.baptistaz.taskwave.data.model.project.Project
 
+/**
+ * RecyclerView Adapter for displaying a list of projects in the Admin interface.
+ *
+ * @param projectList List of projects to display.
+ * @param managers List of all users with manager profile.
+ * @param context Android context for starting activities.
+ * @param onDelete Callback for when a delete icon is clicked.
+ */
 class ProjectAdapter(
     private var projectList: List<Project>,
     private val managers: List<User>,
@@ -19,6 +27,7 @@ class ProjectAdapter(
     private val onDelete: (Project) -> Unit
 ) : RecyclerView.Adapter<ProjectAdapter.ProjectViewHolder>() {
 
+    /** Holds view references for each project item in the list. */
     class ProjectViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val nameText: TextView = view.findViewById(R.id.text_project_name)
         val managerText: TextView = view.findViewById(R.id.text_manager_name)
@@ -35,13 +44,14 @@ class ProjectAdapter(
     override fun onBindViewHolder(holder: ProjectViewHolder, position: Int) {
         val project = projectList[position]
 
+        // Project name
         holder.nameText.text = project.name ?: "Projeto sem nome"
 
-        // Manager
+        // Manager name
         val managerName = managers.firstOrNull { it.id_user == project.idManager }?.name ?: "No manager"
         holder.managerText.text = "Manager: $managerName"
 
-        // Status
+        // Status and dynamic color
         holder.statusText.text = project.status ?: "N/A"
         val statusColor = when (project.status?.lowercase() ?: "") {
             "active"    -> R.color.green
@@ -50,14 +60,14 @@ class ProjectAdapter(
         }
         holder.statusText.setTextColor(holder.itemView.context.getColor(statusColor))
 
-        // Só escondemos editar em completos
+        // Hide edit icon if project is completed
         val isComplete = project.status.equals("Completed", ignoreCase = true)
         holder.editIcon.visibility = if (isComplete) View.GONE else View.VISIBLE
 
-        // Delete sempre visível
+        // Delete icon always visible
         holder.deleteIcon.visibility = View.VISIBLE
 
-        // Clique no ícone de editar (só se não for completo)
+        // Edit button action
         holder.editIcon.setOnClickListener {
             if (!isComplete) {
                 val intent = Intent(context, EditProjectActivity::class.java)
@@ -66,13 +76,12 @@ class ProjectAdapter(
             }
         }
 
-        // Delete sempre disponível
+        // Delete button action
         holder.deleteIcon.setOnClickListener {
             onDelete(project)
         }
 
-        // ItemView sempre clicável para detalhes
-        holder.itemView.isClickable = true
+        // Navigate to project details on item click
         holder.itemView.setOnClickListener {
             val intent = Intent(context, ProjectDetailsActivity::class.java)
             intent.putExtra("project", project)
@@ -82,6 +91,9 @@ class ProjectAdapter(
 
     override fun getItemCount(): Int = projectList.size
 
+    /**
+     * Updates the adapter's project list and refreshes the view.
+     */
     fun updateData(newList: List<Project>) {
         projectList = newList
         notifyDataSetChanged()

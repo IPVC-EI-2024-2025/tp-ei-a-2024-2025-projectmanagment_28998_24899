@@ -45,7 +45,6 @@
     <string name="export_button_csv">Export as CSV</string>
     <string name="export_button_pdf">Export as PDF</string>
 
-
     <!-- CreateProjectActivity -->
     <string name="create_project_title">Create Project</string>
     <string name="create_project_name_hint">Project Name</string>
@@ -57,7 +56,6 @@
     <string name="create_project_success">Project created successfully!</string>
     <string name="create_project_error">Error: %1$s</string>
     <string name="create_project_toolbar_title">Create Project</string>
-
 
     <!-- CreateTaskActivity -->
     <string name="create_task_title">New Task</string>
@@ -72,7 +70,6 @@
     <string name="create_task_missing_fields">Title and creation date are required</string>
     <string name="create_task_no_user_selected">Please select a user (admins are excluded)</string>
 
-
     <!-- EditProjectActivity -->
     <string name="edit_project_title">Edit Project</string>
     <string name="edit_project_name_hint">Project Name</string>
@@ -85,7 +82,6 @@
     <string name="edit_project_error">Update failed: %1$s</string>
     <string name="edit_project_toolbar_title">Edit Project</string>
 
-
     <!-- EditTaskActivity -->
     <string name="edit_task_hint_title">Title</string>
     <string name="edit_task_hint_description">Description</string>
@@ -96,7 +92,6 @@
     <string name="edit_task_success">Task updated!</string>
     <string name="edit_task_error">Error: %1$s</string>
     <string name="edit_task_toolbar_title">Edit Task</string>
-
 
     <!-- ManageManagerActivity -->
     <string name="manage_manager_title">Assign New Manager</string>
@@ -109,7 +104,6 @@
     <string name="manage_manager_already_assigned">Already assigned to this manager.</string>
     <string name="manage_manager_success">Manager updated successfully!</string>
     <string name="manage_manager_error">Error: %1$s</string>
-
 
     <!-- ManageProjectsActivity -->
     <string name="manage_projects_title">Manage Projects</string>
@@ -129,7 +123,6 @@
     <string name="delete_project_confirm_no">Cancel</string>
     <string name="manage_projects_toolbar_title">Manage Projects</string>
 
-
     <!-- ProjectDetailsActivity -->
     <string name="project_details_name">Project Name</string>
     <string name="project_details_description">Project Description</string>
@@ -144,7 +137,6 @@
     <string name="project_details_pending_tasks">There are %1$d pending tasks in this project.\n\nDo you want to mark them all as completed?</string>
     <string name="project_details_completed_success">Project successfully completed!</string>
     <string name="project_details_completed_error">Error while completing project: %1$s</string>
-
 
     <!-- ProjectTasksActivity -->
     <string name="project_tasks_create">CREATE TASK</string>
@@ -167,8 +159,6 @@
     <string name="task_detail_responsible_named">Responsible: %1$s</string>
     <string name="title_task_detail">Task Details</string>
 
-
-
     <!-- CreateUserActivity -->
     <string name="title_create_user">Create User</string>
     <string name="hint_full_name">Full Name</string>
@@ -183,7 +173,6 @@
     <string name="error_user_auth">Error creating user in authentication!</string>
     <string name="error_unexpected">Unexpected error</string>
 
-
     <!-- EditUserActivity -->
     <string name="title_edit_user">Edit User</string>
     <string name="label_profile_type">Profile Type</string>
@@ -193,7 +182,6 @@
     <string name="success_user_updated">User updated successfully!</string>
     <string name="error_user_update">Error updating user: %1$s</string>
     <string name="default_profile_type">User</string>
-
 
     <!-- ManageUsersActivity -->
     <string name="title_manage_users">Manage Users</string>
@@ -221,7 +209,6 @@
     <string name="desc_admin">Has full permissions within the system. Can manage projects, users, tasks and export statistics.</string>
     <string name="desc_manager">Manages assigned projects. Can create tasks, assign users, track progress and export statistics.</string>
     <string name="desc_user">Actively participates in projects. Records progress, adds notes/photos, and marks tasks as completed.</string>
-
 
     <!-- AdminHomeActivity -->
     <string name="title_admin_dashboard">Admin Dashboard</string>
@@ -262,7 +249,6 @@
     <string name="title_edit_project">Edit Project</string>
     <string name="project_updated_success">Project updated!</string>
 
-
     <!-- ManagerEvaluateTeamActivity -->
     <string name="title_evaluate_team">Team Evaluation</string>
     <string name="btn_submit_evaluation">Submit Evaluation</string>
@@ -276,7 +262,6 @@
     <string name="evaluation_submitted">Evaluations submitted!</string>
     <string name="error_submitting_evaluation">Error submitting evaluations!</string>
     <string name="error_generic_with_message">ERROR: %1$s</string>
-
 
     <!-- ManagerProfileActivity -->
     <string name="label_phone">Phone:</string>
@@ -301,21 +286,17 @@
     <string name="error_checking_tasks">Error checking tasks: %1$s</string>
     <string name="error_loading_data">Error loading data: %1$s</string>
 
-
-
     <!-- ManagerProjectDetailsCompletedActivity -->
     <string name="project_tasks">Project Tasks</string>
     <string name="evaluations">Evaluations</string>
     <string name="label_manager_with_value">Manager: %1$s</string>
     <string name="unknown_user">Unknown user</string>
 
-
     <!-- ManagerProjectsAreaActivity -->
     <string name="title_my_projects">My Projects</string>
     <string name="btn_in_progress">In Progress</string>
     <string name="btn_completed">Completed</string>
     <string name="error_loading_projects">Error loading projects: %1$s</string>
-
 
     <!-- ManagerProjectTasksActivity -->
     <string name="label_active_tasks">Active Tasks</string>
@@ -331,7 +312,6 @@
     <string name="unassigned">Unassigned</string>
     <string name="title_user_tasks">Tasks</string>
 
-
     <!-- ManagerSettingsActivity -->
     <string name="option_edit_profile">Edit Profile</string>
     <string name="option_change_language">Change Language</string>
@@ -339,7 +319,6 @@
     <string name="toast_loading_profile">Profile still loading</string>
     <string name="error_loading_profile">Error loading profile</string>
     <string name="task_responsible_default">Unassigned</string>
-
 
     <!-- ManagerTaskDetailsActivity -->
     <string name="task_title">Title</string>
@@ -365,7 +344,6 @@
     <string name="error_creating_update">Error creating update: %1$s</string>
     <string name="title_add_update">New Update</string>
 
-
     <!-- TaskHistoryActivity -->
     <string name="history">Task History</string>
 
@@ -382,7 +360,6 @@
     <string name="title_user_evaluations">My Evaluations</string>
     <string name="error_loading_evaluations">Failed to load evaluations: %1$s</string>
 
-
     <!-- UserHomeActivity -->
     <string name="greeting_user">Hi, %1$s 👋</string>
     <string name="title_assigned_tasks">Assigned Tasks</string>
@@ -393,14 +370,12 @@
     <string name="projects_active">Active Projects</string>
     <string name="projects_completed">Completed Projects</string>
 
-
     <!-- UserProjectDetailsActivity -->
     <string name="project_details">Project Details</string>
     <string name="label_start_date">Start: </string>
     <string name="label_end_date">End: </string>
     <string name="placeholder_date">YYYY-MM-DD</string>
     <string name="placeholder_name">Name</string>
-
 
     <!-- UserProjectTasksActivity -->
     <string name="not_assigned">Not Assigned</string>
@@ -409,7 +384,6 @@
     <!-- UserSettingsActivity -->
     <string name="title_account_settings">Account Settings</string>
 
-
     <!-- UserTaskDetailsActivity -->
     <string name="mark_completed">Mark as Completed</string>
     <string name="toast_mark_failed">Failed to mark task: %1$s</string>
@@ -417,7 +391,6 @@
 
     <string name="title_edit_update">Edit Update</string>
     <string name="toast_update_saved">Update saved successfully!</string>
-
 
     <!-- IntroActivity -->
     <string name="next">Next</string>
@@ -454,24 +427,18 @@
     <string name="toast_invalid_token">Signup error: invalid token or authId</string>
     <string name="toast_signup_error">Signup error</string>
 
+    <!-- Geral -->
     <string name="task_updates">Task Updates</string>
-
     <string name="change_language">Change Language</string>
     <string name="cancelar">Cancel</string>
-
     <string name="btn_back">Go Back</string>
     <string name="person_icon">Person Icon</string>
-
-
     <string name="projects">Projects</string>
     <string name="active">Active</string>
     <string name="completed">Completed</string>
-
     <string name="user_home_subtitle">Manage your stuff</string>
-
     <string name="role_admin">Admin</string>
     <string name="role_manager">Manager</string>
     <string name="role_user">User</string>
-
 
 </resources>

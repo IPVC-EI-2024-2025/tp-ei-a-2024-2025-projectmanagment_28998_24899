@@ -12,6 +12,9 @@ import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
+/**
+ * Displays the profile of the logged-in Admin and provides logout functionality.
+ */
 class AdminProfileActivity : BaseLocalizedActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,11 +25,11 @@ class AdminProfileActivity : BaseLocalizedActivity() {
         val textEmail = findViewById<TextView>(R.id.text_admin_email)
         val btnLogout = findViewById<Button>(R.id.button_logout)
 
-        // Texto inicial (placeholders)
+        // Set placeholders while loading
         textName.text  = getString(R.string.loading)
         textEmail.text = getString(R.string.loading_email)
 
-        // Carrega dados do Admin
+        // Load user data based on AUTH_ID passed or from Session
         val authId = intent.getStringExtra("AUTH_ID") ?: SessionManager.getAuthId(this)
         if (authId != null) {
             lifecycleScope.launch {
@@ -38,7 +41,7 @@ class AdminProfileActivity : BaseLocalizedActivity() {
             }
         }
 
-        // Logout
+        // Logout action
         btnLogout.text = getString(R.string.btn_logout)
         btnLogout.setOnClickListener {
             SessionManager.clearAccessToken(this)

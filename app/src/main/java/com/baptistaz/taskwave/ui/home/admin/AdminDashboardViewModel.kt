@@ -9,6 +9,14 @@ import com.baptistaz.taskwave.data.remote.project.repository.TaskRepository
 import com.baptistaz.taskwave.data.remote.user.UserRepository
 import kotlinx.coroutines.launch
 
+/**
+ * Loading dashboard statistics for the Admin home screen
+ * Project Count, User Count and Task Count.
+ *
+ * @param projectRepo Repository to access project data.
+ * @param userRepo Repository to access user data.
+ * @param taskRepo Repository to access task data.
+ */
 class AdminDashboardViewModel(
     private val projectRepo: ProjectRepository,
     private val userRepo: UserRepository,
@@ -24,6 +32,11 @@ class AdminDashboardViewModel(
     private val _taskCount = MutableLiveData<Int>()
     val taskCount: LiveData<Int> = _taskCount
 
+    /**
+     * Loads the total counts of projects, users and tasks for the admin dashboard.
+     *
+     * @param token JWT token used for authenticated user and project access.
+     */
     fun loadDashboardData(token: String) {
         viewModelScope.launch {
             try {

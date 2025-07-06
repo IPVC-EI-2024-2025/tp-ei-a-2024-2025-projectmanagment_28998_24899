@@ -8,11 +8,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.task.Task
 
+/**
+ * Adapter for displaying tasks in read-only mode.
+ * Used by managers to view project tasks without editing.
+ *
+ * @param tasks List of Task objects to display.
+ * @param onItemClick Callback triggered when a task is clicked.
+ */
 class ManagerProjectTasksReadOnlyAdapter(
     private val tasks: List<Task>,
-    private val onItemClick: (Task) -> Unit // Listener para clique na tarefa
+    private val onItemClick: (Task) -> Unit
 ) : RecyclerView.Adapter<ManagerProjectTasksReadOnlyAdapter.Holder>() {
 
+    /** ViewHolder representing a single task row. */
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val tvTitle: TextView = view.findViewById(R.id.text_task_title)
         val tvStatus: TextView = view.findViewById(R.id.text_task_status)
@@ -29,7 +37,7 @@ class ManagerProjectTasksReadOnlyAdapter(
         holder.tvTitle.text = task.title
         holder.tvStatus.text = task.state
 
-        // Definindo o clique para abrir os detalhes dos updates
+        // Open task update details when item is clicked
         holder.itemView.setOnClickListener {
             onItemClick(task)
         }

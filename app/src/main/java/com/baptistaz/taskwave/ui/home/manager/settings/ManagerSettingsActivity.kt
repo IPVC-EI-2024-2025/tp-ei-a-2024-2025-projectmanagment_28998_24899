@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.manager.settings
 
-import com.baptistaz.taskwave.ui.home.manager.base.BaseManagerBottomNavActivity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -11,11 +10,15 @@ import android.widget.Toast
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.ui.home.admin.manageusers.EditUserActivity
+import com.baptistaz.taskwave.ui.home.manager.base.BaseManagerBottomNavActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Manager settings screen allowing the user to edit their profile or change language.
+ */
 class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
 
     override fun getSelectedMenuId(): Int = R.id.nav_settings
@@ -25,19 +28,20 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manager_settings)
 
-        // Verificando se os IDs estão corretos
+        // UI references
         val progress = findViewById<ProgressBar>(R.id.progress_loading)
         val contentLayout = findViewById<LinearLayout>(R.id.layout_manager_settings)
         val txtName = findViewById<TextView>(R.id.text_name)
 
+        // Basic null check to avoid crashes
         if (progress == null || contentLayout == null || txtName == null) {
-            Toast.makeText(this, "Erro ao carregar componentes", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Error loading components", Toast.LENGTH_SHORT).show()
             return
         }
 
         loadCurrentManager()
 
-        // Evento para edição de perfil
+        // Edit profile action
         findViewById<LinearLayout>(R.id.option_edit_profile).setOnClickListener {
             currentUserId?.let { id ->
                 Intent(this, EditUserActivity::class.java)
@@ -50,7 +54,7 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
             ).show()
         }
 
-        // Evento para mudar idioma
+        // Change language action
         findViewById<LinearLayout>(R.id.option_change_language).setOnClickListener {
             showLanguageDialog()
         }
@@ -61,7 +65,9 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
         loadCurrentManager()
     }
 
-    // Função para carregar o perfil do gerente
+    /**
+     * Loads the current manager's profile from the backend.
+     */
     private fun loadCurrentManager() {
         val progress = findViewById<ProgressBar>(R.id.progress_loading)
         val contentLayout = findViewById<LinearLayout>(R.id.layout_manager_settings)
@@ -69,11 +75,11 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
         val token = SessionManager.getAccessToken(this) ?: return
         val authId = SessionManager.getAuthId(this) ?: return
 
-        // Exibe o progresso enquanto a informação do usuário é carregada
+        // Show progress while loading user info
         progress.visibility = View.VISIBLE
         contentLayout.visibility = View.GONE
 
-        // Carrega os dados do gerente
+        // Load user data
         CoroutineScope(Dispatchers.Main).launch {
             val user = UserRepository().getUserByAuthId(authId, token)
             progress.visibility = View.GONE
@@ -91,5 +97,3 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
         }
     }
 }
-
-

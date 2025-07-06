@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.baptistaz.taskwave.R
 
+/**
+ * Third slide of the onboarding sequence.
+ */
 class IntroSlider3Fragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

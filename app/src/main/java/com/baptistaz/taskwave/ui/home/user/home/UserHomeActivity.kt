@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.user.home
 
-import com.baptistaz.taskwave.data.model.auth.User
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
@@ -11,20 +10,24 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.auth.User
 import com.baptistaz.taskwave.data.model.project.Project
 import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.UserTaskRepository
-import com.baptistaz.taskwave.ui.home.user.tasks.TaskHistoryActivity
-import com.baptistaz.taskwave.ui.home.user.projects.UserProjectDetailsActivity
-import com.baptistaz.taskwave.ui.home.user.tasks.details.UserTaskDetailsActivity
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.ui.home.user.base.BaseBottomNavActivity
+import com.baptistaz.taskwave.ui.home.user.projects.UserProjectDetailsActivity
+import com.baptistaz.taskwave.ui.home.user.tasks.TaskHistoryActivity
+import com.baptistaz.taskwave.ui.home.user.tasks.details.UserTaskDetailsActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import com.google.android.flexbox.FlexboxLayout
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Home screen for normal users.
+ */
 class UserHomeActivity : BaseBottomNavActivity() {
 
     override fun getSelectedMenuId() = R.id.nav_home
@@ -43,6 +46,7 @@ class UserHomeActivity : BaseBottomNavActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_home)
 
+        // Bind views
         layoutProjectsActive = findViewById(R.id.layout_projects_active)
         layoutProjectsCompleted = findViewById(R.id.layout_projects_completed)
         layoutTasks = findViewById(R.id.layout_tasks)
@@ -51,12 +55,14 @@ class UserHomeActivity : BaseBottomNavActivity() {
         btnMyEvals = findViewById(R.id.button_my_evaluations)
         btnHistory = findViewById(R.id.button_history)
 
+        // Open task history
         btnHistory.setOnClickListener {
             currentUser?.id_user?.let { id ->
                 startActivity(Intent(this, TaskHistoryActivity::class.java).putExtra("USER_ID", id))
             } ?: Toast.makeText(this, getString(R.string.toast_missing_user_id), Toast.LENGTH_SHORT).show()
         }
 
+        // Open evaluation activity
         btnMyEvals.setOnClickListener {
             startActivity(Intent(this, UserEvaluationsActivity::class.java))
         }
@@ -69,6 +75,9 @@ class UserHomeActivity : BaseBottomNavActivity() {
         loadUserDashboard()
     }
 
+    /**
+     * Loads user info and updates greeting + projects/tasks
+     */
     private fun loadUserDashboard() {
         val token = SessionManager.getAccessToken(this) ?: return
         val authId = SessionManager.getAuthId(this) ?: return
@@ -83,6 +92,11 @@ class UserHomeActivity : BaseBottomNavActivity() {
         }
     }
 
+    /**
+     * Loads and populates:
+     * - Active and completed projects
+     * - Tasks in progress with priority badges
+     */
     private suspend fun loadProjectsAndTasks(userId: String, token: String) {
         val utRepo = UserTaskRepository(RetrofitInstance.getUserTaskService(token))
         val allUserTasks = utRepo.getTasksOfUser(userId, token) ?: emptyList()
@@ -90,21 +104,21 @@ class UserHomeActivity : BaseBottomNavActivity() {
         val projects = allUserTasks.mapNotNull { it.task?.project }
             .distinctBy { it.idProject }
 
-        val projetosAtivos = projects.filter { it.status.equals("ACTIVE", true) }
-        val projetosConcluidos = projects.filter { it.status.equals("COMPLETED", true) }
+        val activeProjects = projects.filter { it.status.equals("ACTIVE", true) }
+        val completedProjects = projects.filter { it.status.equals("COMPLETED", true) }
 
         layoutProjectsActive.removeAllViews()
         layoutProjectsCompleted.removeAllViews()
 
-        projetosAtivos.forEach { proj ->
+        activeProjects.forEach { proj ->
             layoutProjectsActive.addView(createProjectButton(proj))
         }
 
-        projetosConcluidos.forEach { proj ->
+        completedProjects.forEach { proj ->
             layoutProjectsCompleted.addView(createProjectButton(proj))
         }
 
-        // --- Tarefas em progresso ---
+        // Load tasks in progress
         val activeTasks = allUserTasks
             .filter { it.task?.state == "IN_PROGRESS" }
             .sortedBy { it.task?.conclusionDate ?: "" }
@@ -160,6 +174,9 @@ class UserHomeActivity : BaseBottomNavActivity() {
         }
     }
 
+    /**
+     * Creates a clickable button for a project
+     */
     private fun createProjectButton(proj: Project): Button {
         return Button(this).apply {
             text = proj.name

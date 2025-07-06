@@ -12,18 +12,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.task.Task
 import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.repository.TaskUpdateRepository
 import com.baptistaz.taskwave.data.remote.project.repository.UserTaskRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.ui.home.manager.tasks.ManagerEditTaskActivity
 import com.baptistaz.taskwave.ui.home.user.UpdateAdapter
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
+/**
+ * Displays detailed information about a task from the Manager's perspective.
+ */
 class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
 
+    // Views
     private lateinit var textTitle: TextView
     private lateinit var textDescription: TextView
     private lateinit var textState: TextView
@@ -36,20 +40,22 @@ class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
     private lateinit var btnEdit: Button
     private lateinit var btnDone: Button
 
+    // Repositories and task data
     private lateinit var repoUpd : TaskUpdateRepository
     private lateinit var repoTask: TaskRepository
     private lateinit var taskId : String
     private lateinit var task   : Task
-
     private var canEdit: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manager_task_details)
 
+        // Toolbar setup
         setSupportActionBar(findViewById(R.id.toolbar))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // Bind views
         textTitle         = findViewById(R.id.text_title)
         textDescription   = findViewById(R.id.text_description)
         textState         = findViewById(R.id.text_state)
@@ -62,20 +68,22 @@ class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
         btnEdit           = findViewById(R.id.button_edit_task)
         btnDone           = findViewById(R.id.button_mark_done)
 
-        taskId = intent.getStringExtra("TASK_ID") ?: return finish()
+        // Arguments
+        taskId  = intent.getStringExtra("TASK_ID") ?: return finish()
         canEdit = intent.getBooleanExtra("CAN_EDIT", false)
 
         val token = SessionManager.getAccessToken(this) ?: return finish()
-        val myUserId = SessionManager.getUserId(this) ?: ""
-
         repoUpd  = TaskUpdateRepository(RetrofitInstance.getTaskUpdateService(token))
         repoTask = TaskRepository(RetrofitInstance.taskService)
 
+        // Setup recycler
         recyclerUpdates.layoutManager = LinearLayoutManager(this)
 
+        // Click listeners
         btnEdit.setOnClickListener { openEditTask() }
         btnDone.setOnClickListener { marcarConcluida() }
 
+        // Hide edit buttons if readonly
         if (!canEdit) {
             btnEdit.visibility = View.GONE
             btnDone.visibility = View.GONE
@@ -89,10 +97,14 @@ class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
         refreshTaskAndUpdates()
     }
 
+    /**
+     * Loads task details and updates from backend
+     */
     private fun refreshTaskAndUpdates() = lifecycleScope.launch {
         try {
             task = repoTask.getTaskById(taskId) ?: return@launch
 
+            // Populate UI
             textTitle.text         = task.title
             textDescription.text   = task.description
             textState.text         = task.state
@@ -100,10 +112,13 @@ class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
             textConclusionDate.text= task.conclusionDate ?: "-"
             textPriority.text      = task.priority ?: "-"
 
-            val userTaskRepo = UserTaskRepository(RetrofitInstance.getUserTaskService(token = SessionManager.getAccessToken(this@ManagerTaskDetailsActivity) ?: ""))
+            // Get responsible user name
+            val userTaskRepo = UserTaskRepository(
+                RetrofitInstance.getUserTaskService(token = SessionManager.getAccessToken(this@ManagerTaskDetailsActivity) ?: "")
+            )
             val userTasks = userTaskRepo.getUserTasksByTask(task.idTask)
-
             val responsibleUserId = userTasks.firstOrNull()?.idUser
+
             val responsibleName = if (responsibleUserId != null) {
                 val userRepo = UserRepository()
                 val token = SessionManager.getAccessToken(this@ManagerTaskDetailsActivity) ?: ""
@@ -115,6 +130,7 @@ class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
 
             textResponsible.text = getString(R.string.task_responsible_prefix, responsibleName)
 
+            // Load updates
             val updates = repoUpd.list(taskId).sortedBy { it.date }
 
             if (updates.isEmpty()) {
@@ -131,6 +147,7 @@ class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
                 )
             }
 
+            // Show "Mark as done" if allowed and task is still in progress
             btnDone.visibility = if (canEdit && task.state == "IN_PROGRESS") View.VISIBLE else View.GONE
 
         } catch (e: Exception) {
@@ -138,6 +155,9 @@ class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
         }
     }
 
+    /**
+     * Navigates to edit screen for the current task
+     */
     private fun openEditTask() {
         if (!canEdit) return
         val intent = Intent(this, ManagerEditTaskActivity::class.java)
@@ -145,6 +165,9 @@ class ManagerTaskDetailsActivity : BaseLocalizedActivity() {
         startActivity(intent)
     }
 
+    /**
+     * Marks task as completed and closes activity
+     */
     private fun marcarConcluida() = lifecycleScope.launch {
         if (!canEdit) return@launch
         repoTask.markCompleted(taskId)

@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects.overview
 
-import com.baptistaz.taskwave.data.model.auth.User
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -19,10 +18,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
+import com.baptistaz.taskwave.data.model.auth.User
 import com.baptistaz.taskwave.data.model.project.Project
 import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.ProjectRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.ui.home.admin.manageprojects.project.CreateProjectActivity
 import com.baptistaz.taskwave.ui.home.admin.manageprojects.project.ProjectAdapter
 import com.baptistaz.taskwave.ui.home.admin.manageprojects.viewmodel.ProjectViewModel
@@ -32,6 +32,11 @@ import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+/**
+ * Admin screen for managing all projects.
+ * Allows filtering, searching, deleting, and creating new projects.
+ * Displays total, active, and completed project counts.
+ */
 class ManageProjectsActivity : BaseLocalizedActivity() {
 
     private lateinit var textTotal: TextView
@@ -40,9 +45,9 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ProjectAdapter
     private lateinit var inputSearch: EditText
-    private var fullProjectList: List<Project> = emptyList()
     private lateinit var spinnerFilter: Spinner
 
+    private var fullProjectList: List<Project> = emptyList()
     private var managers: List<User> = emptyList()
 
     private val token: String by lazy {
@@ -50,30 +55,28 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
     }
 
     private val viewModel: ProjectViewModel by viewModels {
-        ProjectViewModelFactory(
-            ProjectRepository(RetrofitInstance.getProjectService(token))
-        )
+        ProjectViewModelFactory(ProjectRepository(RetrofitInstance.getProjectService(token)))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manage_projects)
 
+        // Set up toolbar
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_projects)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.manage_projects_toolbar_title)
 
-        // Cards estatísticos: Total, Ativos, Concluídos
+        // Initialize views
         textTotal = findViewById(R.id.text_value_total)
         textActive = findViewById(R.id.text_value_active)
         textCompleted = findViewById(R.id.text_value_completed)
-
-        // Outros componentes
         inputSearch = findViewById(R.id.input_search)
         spinnerFilter = findViewById(R.id.spinner_filter)
         recyclerView = findViewById(R.id.recycler_projects)
 
+        // Load managers and initialize adapter
         lifecycleScope.launch {
             managers = UserRepository().getAllManagers(token) ?: emptyList()
             adapter = ProjectAdapter(
@@ -85,6 +88,7 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(this@ManageProjectsActivity)
 
+            // Set up spinner filter
             val options = listOf(
                 getString(R.string.manage_projects_filter_all),
                 getString(R.string.manage_projects_filter_active),
@@ -96,6 +100,7 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
                 options
             )
 
+            // Filter on selection change
             spinnerFilter.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     applyFilters()
@@ -103,26 +108,24 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>) {}
             }
 
-            inputSearch.addTextChangedListener {
-                applyFilters()
-            }
+            // Filter on search input
+            inputSearch.addTextChangedListener { applyFilters() }
 
-            // Coletando os projetos e atualizando as informações nos cards
+            // Observe project list and update UI
             lifecycleScope.launch {
                 viewModel.projects.collectLatest {
                     fullProjectList = it
                     applyFilters()
-
-                    // Atualizando os valores dinamicamente
                     textTotal.text = "${viewModel.getTotalCount()}"
                     textActive.text = "${viewModel.getActiveCount()}"
                     textCompleted.text = "${viewModel.getCompletedCount()}"
-                    Log.d("DEBUG_VIEW", "Lista atualizada: $it")
+                    Log.d("DEBUG_VIEW", "Project list updated: $it")
                 }
             }
 
             viewModel.loadProjects()
 
+            // Button to create new project
             findViewById<Button>(R.id.button_new_project).setOnClickListener {
                 val intent = Intent(this@ManageProjectsActivity, CreateProjectActivity::class.java)
                 startActivity(intent)
@@ -135,6 +138,9 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
         viewModel.loadProjects()
     }
 
+    /**
+     * Filters the project list based on status and search input.
+     */
     private fun applyFilters() {
         val query = inputSearch.text.toString()
         val selectedStatus = spinnerFilter.selectedItem.toString()
@@ -144,7 +150,7 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
             val matchesStatus = when (selectedStatus) {
                 getString(R.string.manage_projects_filter_active) -> project.status.equals("active", true)
                 getString(R.string.manage_projects_filter_completed) -> project.status.equals("completed", true)
-                else -> true // Todos
+                else -> true
             }
             matchesSearch && matchesStatus
         }
@@ -152,6 +158,9 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
         adapter.updateData(filtered)
     }
 
+    /**
+     * Deletes the selected project after confirmation.
+     */
     private fun eliminarProjeto(project: Project) {
         AlertDialog.Builder(this)
             .setTitle(getString(R.string.delete_project_title))
@@ -169,7 +178,7 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
                     } catch (e: Exception) {
                         Toast.makeText(
                             this@ManageProjectsActivity,
-                            getString(R.string.delete_project_error, e.message ?: "Erro desconhecido"),
+                            getString(R.string.delete_project_error, e.message ?: "Unknown error"),
                             Toast.LENGTH_LONG
                         ).show()
                     }

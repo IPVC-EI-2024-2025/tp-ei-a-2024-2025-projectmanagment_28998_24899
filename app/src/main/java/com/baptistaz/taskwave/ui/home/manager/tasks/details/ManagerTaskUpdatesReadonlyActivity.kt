@@ -17,6 +17,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Read-only screen that displays all updates for a specific task.
+ * Used by managers to review task progress without editing.
+ */
 class ManagerTaskUpdatesReadonlyActivity : BaseLocalizedActivity() {
 
     private lateinit var recycler: RecyclerView
@@ -26,43 +30,48 @@ class ManagerTaskUpdatesReadonlyActivity : BaseLocalizedActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user_task_details) // Pode usar o mesmo layout
+        setContentView(R.layout.activity_user_task_details)
 
         setSupportActionBar(findViewById(R.id.toolbar_updates))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.task_updates)
 
+        // Get task ID from intent
         taskId = intent.getStringExtra("TASK_ID") ?: return finish()
         val token = SessionManager.getAccessToken(this) ?: return finish()
         repo = TaskUpdateRepository(RetrofitInstance.getTaskUpdateService(token))
 
+        // Setup RecyclerView
         recycler = findViewById(R.id.recycler_updates)
         recycler.layoutManager = LinearLayoutManager(this)
 
-        // Adaptar o Adapter
+        // Setup adapter in read-only mode (no "+" footer)
         adapter = UpdateAdapter(
             mutableListOf(),
-            onFooterClick = {},         // Não vai aparecer
-            onItemClick = { showDetails(it) }, // Mostrar detalhes
-            showFooter = false          // 💡 Não mostra o botão "+"
+            onFooterClick = {},            // Disabled
+            onItemClick = { showDetails(it) }, // Open update details
+            showFooter = false             // Hide "+" button
         )
-
         recycler.adapter = adapter
 
         loadUpdates()
     }
 
-    // Carregar as atualizações de tarefas
+    /**
+     * Loads and displays the updates sorted by date.
+     */
     private fun loadUpdates() = CoroutineScope(Dispatchers.Main).launch {
         try {
             val updates = repo.list(taskId).sortedBy { it.date }
             adapter.setData(updates)
         } catch (e: Exception) {
-            Toast.makeText(this@ManagerTaskUpdatesReadonlyActivity, "Erro ao carregar updates: ${e.message}", Toast.LENGTH_LONG).show()
+            Toast.makeText(this@ManagerTaskUpdatesReadonlyActivity, "Failed to load updates: ${e.message}", Toast.LENGTH_LONG).show()
         }
     }
 
-    // Mostrar os detalhes de uma atualização
+    /**
+     * Opens the update in a read-only detail screen.
+     */
     private fun showDetails(upd: TaskUpdate) {
         startActivity(Intent(this, UpdateDetailsReadonlyActivity::class.java).apply {
             putExtra("UPDATE", upd)

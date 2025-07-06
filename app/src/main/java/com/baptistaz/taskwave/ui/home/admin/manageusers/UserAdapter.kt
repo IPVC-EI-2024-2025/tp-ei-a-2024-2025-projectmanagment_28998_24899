@@ -12,18 +12,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.model.auth.User
 
+/**
+ * RecyclerView adapter for displaying and managing users in the admin panel.
+ *
+ * @param users List of users to display.
+ * @param onDeleteClick Optional callback triggered when a user is deleted.
+ * @param onItemClick Optional callback triggered when a user item is clicked.
+ */
 class UserAdapter(
     private val users: List<User>,
     private val onDeleteClick: ((String) -> Unit)? = null,
     private val onItemClick: ((User) -> Unit)? = null
 ) : RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
+    /** ViewHolder class for user items. */
     inner class UserViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val name = view.findViewById<TextView>(R.id.text_name)
-        val email = view.findViewById<TextView>(R.id.text_email)
-        val role = view.findViewById<TextView>(R.id.text_role)
-        val editIcon = view.findViewById<ImageView>(R.id.icon_edit_user)
-        val deleteIcon = view.findViewById<ImageView>(R.id.icon_delete_user)
+        val name: TextView = view.findViewById(R.id.text_name)
+        val email: TextView = view.findViewById(R.id.text_email)
+        val role: TextView = view.findViewById(R.id.text_role)
+        val editIcon: ImageView = view.findViewById(R.id.icon_edit_user)
+        val deleteIcon: ImageView = view.findViewById(R.id.icon_delete_user)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
@@ -35,10 +43,12 @@ class UserAdapter(
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = users[position]
+        val context = holder.itemView.context
+
         holder.name.text = user.name
         holder.email.text = user.email
 
-        // Só permite editar/apagar se NÃO for admin
+        // Show/hide edit and delete icons depending on profile
         if (user.profileType.equals("ADMIN", ignoreCase = true)) {
             holder.editIcon.visibility = View.GONE
             holder.deleteIcon.visibility = View.GONE
@@ -47,14 +57,13 @@ class UserAdapter(
             holder.deleteIcon.visibility = View.VISIBLE
 
             holder.editIcon.setOnClickListener {
-                val context = holder.itemView.context
                 val intent = Intent(context, EditUserActivity::class.java)
-                intent.putExtra("USER_ID", user.id_user) // <-- Corrige aqui para "USER_ID"
+                intent.putExtra("USER_ID", user.id_user)
                 context.startActivity(intent)
             }
 
             holder.deleteIcon.setOnClickListener {
-                AlertDialog.Builder(holder.itemView.context)
+                AlertDialog.Builder(context)
                     .setTitle("Eliminar Utilizador")
                     .setMessage("Tens a certeza que queres eliminar este utilizador?")
                     .setPositiveButton("Eliminar") { _, _ ->
@@ -65,8 +74,7 @@ class UserAdapter(
             }
         }
 
-        val context = holder.itemView.context
-
+        // Role badge and label styling
         when (user.profileType.lowercase()) {
             "admin" -> {
                 holder.role.text = context.getString(R.string.role_admin)
@@ -84,11 +92,9 @@ class UserAdapter(
 
         holder.role.setTextColor(ContextCompat.getColor(context, R.color.background_white))
 
-
+        // Trigger external callback when item is clicked
         holder.itemView.setOnClickListener {
             onItemClick?.invoke(user)
         }
-
     }
-
 }

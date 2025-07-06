@@ -17,7 +17,7 @@ import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.repository.UserTaskRepository
 import com.baptistaz.taskwave.ui.home.admin.manageprojects.task.CreateTaskActivity
-import com.baptistaz.taskwave.ui.home.admin.manageprojects.task.TaskDetailActivity
+import com.baptistaz.taskwave.ui.home.admin.manageprojects.task.TaskDetailActivity 
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch

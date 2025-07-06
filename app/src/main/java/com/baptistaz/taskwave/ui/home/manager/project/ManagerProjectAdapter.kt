@@ -12,12 +12,18 @@ import com.baptistaz.taskwave.data.model.project.Project
 import com.baptistaz.taskwave.ui.home.manager.project.details.ManagerProjectDetailsActivity
 import com.baptistaz.taskwave.ui.home.manager.project.details.ManagerProjectDetailsCompletedActivity
 
+/**
+ * Adapter for displaying a list of projects assigned to a manager.
+ *
+ * @param activity Host activity used for starting detail views.
+ */
 class ManagerProjectAdapter(
     private val activity: Activity
 ) : RecyclerView.Adapter<ManagerProjectAdapter.Holder>() {
 
     private var data: List<Project> = emptyList()
 
+    /** ViewHolder representing a single project item. */
     class Holder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView = view.findViewById(R.id.text_project_name)
     }
@@ -33,22 +39,25 @@ class ManagerProjectAdapter(
         holder.tvName.text = project.name
 
         holder.itemView.setOnClickListener {
-            // Decide activity destino com base no status
+            // Open details screen based on project status
             val status = project.status?.lowercase() ?: ""
-            if (status == "completed" || status == "concluido") {
-                val intent = Intent(activity, ManagerProjectDetailsCompletedActivity::class.java)
-                intent.putExtra("PROJECT_ID", project.idProject)
-                activity.startActivity(intent)
+            val intent = if (status == "completed" || status == "concluido") {
+                Intent(activity, ManagerProjectDetailsCompletedActivity::class.java)
             } else {
-                val intent = Intent(activity, ManagerProjectDetailsActivity::class.java)
-                intent.putExtra("PROJECT_ID", project.idProject)
-                activity.startActivity(intent)
+                Intent(activity, ManagerProjectDetailsActivity::class.java)
             }
+            intent.putExtra("PROJECT_ID", project.idProject)
+            activity.startActivity(intent)
         }
     }
 
     override fun getItemCount(): Int = data.size
 
+    /**
+     * Updates the project list and refreshes the UI.
+     *
+     * @param newData New list of projects to display.
+     */
     fun updateData(newData: List<Project>) {
         data = newData
         notifyDataSetChanged()

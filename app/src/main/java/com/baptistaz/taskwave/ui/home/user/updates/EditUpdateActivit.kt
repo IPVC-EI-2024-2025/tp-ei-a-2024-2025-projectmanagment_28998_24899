@@ -13,6 +13,9 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
+/**
+ * Screen that allows a user to edit a task update.
+ */
 class EditUpdateActivity : BaseLocalizedActivity() {
 
     private lateinit var repo: TaskUpdateRepository
@@ -20,17 +23,19 @@ class EditUpdateActivity : BaseLocalizedActivity() {
 
     override fun onCreate(b: Bundle?) {
         super.onCreate(b)
-        setContentView(R.layout.activity_add_update)   // mesmo XML
+        setContentView(R.layout.activity_add_update) // shared layout with AddUpdateActivity
 
+        // Toolbar setup
         setSupportActionBar(findViewById(R.id.toolbar_add_update))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_edit_update)
 
-        upd  = intent.getSerializableExtra("UPDATE") as TaskUpdate
+        // Retrieve update object and setup repository
+        upd = intent.getSerializableExtra("UPDATE") as TaskUpdate
         val token = SessionManager.getAccessToken(this) ?: return finish()
         repo = TaskUpdateRepository(RetrofitInstance.getTaskUpdateService(token))
 
-        // Preencher campos
+        // Bind input fields
         val tTitle = findViewById<TextInputEditText>(R.id.input_title)
         val tNotes = findViewById<TextInputEditText>(R.id.input_notes)
         val tLoc   = findViewById<TextInputEditText>(R.id.input_location)
@@ -41,6 +46,7 @@ class EditUpdateActivity : BaseLocalizedActivity() {
         tLoc.setText(upd.location)
         tTime.setText(upd.timeSpent)
 
+        // Edit button (same ID as "Add" but with different label and behavior)
         findViewById<MaterialButton>(R.id.button_add_update)
             .apply { text = getString(R.string.title_edit_update) }
             .setOnClickListener {
@@ -50,6 +56,8 @@ class EditUpdateActivity : BaseLocalizedActivity() {
                     location  = tLoc.text?.toString(),
                     timeSpent = tTime.text?.toString()
                 )
+
+                // Send update to backend
                 lifecycleScope.launch {
                     repo.edit(upd.idUpdate!!, edited)
                     Toast.makeText(

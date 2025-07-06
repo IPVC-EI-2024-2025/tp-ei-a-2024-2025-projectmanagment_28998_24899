@@ -11,6 +11,9 @@ import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 
+/**
+ * Activity that displays a list of evaluations received by the user.
+ */
 class UserEvaluationsActivity : BaseLocalizedActivity() {
 
     private lateinit var rvEvals: RecyclerView
@@ -19,19 +22,21 @@ class UserEvaluationsActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_evaluations)
 
-        // toolbar com título e botão "voltar"
+        // Setup toolbar
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_user_evaluations)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_user_evaluations)
-
         toolbar.setNavigationOnClickListener { finish() }
 
+        // Initialize RecyclerView
         rvEvals = findViewById(R.id.rv_user_evaluations)
 
+        // Get token and userId from session
         val token  = SessionManager.getAccessToken(this) ?: return finish()
         val userId = SessionManager.getUserId(this)      ?: return finish()
 
+        // Load evaluations from backend and bind to RecyclerView
         lifecycleScope.launch {
             try {
                 val evals = EvaluationRepository(token).getEvaluationsByUser(userId)

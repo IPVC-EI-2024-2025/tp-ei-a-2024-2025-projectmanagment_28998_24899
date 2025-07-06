@@ -1,6 +1,5 @@
 package com.baptistaz.taskwave.ui.home.manager.tasks
 
-import com.baptistaz.taskwave.data.model.auth.User
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -11,18 +10,22 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
-import com.baptistaz.taskwave.data.model.task.Task
+import com.baptistaz.taskwave.data.model.auth.User
 import com.baptistaz.taskwave.data.model.auth.UserTask
+import com.baptistaz.taskwave.data.model.task.Task
 import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.TaskRepository
 import com.baptistaz.taskwave.data.remote.project.repository.UserTaskRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import java.util.UUID
 
+/**
+ * Activity for Managers to edit an existing task.
+ */
 class ManagerEditTaskActivity : BaseLocalizedActivity() {
 
     private lateinit var inputTitle       : EditText
@@ -43,10 +46,12 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
 
         setSupportActionBar(findViewById(R.id.toolbar_edit_task))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = "Editar Tarefa"
+        supportActionBar?.title = getString(R.string.edit_task_toolbar_title)
 
+        // Retrieve task passed via intent
         task = intent.getSerializableExtra("task") as? Task ?: return finish()
 
+        // Bind views
         inputTitle       = findViewById(R.id.input_title)
         inputDescription = findViewById(R.id.input_description)
         inputCreation    = findViewById(R.id.input_creation_date)
@@ -56,14 +61,14 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
         txtState         = findViewById(R.id.text_state)
         buttonSave       = findViewById(R.id.button_save_edit)
 
-        txtState.text = "Estado atual: ${task.state}"
-
+        // Set initial values
+        txtState.text = getString(R.string.edit_task_state_prefix, task.state)
         inputTitle.setText(task.title)
         inputDescription.setText(task.description)
         inputCreation.setText(task.creationDate)
         inputConclusion.setText(task.conclusionDate ?: "")
 
-        // 👉 Ativar calendários
+        // Enable date picker for date fields
         inputCreation.setOnClickListener {
             showDatePicker(inputCreation.text.toString()) { selected ->
                 inputCreation.setText(selected)
@@ -76,6 +81,7 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
             }
         }
 
+        // Set up priority spinner
         spinnerPriority.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item,
             listOf("LOW", "MEDIUM", "HIGH")
@@ -85,10 +91,11 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
                 .getPosition(task.priority ?: "LOW")
         )
 
+        // Load regular users only (exclude managers/admins)
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
             users = (UserRepository().getAllUsers(token) ?: emptyList())
-                .filter { it.profileType.equals("USER", true) } // ⚠️ apenas users, não managers!
+                .filter { it.profileType.equals("USER", true) }
 
             spinnerAssign.adapter = ArrayAdapter(
                 this@ManagerEditTaskActivity,
@@ -96,6 +103,7 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
                 users.map { it.name }
             )
 
+            // Preselect assigned user in spinner
             val utRepo = UserTaskRepository(RetrofitInstance.userTaskService)
             utRepo.getUserTasksByTask(task.idTask).firstOrNull()?.let { ut ->
                 val idx = users.indexOfFirst { it.id_user == ut.idUser }
@@ -103,8 +111,9 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
             }
         }
 
+        // Save button logic
         buttonSave.setOnClickListener {
-            val upd = task.copy(
+            val updatedTask = task.copy(
                 title          = inputTitle.text.toString(),
                 description    = inputDescription.text.toString(),
                 creationDate   = inputCreation.text.toString(),
@@ -117,32 +126,37 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
 
             lifecycleScope.launch {
                 try {
-                    tRepo.updateTask(upd.idTask, upd)
+                    // Update the task
+                    tRepo.updateTask(updatedTask.idTask, updatedTask)
 
-                    utRepo.getUserTasksByTask(upd.idTask)
+                    // Remove old user-task assignments
+                    utRepo.getUserTasksByTask(updatedTask.idTask)
                         .forEach { utRepo.deleteUserTask(it.idUserTask) }
 
-                    val sel = users[spinnerAssign.selectedItemPosition]
-                    utRepo.assignUserToTask(
-                        UserTask(
-                            idUserTask = UUID.randomUUID().toString(),
-                            idUser     = sel.id_user ?: "",
-                            idTask     = upd.idTask,
-                            registrationDate = null,
-                            status     = "ASSIGNED"
-                        )
+                    // Assign selected user
+                    val selected = users[spinnerAssign.selectedItemPosition]
+                    val newLink = UserTask(
+                        idUserTask = UUID.randomUUID().toString(),
+                        idUser     = selected.id_user ?: "",
+                        idTask     = updatedTask.idTask,
+                        registrationDate = null,
+                        status     = "ASSIGNED"
                     )
+                    utRepo.assignUserToTask(newLink)
 
-                    Toast.makeText(this@ManagerEditTaskActivity, "Tarefa atualizada!", Toast.LENGTH_SHORT).show()
-                    setResult(RESULT_OK, intent.putExtra("task", upd))
+                    Toast.makeText(this@ManagerEditTaskActivity, getString(R.string.edit_task_success), Toast.LENGTH_SHORT).show()
+                    setResult(RESULT_OK, intent.putExtra("task", updatedTask))
                     finish()
                 } catch (e: Exception) {
-                    Toast.makeText(this@ManagerEditTaskActivity, "Erro: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@ManagerEditTaskActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
 
+    /**
+     * Opens a DatePickerDialog and sets the selected date as YYYY-MM-DD.
+     */
     private fun showDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
         val calendar = Calendar.getInstance()
         if (!initialDate.isNullOrBlank()) {

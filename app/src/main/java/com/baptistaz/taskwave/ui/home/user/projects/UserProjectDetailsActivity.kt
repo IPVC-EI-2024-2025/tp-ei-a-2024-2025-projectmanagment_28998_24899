@@ -8,14 +8,17 @@ import android.widget.TextView
 import android.widget.Toast
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.common.RetrofitInstance
-import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.data.remote.project.repository.ProjectRepository
+import com.baptistaz.taskwave.data.remote.user.UserRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Activity that shows the details of a project assigned to the user.
+ */
 class UserProjectDetailsActivity : BaseLocalizedActivity() {
 
     private lateinit var textName: TextView
@@ -30,11 +33,13 @@ class UserProjectDetailsActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_project_details)
 
+        // Toolbar setup
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_project_summary)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.project_details)
 
+        // Bind UI elements
         textName        = findViewById(R.id.text_project_name)
         textDescription = findViewById(R.id.text_project_description)
         textStatus      = findViewById(R.id.text_project_status)
@@ -43,19 +48,24 @@ class UserProjectDetailsActivity : BaseLocalizedActivity() {
         textEnd         = findViewById(R.id.text_project_end)
         buttonViewTasks = findViewById(R.id.button_view_tasks)
 
+        // Get project ID and token
         val projectId = intent.getStringExtra("PROJECT_ID") ?: return
         val token = SessionManager.getAccessToken(this) ?: return
 
+        // Load project details and update UI
         CoroutineScope(Dispatchers.Main).launch {
             val repo = ProjectRepository(RetrofitInstance.getProjectService(token))
             val project = repo.getProjectById(projectId)
+
             if (project != null) {
+                // Fill project data into UI
                 textName.text = project.name
                 textDescription.text = project.description
                 textStatus.text = project.status
                 textStart.text = project.startDate
                 textEnd.text = project.endDate
 
+                // Load project manager name (if exists)
                 val managerId = project.idManager ?: ""
                 val manager = if (managerId.isNotEmpty()) {
                     UserRepository().getUserById(managerId, token)
@@ -66,6 +76,7 @@ class UserProjectDetailsActivity : BaseLocalizedActivity() {
 
                 Log.d("CurrentManager", "ID=$managerId, Name=$managerName")
 
+                // Open task list for this project
                 buttonViewTasks.setOnClickListener {
                     val intent = Intent(this@UserProjectDetailsActivity, UserProjectTasksActivity::class.java)
                     intent.putExtra("PROJECT_ID", projectId)
