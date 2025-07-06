@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import android.widget.Switch
 import android.widget.TextView
 import android.widget.Toast
 import com.baptistaz.taskwave.R
@@ -26,8 +25,19 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manager_settings)
 
+        // Verificando se os IDs estão corretos
+        val progress = findViewById<ProgressBar>(R.id.progress_loading)
+        val contentLayout = findViewById<LinearLayout>(R.id.layout_manager_settings)
+        val txtName = findViewById<TextView>(R.id.text_name)
+
+        if (progress == null || contentLayout == null || txtName == null) {
+            Toast.makeText(this, "Erro ao carregar componentes", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         loadCurrentManager()
 
+        // Evento para edição de perfil
         findViewById<LinearLayout>(R.id.option_edit_profile).setOnClickListener {
             currentUserId?.let { id ->
                 Intent(this, EditUserActivity::class.java)
@@ -40,12 +50,9 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
             ).show()
         }
 
+        // Evento para mudar idioma
         findViewById<LinearLayout>(R.id.option_change_language).setOnClickListener {
             showLanguageDialog()
-        }
-
-        findViewById<Switch>(R.id.switch_notifications).setOnCheckedChangeListener { _, isChecked ->
-            // Guardar preferência se necessário
         }
     }
 
@@ -54,16 +61,19 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
         loadCurrentManager()
     }
 
+    // Função para carregar o perfil do gerente
     private fun loadCurrentManager() {
         val progress = findViewById<ProgressBar>(R.id.progress_loading)
-        val contentLayout = findViewById<LinearLayout>(R.id.layout_user_settings)
+        val contentLayout = findViewById<LinearLayout>(R.id.layout_manager_settings)
         val txtName = findViewById<TextView>(R.id.text_name)
         val token = SessionManager.getAccessToken(this) ?: return
         val authId = SessionManager.getAuthId(this) ?: return
 
+        // Exibe o progresso enquanto a informação do usuário é carregada
         progress.visibility = View.VISIBLE
         contentLayout.visibility = View.GONE
 
+        // Carrega os dados do gerente
         CoroutineScope(Dispatchers.Main).launch {
             val user = UserRepository().getUserByAuthId(authId, token)
             progress.visibility = View.GONE
@@ -81,3 +91,5 @@ class ManagerSettingsActivity : BaseManagerBottomNavActivity() {
         }
     }
 }
+
+

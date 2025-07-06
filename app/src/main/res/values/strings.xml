@@ -63,6 +63,7 @@
     <string name="create_task_title">New Task</string>
     <string name="create_task_hint_title">Title</string>
     <string name="create_task_hint_description">Description</string>
+    <string name="label_priority">Select Priority</string>
     <string name="create_task_hint_creation_date">Creation Date (YYYY-MM-DD)</string>
     <string name="create_task_hint_conclusion_date">Conclusion Date (optional)</string>
     <string name="create_task_button">Create</string>
@@ -217,6 +218,10 @@
     <string name="text_tasks_assigned">Assigned tasks: 0</string>
     <string name="text_tasks_completed">Completed tasks: 0</string>
     <string name="title_projects">Projects</string>
+    <string name="desc_admin">Has full permissions within the system. Can manage projects, users, tasks and export statistics.</string>
+    <string name="desc_manager">Manages assigned projects. Can create tasks, assign users, track progress and export statistics.</string>
+    <string name="desc_user">Actively participates in projects. Records progress, adds notes/photos, and marks tasks as completed.</string>
+
 
     <!-- AdminHomeActivity -->
     <string name="title_admin_dashboard">Admin Dashboard</string>
@@ -454,6 +459,16 @@
     <string name="change_language">Change Language</string>
     <string name="cancelar">Cancel</string>
 
-    <string name="btn_back">Voltar atrás</string>
+    <string name="btn_back">Go Back</string>
+    <string name="person_icon">Person Icon</string>
+
+
+    <string name="projects">Projects</string>
+    <string name="active">Active</string>
+    <string name="completed">Completed</string>
+
+    <string name="user_home_subtitle">Manage your stuff</string>
+
+
 
 </resources>

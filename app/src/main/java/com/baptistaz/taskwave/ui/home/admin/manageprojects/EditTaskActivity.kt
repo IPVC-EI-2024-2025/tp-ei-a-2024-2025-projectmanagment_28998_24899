@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
 import User
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -19,6 +20,7 @@ import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.UUID
 
 class EditTaskActivity : BaseLocalizedActivity() {
@@ -61,6 +63,19 @@ class EditTaskActivity : BaseLocalizedActivity() {
         inputCreation.setText(task.creationDate)
         inputConclusion.setText(task.conclusionDate ?: "")
 
+        // 👉 Ativar calendários
+        inputCreation.setOnClickListener {
+            showDatePicker(inputCreation.text.toString()) { selected ->
+                inputCreation.setText(selected)
+            }
+        }
+
+        inputConclusion.setOnClickListener {
+            showDatePicker(inputConclusion.text.toString()) { selected ->
+                inputConclusion.setText(selected)
+            }
+        }
+
         spinnerPriority.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item,
             listOf("LOW", "MEDIUM", "HIGH")
@@ -73,7 +88,8 @@ class EditTaskActivity : BaseLocalizedActivity() {
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
             users = (UserRepository().getAllUsers(token) ?: emptyList())
-                .filterNot { it.profileType.equals("ADMIN", true) }
+                .filter { it.profileType.equals("USER", true) }
+
 
             spinnerAssign.adapter = ArrayAdapter(
                 this@EditTaskActivity,
@@ -134,6 +150,27 @@ class EditTaskActivity : BaseLocalizedActivity() {
                 }
             }
         }
+    }
+
+    private fun showDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        if (!initialDate.isNullOrBlank()) {
+            try {
+                val parts = initialDate.split("-")
+                calendar.set(parts[0].toInt(), parts[1].toInt() - 1, parts[2].toInt())
+            } catch (_: Exception) {}
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePicker = DatePickerDialog(this, { _, y, m, d ->
+            val formatted = "%04d-%02d-%02d".format(y, m + 1, d)
+            onDateSelected(formatted)
+        }, year, month, day)
+
+        datePicker.show()
     }
 
     override fun onSupportNavigateUp(): Boolean = finish().let { true }

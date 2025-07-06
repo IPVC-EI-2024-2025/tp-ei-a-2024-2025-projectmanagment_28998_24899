@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
 import User
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -20,6 +21,7 @@ import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 class EditProjectActivity : BaseLocalizedActivity() {
 
@@ -55,6 +57,19 @@ class EditProjectActivity : BaseLocalizedActivity() {
         inputDescription.setText(project.description)
         inputStartDate.setText(project.startDate)
         inputEndDate.setText(project.endDate)
+
+        // 👉 Ativar seleção de datas com DatePicker
+        inputStartDate.setOnClickListener {
+            showDatePicker(inputStartDate.text.toString()) { selected ->
+                inputStartDate.setText(selected)
+            }
+        }
+
+        inputEndDate.setOnClickListener {
+            showDatePicker(inputEndDate.text.toString()) { selected ->
+                inputEndDate.setText(selected)
+            }
+        }
 
         val token = SessionManager.getAccessToken(this) ?: return
         lifecycleScope.launch {
@@ -113,6 +128,27 @@ class EditProjectActivity : BaseLocalizedActivity() {
                 }
             }
         }
+    }
+
+    private fun showDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        if (!initialDate.isNullOrBlank()) {
+            try {
+                val parts = initialDate.split("-")
+                calendar.set(parts[0].toInt(), parts[1].toInt() - 1, parts[2].toInt())
+            } catch (_: Exception) {}
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePicker = DatePickerDialog(this, { _, y, m, d ->
+            val formatted = "%04d-%02d-%02d".format(y, m + 1, d)
+            onDateSelected(formatted)
+        }, year, month, day)
+
+        datePicker.show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

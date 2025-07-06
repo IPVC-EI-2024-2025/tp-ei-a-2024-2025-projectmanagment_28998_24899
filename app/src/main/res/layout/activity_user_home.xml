@@ -6,6 +6,7 @@
     android:background="@color/background_white"
     android:orientation="vertical">
 
+    <!-- Idioma -->
     <Spinner
         android:id="@+id/spinner_language"
         android:layout_width="wrap_content"
@@ -15,6 +16,7 @@
         android:spinnerMode="dropdown"
         android:backgroundTint="@color/button_orange" />
 
+    <!-- Scroll principal -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -27,40 +29,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Profile -->
+            <!-- Saudação com imagem -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
 
                 <ImageView
                     android:id="@+id/image_user"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:src="@drawable/ic_person" />
+                    android:layout_width="64dp"
+                    android:layout_height="64dp"
+                    android:src="@drawable/ic_person"
+                    android:background="@drawable/circle_background"
+                    android:padding="12dp" />
 
-                <TextView
-                    android:id="@+id/text_greeting"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/greeting_user"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:paddingStart="16dp" />
+                    android:paddingStart="16dp">
+
+                    <TextView
+                        android:id="@+id/text_greeting"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/greeting_user"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/text_subtitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/user_home_subtitle"
+                        android:textColor="@color/gray" />
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Projects Section -->
+            <!-- Título Projetos -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_projects"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="6dp"/>
 
-            <!-- Active Projects -->
+            <!-- Projetos Ativos -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,9 +94,10 @@
                 app:flexWrap="wrap"
                 app:justifyContent="flex_start"
                 app:alignItems="center"
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:layout_marginBottom="8dp" />
 
-            <!-- Completed Projects -->
+            <!-- Projetos Concluídos -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -96,44 +114,53 @@
                 app:flexWrap="wrap"
                 app:justifyContent="flex_start"
                 app:alignItems="center"
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:layout_marginBottom="16dp" />
 
-            <!-- Tasks -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"
+                android:layout_marginBottom="16dp" />
+
+            <!-- Título Tarefas -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/title_assigned_tasks"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:layout_marginTop="32dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="12dp"/>
 
-            <Button
-                android:id="@+id/button_my_evaluations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_my_evaluations"
-                android:backgroundTint="@color/button_orange"
-                android:textColor="@color/background_white"
-                android:layout_marginBottom="8dp"/>
-
-            <Button
-                android:id="@+id/button_history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/btn_history"
-                android:backgroundTint="@color/button_orange"
-                android:textColor="@color/background_white"
-                android:layout_marginTop="8dp"/>
-
+            <!-- Lista de tarefas atribuídas -->
             <LinearLayout
                 android:id="@+id/layout_tasks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" />
+
+            <!-- Botões -->
+            <Button
+                android:id="@+id/button_my_evaluations"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_my_evaluations"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/button_history"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_history"
+                android:layout_marginTop="12dp"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white" />
         </LinearLayout>
     </ScrollView>
 
+    <!-- Bottom Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

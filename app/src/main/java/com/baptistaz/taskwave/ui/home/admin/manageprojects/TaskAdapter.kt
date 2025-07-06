@@ -12,7 +12,8 @@ class TaskAdapter(
     private var data: List<TaskWithUser>,
     private val onClick: (Task) -> Unit,
     private val onDelete: ((Task) -> Unit)? = null,
-    private val canEdit: Boolean = false
+    private val canEdit: Boolean = false,
+    private val showResponsible: Boolean = true
 ) : RecyclerView.Adapter<TaskAdapter.Holder>() {
 
     class Holder(v: View) : RecyclerView.ViewHolder(v) {
@@ -21,6 +22,7 @@ class TaskAdapter(
         val status      : TextView = v.findViewById(R.id.text_task_status)
         val dueDate     : TextView = v.findViewById(R.id.text_task_due_date)
         val responsible : TextView = v.findViewById(R.id.text_task_responsavel)
+        val responsibleLayout: View = v.findViewById(R.id.layout_responsible)
         val btnDelete   : Button = v.findViewById(R.id.button_delete_task)
     }
 
@@ -46,6 +48,9 @@ class TaskAdapter(
             h.btnDelete.visibility = View.GONE
             h.btnDelete.setOnClickListener(null)
         }
+
+        h.responsibleLayout.visibility =
+            if (showResponsible) View.VISIBLE else View.GONE
     }
 
     override fun getItemCount(): Int = data.size

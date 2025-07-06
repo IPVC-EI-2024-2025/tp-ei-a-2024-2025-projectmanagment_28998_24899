@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/background_white">
 
+    <!-- Idioma -->
     <Spinner
         android:id="@+id/spinner_language"
         android:layout_width="wrap_content"
@@ -15,6 +16,7 @@
         android:spinnerMode="dropdown"
         android:backgroundTint="@color/button_orange" />
 
+    <!-- Conteúdo scrollável -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -25,10 +27,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:padding="0dp">
+            android:gravity="center_horizontal">
 
-            <!-- Header arredondado e profile -->
+            <!-- Header arredondado com avatar -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="200dp">
@@ -37,11 +38,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
                     android:background="@color/button_orange"
-                    android:layout_gravity="top"
                     android:scaleY="1.5"
                     android:translationY="-60dp"
-                    android:layout_marginBottom="-60dp"
-                    android:backgroundTint="@color/button_orange"
                     android:clipToOutline="true" />
 
                 <ImageView
@@ -52,32 +50,32 @@
                     android:src="@drawable/ic_person"
                     android:background="@drawable/profile_circle_bg"
                     android:layout_marginTop="90dp"
-                    android:elevation="6dp"/>
+                    android:elevation="6dp" />
             </FrameLayout>
 
-            <!-- Nome e username -->
+            <!-- Nome + username -->
             <TextView
                 android:id="@+id/text_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_placeholder"
-                android:textSize="22sp"
                 android:textStyle="bold"
+                android:textSize="20sp"
                 android:textColor="@color/black"
                 android:layout_marginTop="12dp"
-                android:gravity="center"/>
+                android:gravity="center" />
 
             <TextView
                 android:id="@+id/text_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/text_placeholder"
-                android:textSize="16sp"
                 android:textColor="@color/gray"
+                android:textSize="14sp"
                 android:layout_marginTop="2dp"
-                android:gravity="center"/>
+                android:gravity="center" />
 
-            <!-- Dados do user -->
+            <!-- Dados pessoais -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -89,17 +87,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
                     android:orientation="horizontal"
+                    android:background="@drawable/card_bg"
                     android:padding="12dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="12dp">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_person"
-                        app:tint="@color/button_orange"/>
+                        app:tint="@color/button_orange" />
+
                     <TextView
                         android:id="@+id/text_username_card"
                         android:layout_width="wrap_content"
@@ -107,23 +105,24 @@
                         android:text="@string/text_placeholder"
                         android:textSize="16sp"
                         android:textColor="@color/black"
-                        android:layout_marginStart="8dp"/>
+                        android:layout_marginStart="8dp" />
                 </LinearLayout>
 
                 <!-- Email -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
                     android:orientation="horizontal"
+                    android:background="@drawable/card_bg"
                     android:padding="12dp"
-                    android:layout_marginBottom="8dp">
+                    android:layout_marginBottom="12dp">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_email"
-                        app:tint="@color/button_orange"/>
+                        app:tint="@color/button_orange" />
+
                     <TextView
                         android:id="@+id/text_email"
                         android:layout_width="wrap_content"
@@ -131,23 +130,23 @@
                         android:text="@string/text_placeholder"
                         android:textSize="16sp"
                         android:textColor="@color/black"
-                        android:layout_marginStart="8dp"/>
+                        android:layout_marginStart="8dp" />
                 </LinearLayout>
 
                 <!-- Telemóvel -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/card_bg"
                     android:orientation="horizontal"
-                    android:padding="12dp"
-                    android:layout_marginBottom="8dp">
+                    android:background="@drawable/card_bg"
+                    android:padding="12dp">
 
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_phone"
-                        app:tint="@color/button_orange"/>
+                        app:tint="@color/button_orange" />
+
                     <TextView
                         android:id="@+id/text_phone"
                         android:layout_width="wrap_content"
@@ -155,26 +154,30 @@
                         android:text="@string/text_placeholder"
                         android:textSize="16sp"
                         android:textColor="@color/black"
-                        android:layout_marginStart="8dp"/>
+                        android:layout_marginStart="8dp" />
                 </LinearLayout>
             </LinearLayout>
 
             <!-- Botão Logout -->
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_logout"
-                android:layout_width="match_parent"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_logout"
-                android:backgroundTint="@color/red"
-                android:textColor="@android:color/white"
-                android:layout_marginTop="20dp"
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:icon="@drawable/ic_power"
+                android:iconTint="@color/red"
+                app:iconPadding="8dp"
                 android:layout_marginBottom="32dp"
-                android:drawableLeft="@drawable/ic_power"
-                android:drawablePadding="12dp"/>
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center_horizontal"/>
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bottom Navigation Bar -->
+    <!-- Bottom nav -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="match_parent"

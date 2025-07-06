@@ -54,61 +54,88 @@
             android:orientation="vertical"
             android:padding="24dp">
 
-            <EditText
-                android:id="@+id/input_title"
+            <!-- Title -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_title"
-                android:background="@drawable/text_input_background"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_title"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_description"
+            <!-- Description -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_description"
-                android:background="@drawable/text_input_background"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_description"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_conclusion_date"
+            <!-- Priority -->
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_conclusion_date"
-                android:background="@drawable/text_input_background"
-                android:padding="12dp"
-                android:layout_marginBottom="12dp"/>
+                android:text="@string/label_priority"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp"/>
 
             <Spinner
                 android:id="@+id/spinner_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="16dp"/>
 
+            <!-- Responsible -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/label_responsible"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"/>
 
             <Spinner
                 android:id="@+id/spinner_responsible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="16dp"/>
 
-            <Button
+            <!-- Conclusion Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_conclusion_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Data de conclusão (AAAA-MM-DD)"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Botão Criar -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_create_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_create"
-                android:background="@color/button_orange"
-                android:textColor="@android:color/white"/>
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white"
+                app:cornerRadius="16dp"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

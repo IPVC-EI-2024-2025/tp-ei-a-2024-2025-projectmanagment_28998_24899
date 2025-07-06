@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
 import User
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -18,6 +19,7 @@ import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.UUID
 
 class CreateTaskActivity : BaseLocalizedActivity() {
@@ -50,6 +52,19 @@ class CreateTaskActivity : BaseLocalizedActivity() {
         spinnerPriority = findViewById(R.id.spinner_priority)
         spinnerAssignUser = findViewById(R.id.spinner_assign_user)
         buttonCreate = findViewById(R.id.button_create_task)
+
+        // Ativar DatePicker nos campos de data
+        inputCreationDate.setOnClickListener {
+            showDatePicker { selectedDate ->
+                inputCreationDate.setText(selectedDate)
+            }
+        }
+
+        inputConclusion.setOnClickListener {
+            showDatePicker { selectedDate ->
+                inputConclusion.setText(selectedDate)
+            }
+        }
 
         spinnerPriority.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item,
@@ -121,6 +136,20 @@ class CreateTaskActivity : BaseLocalizedActivity() {
                 }
             }
         }
+    }
+
+    private fun showDatePicker(onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePicker = DatePickerDialog(this, { _, y, m, d ->
+            val formatted = "%04d-%02d-%02d".format(y, m + 1, d) // AAAA-MM-DD
+            onDateSelected(formatted)
+        }, year, month, day)
+
+        datePicker.show()
     }
 
     private fun toast(msg: String) =

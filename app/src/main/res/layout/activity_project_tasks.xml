@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -5,7 +6,7 @@
     android:orientation="vertical"
     android:background="@color/background_white">
 
-    <!-- Toolbar com título e spinner embutido -->
+    <!-- Toolbar com título e spinner -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_tasks"
         android:layout_width="match_parent"
@@ -40,34 +41,58 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Conteúdo -->
-    <LinearLayout
+    <!-- Conteúdo scrollável -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical">
+        android:fillViewport="true">
 
-        <!-- Recycler de tarefas ativas -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_active"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:nestedScrollingEnabled="false" />
+            android:orientation="vertical"
+            android:padding="16dp">
 
-        <!-- Recycler de tarefas concluídas -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_completed"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:nestedScrollingEnabled="false" />
-    </LinearLayout>
+            <!-- Secção: Ativas -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_active_tasks"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
 
-    <!-- Botão Criar Tarefa -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_active"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Secção: Concluídas -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_completed_tasks"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_completed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Espaço extra antes do botão -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Botão fixo -->
     <Button
         android:id="@+id/button_create_task"
         android:layout_width="match_parent"
@@ -75,5 +100,5 @@
         android:text="@string/project_tasks_create"
         android:layout_margin="16dp"
         android:backgroundTint="@color/button_orange"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/white" />
 </LinearLayout>

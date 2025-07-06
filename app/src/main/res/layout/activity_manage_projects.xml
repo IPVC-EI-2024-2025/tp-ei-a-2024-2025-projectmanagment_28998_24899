@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +7,7 @@
     android:background="@color/background_white"
     tools:context=".ui.home.admin.manageprojects.ManageProjectsActivity">
 
-    <!-- Toolbar com spinner embutido -->
+    <!-- Toolbar com spinner -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_projects"
         android:layout_width="match_parent"
@@ -32,12 +31,99 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:weightSum="3"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:weightSum="3">
 
-        <include layout="@layout/project_card_stat" android:id="@+id/card_total" />
-        <include layout="@layout/project_card_stat" android:id="@+id/card_active" />
-        <include layout="@layout/project_card_stat" android:id="@+id/card_completed" />
+        <!-- Card Total -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="4dp"
+            android:background="@drawable/bg_stat_card"
+            android:elevation="2dp"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/text_value_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/text_label_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total"
+                android:textSize="14sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <!-- Card Ativos -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="4dp"
+            android:background="@drawable/bg_stat_card"
+            android:elevation="2dp"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/text_value_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/text_label_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ativos"
+                android:textSize="14sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <!-- Card Concluídos -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="4dp"
+            android:background="@drawable/bg_stat_card"
+            android:elevation="2dp"
+            android:padding="8dp">
+
+            <TextView
+                android:id="@+id/text_value_completed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/text_label_completed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Concluídos"
+                android:textSize="14sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
     </LinearLayout>
 
     <!-- Filtros -->
@@ -46,42 +132,53 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical">
 
         <Spinner
             android:id="@+id/spinner_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:layout_marginEnd="8dp"/>
 
-        <EditText
-            android:id="@+id/input_search"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/CustomTextInputStyle"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:hint="@string/manage_projects_search_hint"
-            android:background="@drawable/text_input_background"
-            android:padding="12dp"
-            android:drawableStart="@android:drawable/ic_menu_search"/>
+            android:layout_weight="1"
+            android:layout_marginStart="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/manage_projects_search_hint"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="8dp"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
-    <!-- Botão -->
-    <Button
+    <!-- Botão Novo Projeto -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_new_project"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/manage_projects_button_new"
-        android:layout_margin="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="4dp"
+        android:backgroundTint="@color/button_orange"
         android:textColor="@android:color/white"
-        android:background="@color/button_orange"
-        android:elevation="4dp"/>
+        app:cornerRadius="16dp"/>
 
     <!-- Lista de projetos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_projects"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="16dp"
         android:paddingTop="8dp"
-        android:layout_marginBottom="16dp"/>
+        android:clipToPadding="false"/>
 </LinearLayout>

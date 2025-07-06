@@ -1,11 +1,10 @@
 package com.baptistaz.taskwave.ui.home.manager
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.baptistaz.taskwave.R
@@ -17,6 +16,7 @@ import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 class ManagerEditProjectActivity : BaseLocalizedActivity() {
 
@@ -24,7 +24,6 @@ class ManagerEditProjectActivity : BaseLocalizedActivity() {
     private lateinit var inputDescription: EditText
     private lateinit var inputStartDate: EditText
     private lateinit var inputEndDate: EditText
-    private lateinit var spinnerStatus: Spinner
     private lateinit var buttonEdit: Button
 
     private lateinit var project: Project
@@ -33,46 +32,47 @@ class ManagerEditProjectActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_manager_edit_project)
 
-        // Toolbar
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_edit_project)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_edit_project)
 
-        // Liga componentes (IDs atualizados!)
         inputName = findViewById(R.id.input_name)
         inputDescription = findViewById(R.id.input_description)
-        spinnerStatus = findViewById(R.id.spinner_status)
         inputStartDate = findViewById(R.id.input_start_date)
         inputEndDate = findViewById(R.id.input_end_date)
         buttonEdit = findViewById(R.id.button_edit)
 
-        // Status apenas "Active" ou "Completed"
-        val statusOptions = listOf("Active", "Completed")
-        spinnerStatus.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, statusOptions)
-
-        // Recebe o projeto via intent
         project = intent.getSerializableExtra("project") as Project
 
-        // Preenche os dados
         inputName.setText(project.name)
         inputDescription.setText(project.description)
         inputStartDate.setText(project.startDate)
         inputEndDate.setText(project.endDate)
-        spinnerStatus.setSelection(statusOptions.indexOfFirst { it.equals(project.status, ignoreCase = true) })
 
-        // Botão de guardar alterações
+        // 👉 Ativar calendários para as datas
+        inputStartDate.setOnClickListener {
+            showDatePicker(inputStartDate.text.toString()) { selected ->
+                inputStartDate.setText(selected)
+            }
+        }
+
+        inputEndDate.setOnClickListener {
+            showDatePicker(inputEndDate.text.toString()) { selected ->
+                inputEndDate.setText(selected)
+            }
+        }
+
         buttonEdit.setOnClickListener {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val repo = ProjectRepository(RetrofitInstance.projectService)
 
             lifecycleScope.launch {
                 try {
-                    val start = LocalDate.parse(inputStartDate.text.toString(), formatter)
-                    val end = LocalDate.parse(inputEndDate.text.toString(), formatter)
+                    LocalDate.parse(inputStartDate.text.toString(), formatter)
+                    LocalDate.parse(inputEndDate.text.toString(), formatter)
 
-                    val statusFromSpinner = spinnerStatus.selectedItem.toString()
-                    val statusFormatted = statusFromSpinner.replaceFirstChar { it.uppercase() }
+                    val statusFormatted = project.status ?: "Active"
 
                     val updatedProject = ProjectUpdate(
                         id_project = project.idProject,
@@ -102,6 +102,27 @@ class ManagerEditProjectActivity : BaseLocalizedActivity() {
                 }
             }
         }
+    }
+
+    private fun showDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        if (!initialDate.isNullOrBlank()) {
+            try {
+                val parts = initialDate.split("-")
+                calendar.set(parts[0].toInt(), parts[1].toInt() - 1, parts[2].toInt())
+            } catch (_: Exception) {}
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePicker = DatePickerDialog(this, { _, y, m, d ->
+            val formatted = "%04d-%02d-%02d".format(y, m + 1, d)
+            onDateSelected(formatted)
+        }, year, month, day)
+
+        datePicker.show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

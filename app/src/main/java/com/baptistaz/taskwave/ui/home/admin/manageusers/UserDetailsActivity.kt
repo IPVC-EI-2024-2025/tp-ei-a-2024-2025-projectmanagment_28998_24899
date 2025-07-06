@@ -73,11 +73,21 @@ class UserDetailsActivity : BaseLocalizedActivity() {
             try {
                 val user = userRepo.getUserById(userId, token)
                 user?.let { populateHeader(it) }
-                if (user?.profileType.equals("ADMIN", true)) {
-                    showAdminOnly()
-                } else {
-                    loadParticipation(userId, token)
+                when (user?.profileType?.uppercase()) {
+                    "ADMIN" -> {
+                        showAdminOnly()
+                    }
+                    "GESTOR" -> {
+                        sectionTasks.visibility = View.GONE
+                        sectionProjects.visibility = View.VISIBLE
+                        // podes ainda carregar os projetos se quiseres, mas não as tarefas
+                        loadProjectsOnly(userId, token)
+                    }
+                    else -> {
+                        loadParticipation(userId, token) // utilizador normal
+                    }
                 }
+
             } catch (e: Exception) {
                 Toast.makeText(this@UserDetailsActivity,
                     getString(R.string.project_tasks_loading_error, e.message),
@@ -101,6 +111,7 @@ class UserDetailsActivity : BaseLocalizedActivity() {
             "GESTOR" -> {
                 tvRole.text = getString(R.string.stat_managers)
                 tvRole.setBackgroundResource(R.drawable.role_badge_manager)
+                sectionTasks.visibility = View.GONE
             }
             else     -> {
                 tvRole.text = getString(R.string.stat_users)
@@ -109,8 +120,14 @@ class UserDetailsActivity : BaseLocalizedActivity() {
         }
 
         // Usar as strings padrão que já estão nos XML
-        tvDesc.text        = getString(R.string.label_description)
-        tvDescContent.text = getString(R.string.sample_description)
+        tvDesc.text = getString(R.string.label_description)
+
+        tvDescContent.text = when (u.profileType.uppercase()) {
+            "ADMIN" -> getString(R.string.desc_admin)
+            "GESTOR" -> getString(R.string.desc_manager)
+            else -> getString(R.string.desc_user)
+        }
+
     }
 
     private fun showAdminOnly() {
@@ -171,4 +188,33 @@ class UserDetailsActivity : BaseLocalizedActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean = finish().let { true }
+
+    private suspend fun loadProjectsOnly(userId: String, token: String) {
+        sectionProjects.visibility = View.VISIBLE
+
+        val taskProjects = userTaskRepo.getTasksOfUser(userId, token)
+            ?.mapNotNull { it.task?.project }
+            ?.distinctBy { it.idProject }
+            ?.toMutableList() ?: mutableListOf()
+
+        val allProjects = com.baptistaz.taskwave.data.remote.project.ProjectRepository(
+            RetrofitInstance.getProjectService(token)
+        ).getAllProjects()
+        val managed = allProjects.filter { it.idManager == userId }
+        managed.filterNot { p -> taskProjects.any { it.idProject == p.idProject } }
+            .forEach { taskProjects.add(it) }
+
+        listProjects.removeAllViews()
+        for (p in taskProjects) {
+            val tv = TextView(this).apply {
+                text = p.name
+                textSize = 15f
+                setTypeface(null, Typeface.BOLD)
+                setPadding(8, 6, 8, 6)
+                setTextColor(getColor(R.color.button_orange))
+            }
+            listProjects.addView(tv)
+        }
+    }
+
 }

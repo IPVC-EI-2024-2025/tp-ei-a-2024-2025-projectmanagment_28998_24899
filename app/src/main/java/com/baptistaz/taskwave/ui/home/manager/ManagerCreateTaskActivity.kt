@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.manager
 
 import User
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -18,6 +19,7 @@ import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.UUID
 
 class ManagerCreateTaskActivity : BaseLocalizedActivity() {
@@ -47,18 +49,23 @@ class ManagerCreateTaskActivity : BaseLocalizedActivity() {
 
         val projectId = intent.getStringExtra("PROJECT_ID") ?: return
 
-        // Carrega users para o spinner
+        // 👉 Date picker para a data de conclusão
+        inputConclusionDate.setOnClickListener {
+            showDatePicker(inputConclusionDate.text.toString()) { selected ->
+                inputConclusionDate.setText(selected)
+            }
+        }
+
         val token = SessionManager.getAccessToken(this) ?: return
         lifecycleScope.launch {
-            users = UserRepository().getAllUsers(token) ?: emptyList()
-            val normalUsers = users.filter { it.profileType.equals("USER", ignoreCase = true) }
-            users = normalUsers
+            users = UserRepository().getAllUsers(token)?.filter {
+                it.profileType.equals("USER", ignoreCase = true)
+            } ?: emptyList()
 
-            val names = users.map { it.name }
             spinnerResponsible.adapter = ArrayAdapter(
                 this@ManagerCreateTaskActivity,
                 android.R.layout.simple_spinner_dropdown_item,
-                names
+                users.map { it.name }
             )
         }
 
@@ -116,5 +123,26 @@ class ManagerCreateTaskActivity : BaseLocalizedActivity() {
 
     private fun getCurrentDate(): String {
         return java.time.LocalDate.now().toString()
+    }
+
+    private fun showDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        if (!initialDate.isNullOrBlank()) {
+            try {
+                val parts = initialDate.split("-")
+                calendar.set(parts[0].toInt(), parts[1].toInt() - 1, parts[2].toInt())
+            } catch (_: Exception) {}
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val picker = DatePickerDialog(this, { _, y, m, d ->
+            val formatted = "%04d-%02d-%02d".format(y, m + 1, d)
+            onDateSelected(formatted)
+        }, year, month, day)
+
+        picker.show()
     }
 }

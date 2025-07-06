@@ -45,7 +45,7 @@ class ManagerProjectDetailsActivity : BaseLocalizedActivity() {
         textName           = findViewById(R.id.text_project_name)
         textDesc           = findViewById(R.id.text_project_description)
         textStatus         = findViewById(R.id.text_project_status)
-        textManager        = findViewById(R.id.text_manager)
+        textManager        = findViewById(R.id.text_project_manager)
         textStart          = findViewById(R.id.text_project_start)
         textEnd            = findViewById(R.id.text_project_end)
         buttonViewTasks    = findViewById(R.id.button_view_tasks)

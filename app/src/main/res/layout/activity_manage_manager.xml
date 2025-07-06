@@ -36,15 +36,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- Caixa de detalhes -->
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
+                android:background="@drawable/bg_project_box"
                 android:padding="20dp"
-                android:elevation="2dp"
                 android:layout_marginBottom="24dp">
 
+                <!-- Project Name -->
                 <TextView
                     android:id="@+id/text_project_title"
                     android:layout_width="match_parent"
@@ -56,6 +57,7 @@
                     android:layout_marginBottom="8dp"
                     android:textSize="16sp"/>
 
+                <!-- Current Manager -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -71,10 +73,11 @@
                     android:drawableLeft="@drawable/ic_person"
                     android:drawablePadding="8dp"
                     android:textSize="16sp"
-                    android:layout_marginBottom="14dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginBottom="14dp"
                     android:textColor="@color/black"/>
 
+                <!-- Novo Gestor -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -90,13 +93,15 @@
                     android:layout_marginBottom="12dp"/>
             </LinearLayout>
 
-            <Button
+            <!-- Botão atualizar -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_update_manager"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/manage_manager_button"
-                android:background="@color/button_orange"
-                android:textColor="@android:color/white"/>
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white"
+                app:cornerRadius="16dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

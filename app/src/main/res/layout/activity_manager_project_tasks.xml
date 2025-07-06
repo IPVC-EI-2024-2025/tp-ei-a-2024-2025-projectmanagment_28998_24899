@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -11,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/button_orange"
+        android:elevation="4dp"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:gravity="center_vertical">
@@ -40,52 +42,67 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Conteúdo -->
-    <TextView
-        android:id="@+id/label_active"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_active_tasks"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:paddingTop="16dp"
-        android:paddingStart="24dp"
-        android:paddingBottom="8dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_active"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:nestedScrollingEnabled="false" />
-
-    <TextView
-        android:id="@+id/label_completed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_completed_tasks"
-        android:textStyle="bold"
-        android:textSize="16sp"
-        android:paddingTop="24dp"
-        android:paddingStart="24dp"
-        android:paddingBottom="8dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_completed"
+    <!-- Conteúdo scrollável -->
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:nestedScrollingEnabled="false" />
+        android:fillViewport="true">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingBottom="16dp">
+
+            <!-- Secção: Tarefas ativas -->
+            <TextView
+                android:id="@+id/label_active"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_active_tasks"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:paddingTop="20dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_active"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+            <!-- Secção: Tarefas concluídas -->
+            <TextView
+                android:id="@+id/label_completed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_completed_tasks"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:paddingTop="28dp"
+                android:paddingBottom="8dp"
+                android:textColor="@color/black" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_completed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Botão criar tarefa -->
     <Button
         android:id="@+id/button_create_task"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/btn_create_task"
-        android:layout_margin="16dp"
+        android:textStyle="bold"
         android:backgroundTint="@color/button_orange"
-        android:textColor="@color/background_white"/>
+        android:textColor="@android:color/white"
+        android:layout_margin="16dp"
+        android:elevation="4dp" />
 </LinearLayout>

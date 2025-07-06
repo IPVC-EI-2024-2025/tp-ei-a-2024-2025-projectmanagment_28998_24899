@@ -44,7 +44,8 @@ class TaskHistoryActivity : BaseLocalizedActivity() {
                 intent.putExtra("TASK_ID", task.idTask)
                 startActivity(intent)
             },
-            onDelete = null
+            onDelete = null,
+            showResponsible = false
         )
 
         recycler.adapter = adapter

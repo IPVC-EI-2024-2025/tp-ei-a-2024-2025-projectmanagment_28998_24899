@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background_white">
+    android:background="@color/background_white"
+    android:orientation="vertical">
 
-    <!-- Toolbar fixa no topo -->
+    <!-- Toolbar com título e idioma -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_project_details"
         android:layout_width="match_parent"
@@ -43,94 +43,152 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Conteúdo scrollável -->
+    <!-- Conteúdo -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/background_white">
+        android:padding="24dp"
+        android:clipToPadding="false">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:padding="24dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/text_project_name"
+            <!-- Card com info principal -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/project_name"
-                android:textStyle="bold"
-                android:textSize="22sp"
-                android:paddingTop="16dp" />
+                android:layout_marginBottom="16dp"
+                android:elevation="4dp"
+                android:radius="16dp">
 
-            <TextView
-                android:id="@+id/text_project_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/project_description"
-                android:textSize="16sp"
-                android:paddingTop="8dp" />
-
-            <TextView
-                android:id="@+id/text_project_status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/project_status"
-                android:paddingTop="8dp" />
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="8dp">
-
-                <TextView
-                    android:id="@+id/text_manager"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_manager"
-                    android:textStyle="bold"
-                    android:layout_marginTop="12dp"/>
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                <TextView
-                    android:id="@+id/text_project_start"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/start_date" />
+                    <TextView
+                        android:id="@+id/text_project_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/project_name"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="4dp" />
 
-                <TextView
-                    android:id="@+id/text_project_end"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="@string/end_date"
-                    android:gravity="end" />
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/text_project_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/project_description"
+                        android:textColor="@color/gray_dark"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="8dp" />
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="4dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_status"
+                            app:tint="@color/button_orange"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:id="@+id/text_project_status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/project_status"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="8dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_person"
+                            app:tint="@color/button_orange"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:id="@+id/text_project_manager"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/label_manager"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/button_orange"
+                            android:layout_marginEnd="8dp"/>
+
+                        <TextView
+                            android:id="@+id/text_project_start"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/start_date"
+                            android:textColor="@color/black"
+                            android:layout_marginEnd="16dp"/>
+
+                        <TextView
+                            android:id="@+id/text_project_end"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/end_date"
+                            android:textColor="@color/black"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <Button
                 android:id="@+id/button_view_tasks"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_view_tasks"
-                android:layout_marginTop="24dp" />
+                android:background="@drawable/button_outline"
+                android:textColor="@color/button_orange"
+                android:elevation="0dp"/>
 
             <Button
                 android:id="@+id/button_edit_project"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:text="@string/btn_edit_project"
-                android:layout_marginTop="12dp"/>
+                android:background="@color/button_orange"
+                android:textColor="@android:color/white"/>
 
             <Button
                 android:id="@+id/button_mark_complete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/btn_mark_completed"
-                android:background="@color/button_orange"
+                android:backgroundTint="@color/button_orange"
                 android:textColor="@android:color/white"
                 android:visibility="gone"/>
         </LinearLayout>

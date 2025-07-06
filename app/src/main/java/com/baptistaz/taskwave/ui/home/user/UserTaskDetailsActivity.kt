@@ -29,7 +29,13 @@ class UserTaskDetailsActivity : BaseLocalizedActivity() {
     private lateinit var btnDone: Button
     private lateinit var task   : Task
 
+    // Launcher para adicionar atualização
     private val addUpdLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { if (it.resultCode == RESULT_OK) refreshUpdates() }
+
+    // Launcher para detalhes de uma atualização (e possível remoção)
+    private val detailsUpdLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { if (it.resultCode == RESULT_OK) refreshUpdates() }
 
@@ -100,14 +106,18 @@ class UserTaskDetailsActivity : BaseLocalizedActivity() {
         }
     }
 
-    private fun openAddUpdate() =
-        addUpdLauncher.launch(Intent(this, AddUpdateActivity::class.java)
-            .putExtra("TASK_ID", taskId))
+    private fun openAddUpdate() {
+        val intent = Intent(this, AddUpdateActivity::class.java)
+            .putExtra("TASK_ID", taskId)
+        addUpdLauncher.launch(intent)
+    }
 
-    private fun openDetails(upd: TaskUpdate) =
-        startActivity(Intent(this, UpdateDetailsActivity::class.java)
+    private fun openDetails(upd: TaskUpdate) {
+        val intent = Intent(this, UpdateDetailsActivity::class.java)
             .putExtra("UPDATE", upd)
-            .putExtra("TASK_ID", taskId))
+            .putExtra("TASK_ID", taskId)
+        detailsUpdLauncher.launch(intent)
+    }
 
     private fun toast(msg: String) =
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()

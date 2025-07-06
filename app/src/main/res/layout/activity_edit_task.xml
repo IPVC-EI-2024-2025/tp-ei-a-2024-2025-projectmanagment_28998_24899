@@ -37,69 +37,98 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/input_title"
-                android:hint="@string/edit_task_hint_title"
-                android:inputType="textCapSentences"
+            <!-- Title -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="20dp"/>
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edit_task_hint_title"
+                    android:inputType="textCapSentences"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_description"
-                android:hint="@string/edit_task_hint_description"
-                android:inputType="textCapSentences"
+            <!-- Description -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edit_task_hint_description"
+                    android:inputType="textCapSentences"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- State (readonly) -->
             <TextView
                 android:id="@+id/text_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:paddingTop="8dp" />
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"/>
 
-            <EditText
-                android:id="@+id/input_creation_date"
-                android:hint="@string/edit_task_hint_creation_date"
-                android:inputType="date"
+            <!-- Creation Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_creation_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edit_task_hint_creation_date"
+                    android:focusable="false"
+                    android:inputType="date"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_conclusion_date"
-                android:hint="@string/edit_task_hint_conclusion_date"
-                android:inputType="date"
+            <!-- Conclusion Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_conclusion_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/edit_task_hint_conclusion_date"
+                    android:focusable="false"
+                    android:inputType="date"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Priority Spinner -->
             <Spinner
                 android:id="@+id/spinner_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="16dp"/>
 
+            <!-- Assign User Spinner -->
             <Spinner
                 android:id="@+id/spinner_assign_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="24dp"/>
 
-            <Button
+            <!-- Botão -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_save_edit"
-                android:text="@string/edit_task_button_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="48dp"
-                android:layout_marginTop="24dp"/>
+                android:text="@string/edit_task_button_save"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white"
+                app:cornerRadius="16dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

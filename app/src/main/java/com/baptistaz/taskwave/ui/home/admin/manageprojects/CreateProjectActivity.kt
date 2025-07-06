@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.admin.manageprojects
 
 import User
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -17,6 +18,7 @@ import com.baptistaz.taskwave.data.remote.project.ProjectRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.UUID
 
 class CreateProjectActivity : BaseLocalizedActivity() {
@@ -34,13 +36,11 @@ class CreateProjectActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_project)
 
-        // Toolbar de voltar atrás
         val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.create_project_toolbar_title)
 
-        // Ligação aos componentes
         inputName = findViewById(R.id.input_name)
         inputDescription = findViewById(R.id.input_description)
         inputStartDate = findViewById(R.id.input_start_date)
@@ -48,7 +48,19 @@ class CreateProjectActivity : BaseLocalizedActivity() {
         buttonCreate = findViewById(R.id.button_create_project)
         spinnerManager = findViewById(R.id.spinner_manager)
 
-        // Popular spinner de managers
+        // Adicionar listeners para abrir o calendário
+        inputStartDate.setOnClickListener {
+            showDatePicker { selectedDate ->
+                inputStartDate.setText(selectedDate)
+            }
+        }
+
+        inputEndDate.setOnClickListener {
+            showDatePicker { selectedDate ->
+                inputEndDate.setText(selectedDate)
+            }
+        }
+
         val token = SessionManager.getAccessToken(this) ?: return
         lifecycleScope.launch {
             managers = UserRepository().getAllManagers(token) ?: emptyList()
@@ -61,7 +73,6 @@ class CreateProjectActivity : BaseLocalizedActivity() {
             )
         }
 
-        // Clique no botão
         buttonCreate.setOnClickListener {
             val name = inputName.text.toString()
             val description = inputDescription.text.toString()
@@ -81,7 +92,6 @@ class CreateProjectActivity : BaseLocalizedActivity() {
                 idManager = idManager
             )
 
-            // Enviar para Supabase
             val repository = ProjectRepository(RetrofitInstance.projectService)
             lifecycleScope.launch {
                 try {
@@ -104,6 +114,20 @@ class CreateProjectActivity : BaseLocalizedActivity() {
                 }
             }
         }
+    }
+
+    private fun showDatePicker(onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePicker = DatePickerDialog(this, { _, y, m, d ->
+            val formatted = "%04d-%02d-%02d".format(y, m + 1, d)
+            onDateSelected(formatted)
+        }, year, month, day)
+
+        datePicker.show()
     }
 
     override fun onSupportNavigateUp(): Boolean {

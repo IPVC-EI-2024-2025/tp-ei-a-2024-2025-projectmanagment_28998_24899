@@ -6,7 +6,6 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:padding="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -53,87 +52,112 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- Nome e Descrição -->
             <TextView
                 android:id="@+id/text_project_name"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/project_name"
                 android:textStyle="bold"
-                android:textSize="24sp"
+                android:textSize="22sp"
                 android:textColor="@color/black"
                 android:layout_marginBottom="4dp"/>
 
             <TextView
                 android:id="@+id/text_project_description"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/project_description"
-                android:textSize="16sp"
-                android:layout_marginBottom="12dp"/>
+                android:textSize="15sp"
+                android:textColor="@color/gray_dark"
+                android:layout_marginBottom="16dp"/>
 
+            <!-- Status -->
             <TextView
                 android:id="@+id/text_project_status"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/project_status"
                 android:textStyle="italic"
-                android:textSize="16sp"
-                android:layout_marginBottom="12dp"/>
+                android:textSize="15sp"
+                android:textColor="@color/gray"
+                android:layout_marginBottom="16dp"/>
 
+            <!-- Manager -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_manager"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:layout_marginBottom="2dp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/text_manager"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_name"
+                android:textSize="15sp"
+                android:textColor="@color/gray_dark"
+                android:layout_marginBottom="16dp"/>
+
+            <!-- Datas -->
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp">
+                android:layout_marginBottom="24dp"
+                android:weightSum="2">
 
-                <TextView
-                    android:text="@string/label_manager"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/text_manager"
-                    android:text="@string/placeholder_name"
-                    android:textSize="16sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp">
-
-                <TextView
-                    android:text="@string/label_start_date"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/text_project_start"
-                    android:text="@string/placeholder_date"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"/>
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:text="@string/label_end_date"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/text_project_end"
-                    android:text="@string/placeholder_date"
-                    android:textSize="14sp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <TextView
+                        android:text="@string/label_start_date"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/text_project_start"
+                        android:text="@string/placeholder_date"
+                        android:textSize="14sp"
+                        android:textColor="@color/gray_dark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:text="@string/label_end_date"
+                        android:textStyle="bold"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/text_project_end"
+                        android:text="@string/placeholder_date"
+                        android:textSize="14sp"
+                        android:textColor="@color/gray_dark"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
             </LinearLayout>
 
+            <!-- Botão de Ações -->
             <Button
                 android:id="@+id/button_view_tasks"
                 android:layout_width="match_parent"

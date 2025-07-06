@@ -55,49 +55,71 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/input_name"
-                android:hint="@string/hint_project_name"
+            <!-- Project Name -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_project_name"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_description"
-                android:hint="@string/hint_project_description"
+            <!-- Description -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_project_description"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/spinner_status"
+            <!-- Start Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_start_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_start_date"
+                    android:focusable="false"
+                    android:inputType="date"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_start_date"
-                android:hint="@string/hint_start_date"
-                android:inputType="date"
+            <!-- End Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"/>
+                android:layout_marginBottom="24dp">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_end_date"
+                    android:focusable="false"
+                    android:inputType="date"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/input_end_date"
-                android:hint="@string/hint_end_date"
-                android:inputType="date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"/>
-
-            <Button
+            <!-- Botão -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_edit"
-                android:text="@string/btn_save_changes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/button_orange"
-                android:textColor="@color/background_white"/>
+                android:text="@string/btn_save_changes"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white"
+                app:cornerRadius="16dp"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

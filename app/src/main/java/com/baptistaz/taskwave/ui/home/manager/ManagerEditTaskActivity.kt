@@ -1,6 +1,7 @@
 package com.baptistaz.taskwave.ui.home.manager
 
 import User
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -19,6 +20,7 @@ import com.baptistaz.taskwave.data.remote.project.UserTaskRepository
 import com.baptistaz.taskwave.utils.BaseLocalizedActivity
 import com.baptistaz.taskwave.utils.SessionManager
 import kotlinx.coroutines.launch
+import java.util.Calendar
 import java.util.UUID
 
 class ManagerEditTaskActivity : BaseLocalizedActivity() {
@@ -45,7 +47,6 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
 
         task = intent.getSerializableExtra("task") as? Task ?: return finish()
 
-        /* refs */
         inputTitle       = findViewById(R.id.input_title)
         inputDescription = findViewById(R.id.input_description)
         inputCreation    = findViewById(R.id.input_creation_date)
@@ -62,6 +63,19 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
         inputCreation.setText(task.creationDate)
         inputConclusion.setText(task.conclusionDate ?: "")
 
+        // 👉 Ativar calendários
+        inputCreation.setOnClickListener {
+            showDatePicker(inputCreation.text.toString()) { selected ->
+                inputCreation.setText(selected)
+            }
+        }
+
+        inputConclusion.setOnClickListener {
+            showDatePicker(inputConclusion.text.toString()) { selected ->
+                inputConclusion.setText(selected)
+            }
+        }
+
         spinnerPriority.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item,
             listOf("LOW", "MEDIUM", "HIGH")
@@ -71,11 +85,10 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
                 .getPosition(task.priority ?: "LOW")
         )
 
-        // Carrega users (sem Admin)
         val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
             users = (UserRepository().getAllUsers(token) ?: emptyList())
-                .filterNot { it.profileType.equals("ADMIN", true) }
+                .filter { it.profileType.equals("USER", true) } // ⚠️ apenas users, não managers!
 
             spinnerAssign.adapter = ArrayAdapter(
                 this@ManagerEditTaskActivity,
@@ -106,11 +119,9 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
                 try {
                     tRepo.updateTask(upd.idTask, upd)
 
-                    // Limpa antigos responsáveis
                     utRepo.getUserTasksByTask(upd.idTask)
                         .forEach { utRepo.deleteUserTask(it.idUserTask) }
 
-                    // Novo responsável
                     val sel = users[spinnerAssign.selectedItemPosition]
                     utRepo.assignUserToTask(
                         UserTask(
@@ -130,6 +141,27 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
                 }
             }
         }
+    }
+
+    private fun showDatePicker(initialDate: String?, onDateSelected: (String) -> Unit) {
+        val calendar = Calendar.getInstance()
+        if (!initialDate.isNullOrBlank()) {
+            try {
+                val parts = initialDate.split("-")
+                calendar.set(parts[0].toInt(), parts[1].toInt() - 1, parts[2].toInt())
+            } catch (_: Exception) {}
+        }
+
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePicker = DatePickerDialog(this, { _, y, m, d ->
+            val formatted = "%04d-%02d-%02d".format(y, m + 1, d)
+            onDateSelected(formatted)
+        }, year, month, day)
+
+        datePicker.show()
     }
 
     override fun onSupportNavigateUp(): Boolean = finish().let { true }

@@ -1,12 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="0dp"
     android:background="@color/background_white">
 
-    <!-- Toolbar com título e spinner -->
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_task_detail"
         android:layout_width="match_parent"
@@ -41,75 +41,99 @@
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Conteúdo -->
+    <!-- Conteúdo Scroll -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="24dp">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <!-- Nome da tarefa -->
             <TextView
                 android:id="@+id/text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
                 android:text="@string/task_title"
-                android:layout_marginBottom="8dp"/>
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_marginBottom="4dp" />
 
+            <!-- Descrição -->
             <TextView
                 android:id="@+id/text_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/task_description"
-                android:layout_marginBottom="8dp"/>
+                android:textColor="@color/dark_gray"
+                android:layout_marginBottom="16dp" />
 
-            <TextView
-                android:id="@+id/text_status"
+            <!-- Card de detalhes -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/task_status"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                android:backgroundTint="@android:color/white">
 
-            <TextView
-                android:id="@+id/text_creation_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/task_creation_date"
-                android:layout_marginBottom="8dp"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-            <TextView
-                android:id="@+id/text_conclusion_date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/task_conclusion_date"
-                android:layout_marginBottom="8dp"/>
+                    <TextView
+                        android:id="@+id/text_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/task_status"
+                        android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:id="@+id/text_priority"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/task_priority"
-                android:layout_marginBottom="16dp"/>
+                    <TextView
+                        android:id="@+id/text_creation_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/task_creation_date"
+                        android:layout_marginBottom="8dp" />
 
-            <TextView
-                android:id="@+id/text_assigned_user"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/task_detail_responsible"
-                android:textStyle="bold"
-                android:layout_marginBottom="32dp" />
+                    <TextView
+                        android:id="@+id/text_conclusion_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/task_conclusion_date"
+                        android:layout_marginBottom="8dp" />
 
+                    <TextView
+                        android:id="@+id/text_priority"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/task_priority"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/text_assigned_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/task_detail_responsible"
+                        android:textStyle="bold"
+                        android:textColor="@color/black" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Botões -->
             <Button
                 android:id="@+id/button_edit_task"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/task_detail_edit"
-                android:layout_marginBottom="12dp" />
+                android:layout_marginBottom="12dp"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white" />
 
             <Button
                 android:id="@+id/button_mark_complete"

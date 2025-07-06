@@ -5,61 +5,79 @@
     android:layout_marginVertical="8dp"
     android:layout_marginHorizontal="16dp"
     android:elevation="2dp"
+    android:backgroundTint="@android:color/white"
     android:padding="12dp">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/text_project_name"
-            android:text="@string/project_name"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/text_manager_name"
-            android:text="@string/project_manager_placeholder"
-            android:textSize="14sp"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/text_status"
-            android:text="@string/project_status"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="@color/button_orange"
+        <!-- Ícones topo-direita -->
+        <LinearLayout
+            android:id="@+id/icon_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
-            android:layout_marginTop="8dp">
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="4dp">
 
             <ImageView
                 android:id="@+id/icon_edit"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="8dp"
                 android:src="@android:drawable/ic_menu_edit"
-                android:layout_marginEnd="16dp"
                 android:contentDescription="@string/edit_project" />
 
             <ImageView
                 android:id="@+id/icon_delete"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:src="@android:drawable/ic_menu_delete"
                 android:contentDescription="@string/delete_project" />
         </LinearLayout>
-    </LinearLayout>
+
+        <!-- Conteúdo à esquerda -->
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/icon_container"
+            android:layout_marginEnd="8dp">
+
+            <TextView
+                android:id="@+id/text_project_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/project_name"
+                android:textStyle="bold"
+                android:textSize="15sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/text_manager_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/project_manager_placeholder"
+                android:textSize="13sp"
+                android:textColor="@color/gray" />
+        </LinearLayout>
+
+        <!-- Status destacado em baixo -->
+        <TextView
+            android:id="@+id/text_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/icon_container"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/bg_status_badge"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="4dp"
+            android:text="@string/project_status"
+            android:textColor="@color/button_orange"
+            android:textStyle="bold"
+            android:textSize="12sp" />
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

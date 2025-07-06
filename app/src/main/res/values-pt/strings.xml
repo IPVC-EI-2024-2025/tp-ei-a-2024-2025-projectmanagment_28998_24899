@@ -63,6 +63,7 @@
     <string name="create_task_title">Nova Tarefa</string>
     <string name="create_task_hint_title">Título</string>
     <string name="create_task_hint_description">Descrição</string>
+    <string name="label_priority">Escolher Prioridade</string>
     <string name="create_task_hint_creation_date">Data de Criação (AAAA-MM-DD)</string>
     <string name="create_task_hint_conclusion_date">Data de Conclusão (opcional)</string>
     <string name="create_task_button">Criar</string>
@@ -221,6 +222,10 @@
     <string name="text_tasks_assigned">Tarefas atribuídas: 0</string>
     <string name="text_tasks_completed">Tarefas concluídas: 0</string>
     <string name="title_projects">Projetos</string>
+    <string name="desc_admin">Tem permissões totais no sistema. Pode gerir projetos, utilizadores, tarefas e exportar estatísticas.</string>
+    <string name="desc_manager">Responsável por projetos atribuídos. Pode criar tarefas, distribuir utilizadores, acompanhar progresso e exportar estatísticas.</string>
+    <string name="desc_user">Participa ativamente nos projetos. Regista progresso, observações, fotos e conclui tarefas atribuídas.</string>
+
 
     <!-- AdminHomeActivity -->
     <string name="title_admin_dashboard">Painel do Administrador</string>
@@ -459,6 +464,14 @@
     <string name="change_language">Mudar Idioma</string>
     <string name="cancelar">Cancelar</string>
 
-    <string name="btn_back">Go back</string>
+    <string name="btn_back">Voltar Atrás</string>
+    <string name="person_icon">Icon Pessoa</string>
+
+    <string name="projects">Projetos</string>
+    <string name="active">Ativos</string>
+    <string name="completed">Concluídos</string>
+
+    <string name="user_home_subtitle">Organiza as tuas tarefas e projetos</string>
+
 
 </resources>

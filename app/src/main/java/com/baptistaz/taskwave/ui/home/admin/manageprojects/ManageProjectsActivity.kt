@@ -46,7 +46,6 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
     }
 
     private val viewModel: ProjectViewModel by viewModels {
-        Log.d("TOKEN_DEBUG", "Token atual: $token")
         ProjectViewModelFactory(
             ProjectRepository(RetrofitInstance.getProjectService(token))
         )
@@ -61,19 +60,16 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.manage_projects_toolbar_title)
 
-        val cardTotal = findViewById<androidx.cardview.widget.CardView>(R.id.card_total)
-        val cardActive = findViewById<androidx.cardview.widget.CardView>(R.id.card_active)
-        val cardCompleted = findViewById<androidx.cardview.widget.CardView>(R.id.card_completed)
+        // Cards estatísticos: Total, Ativos, Concluídos
+        textTotal = findViewById(R.id.text_value_total)
+        textActive = findViewById(R.id.text_value_active)
+        textCompleted = findViewById(R.id.text_value_completed)
 
-        textTotal = cardTotal.findViewById(R.id.text_stat_value)
-        textActive = cardActive.findViewById(R.id.text_stat_value)
-        textCompleted = cardCompleted.findViewById(R.id.text_stat_value)
-
+        // Outros componentes
         inputSearch = findViewById(R.id.input_search)
         spinnerFilter = findViewById(R.id.spinner_filter)
         recyclerView = findViewById(R.id.recycler_projects)
 
-        val token = SessionManager.getAccessToken(this) ?: ""
         lifecycleScope.launch {
             managers = UserRepository().getAllManagers(token) ?: emptyList()
             adapter = ProjectAdapter(
@@ -107,13 +103,16 @@ class ManageProjectsActivity : BaseLocalizedActivity() {
                 applyFilters()
             }
 
+            // Coletando os projetos e atualizando as informações nos cards
             lifecycleScope.launch {
                 viewModel.projects.collectLatest {
                     fullProjectList = it
                     applyFilters()
-                    textTotal.text = viewModel.getTotalCount().toString()
-                    textActive.text = viewModel.getActiveCount().toString()
-                    textCompleted.text = viewModel.getCompletedCount().toString()
+
+                    // Atualizando os valores dinamicamente
+                    textTotal.text = "${viewModel.getTotalCount()}"
+                    textActive.text = "${viewModel.getActiveCount()}"
+                    textCompleted.text = "${viewModel.getCompletedCount()}"
                     Log.d("DEBUG_VIEW", "Lista atualizada: $it")
                 }
             }

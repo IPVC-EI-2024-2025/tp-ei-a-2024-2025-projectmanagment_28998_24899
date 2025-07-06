@@ -3,8 +3,8 @@ package com.baptistaz.taskwave.ui.home.manager
 import BaseManagerBottomNavActivity
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.baptistaz.taskwave.R
 import com.baptistaz.taskwave.data.remote.UserRepository
@@ -27,7 +27,7 @@ class ManagerProfileActivity : BaseManagerBottomNavActivity() {
         val txtUsernameCard = findViewById<TextView>(R.id.text_username_card)
         val txtEmail = findViewById<TextView>(R.id.text_email)
         val txtPhone = findViewById<TextView>(R.id.text_phone)
-        val btnLogout = findViewById<Button>(R.id.button_logout)
+        val btnLogout = findViewById<LinearLayout>(R.id.button_logout)
 
         txtName.text = ""
         txtUsername.text = ""

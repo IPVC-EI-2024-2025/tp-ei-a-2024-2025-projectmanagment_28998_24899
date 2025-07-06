@@ -31,7 +31,8 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:weightSum="4"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:gravity="center">
 
         <include layout="@layout/user_card_stat" android:id="@+id/card_total"/>
         <include layout="@layout/user_card_stat" android:id="@+id/card_admins"/>
@@ -45,7 +46,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
-        android:layout_marginBottom="12dp">
+        android:layout_marginBottom="8dp"
+        android:gravity="center_vertical">
 
         <Spinner
             android:id="@+id/spinner_filter"
@@ -54,34 +56,43 @@
             android:layout_weight="1"
             android:layout_marginEnd="8dp"/>
 
-        <EditText
-            android:id="@+id/input_search"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/CustomTextInputStyle"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_search_user"
-            android:background="@drawable/text_input_background"
-            android:padding="12dp"
-            android:drawableStart="@android:drawable/ic_menu_search"/>
+            android:layout_weight="2"
+            android:layout_marginStart="8dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/input_search"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_search_user"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="8dp"
+                android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 
     <!-- Botão criar -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_new_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/btn_new_user"
-        android:background="@color/button_orange"
-        android:textColor="@color/background_white"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="12dp"
+        android:backgroundTint="@color/button_orange"
+        android:textColor="@android:color/white"
+        app:cornerRadius="16dp"/>
 
-    <!-- Lista -->
+    <!-- Lista de utilizadores -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_users"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:paddingTop="8dp"
-        android:layout_marginBottom="16dp"/>
+        android:paddingHorizontal="16dp"
+        android:clipToPadding="false"/>
 </LinearLayout>

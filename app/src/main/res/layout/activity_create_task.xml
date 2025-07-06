@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background_white">
 
-    <!-- Toolbar com Spinner integrado -->
+    <!-- Toolbar com spinner -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
             android:backgroundTint="@color/background_white" />
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- Conteúdo com scroll -->
+    <!-- Conteúdo -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -35,6 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- Título -->
             <TextView
                 android:text="@string/create_task_title"
                 android:textStyle="bold"
@@ -43,53 +45,87 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"/>
 
-            <EditText
-                android:id="@+id/input_title"
-                android:hint="@string/create_task_hint_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <EditText
-                android:id="@+id/input_description"
-                android:hint="@string/create_task_hint_description"
+            <!-- Task Title -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="12dp">
 
-            <EditText
-                android:id="@+id/input_creation_date"
-                android:hint="@string/create_task_hint_creation_date"
-                android:inputType="date"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/create_task_hint_title"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Description -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="12dp">
 
-            <EditText
-                android:id="@+id/input_conclusion_date"
-                android:hint="@string/create_task_hint_conclusion_date"
-                android:inputType="date"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/create_task_hint_description"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Creation Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="12dp">
 
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_creation_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/create_task_hint_creation_date"
+                    android:focusable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Conclusion Date -->
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/CustomTextInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/input_conclusion_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/create_task_hint_conclusion_date"
+                    android:focusable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Priority Spinner -->
             <Spinner
                 android:id="@+id/spinner_priority"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="16dp"/>
 
+            <!-- Assign User Spinner -->
             <Spinner
                 android:id="@+id/spinner_assign_user"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"/>
+                android:layout_marginBottom="24dp"/>
 
-            <Button
+            <!-- Botão -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_create_task"
-                android:text="@string/create_task_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"/>
+                android:text="@string/create_task_button"
+                android:backgroundTint="@color/button_orange"
+                android:textColor="@android:color/white"
+                app:cornerRadius="16dp"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
