@@ -6,24 +6,41 @@
     android:orientation="vertical"
     android:background="@color/background_white">
 
-    <!-- Toolbar com spinner integrado -->
+    <!-- Toolbar personalizada com título e spinner -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_profile"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/button_orange"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="@string/title_profile"
+        app:title=""
         app:titleTextColor="@color/black">
 
-        <Spinner
-            android:id="@+id/spinner_language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginEnd="16dp"
-            android:spinnerMode="dropdown"
-            android:backgroundTint="@color/background_white"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_profile"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black" />
+
+            <Spinner
+                android:id="@+id/spinner_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:backgroundTint="@color/background_white" />
+        </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
     <!-- Conteúdo -->

@@ -22,7 +22,7 @@ class EditUpdateActivity : BaseLocalizedActivity() {
         super.onCreate(b)
         setContentView(R.layout.activity_add_update)   // mesmo XML
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar_add_update))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_edit_update)
 

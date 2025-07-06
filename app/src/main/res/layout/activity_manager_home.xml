@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_white">
+
+    <!-- SCROLLABLE CONTEÚDO: só UM filho direto! -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:layout_gravity="top">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/image_user"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@drawable/ic_person"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/profile_circle_bg"
+                android:elevation="4dp" />
+
+            <TextView
+                android:id="@+id/text_greeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Olá, Gestor!"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center_horizontal" />
+
+            <!-- Histórico -->
+            <Button
+                android:id="@+id/button_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver Histórico"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center_horizontal"/>
+
+            <!-- Projetos em que é membro -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Projetos onde sou membro"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:layout_marginTop="24dp"/>
+
+            <LinearLayout
+                android:id="@+id/layout_projects"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"/>
+
+            <!-- Tarefas em progresso -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Minhas Tarefas Ativas"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="17sp"
+                android:layout_marginTop="24dp"/>
+
+            <LinearLayout
+                android:id="@+id/layout_tasks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@android:color/transparent" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- BOTTOM NAVIGATION SEMPRE FORA DO SCROLLVIEW -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_manager"
+        app:itemIconTint="@color/bottom_nav_color_selector"
+        app:itemTextColor="@color/bottom_nav_color_selector"
+        android:background="@color/background_white"
+        android:elevation="12dp" />
+
+</FrameLayout>

@@ -35,7 +35,7 @@ class EditUserActivity : BaseLocalizedActivity() {
         setContentView(R.layout.activity_edit_user)
 
         // Toolbar com botão back
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar_edit_user)
         toolbar.title = getString(R.string.title_edit_user)
         toolbar.setNavigationIcon(R.drawable.ic_arrow_right)
         toolbar.setNavigationOnClickListener { finish() }

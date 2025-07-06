@@ -34,7 +34,7 @@ class ManagerEditProjectActivity : BaseLocalizedActivity() {
         setContentView(R.layout.activity_manager_edit_project)
 
         // Toolbar
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_edit_project)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_edit_project)

@@ -16,6 +16,7 @@ class AdminProfileActivity : BaseLocalizedActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_profile)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
 
         val textName  = findViewById<TextView>(R.id.text_admin_name)
         val textEmail = findViewById<TextView>(R.id.text_admin_email)

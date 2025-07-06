@@ -38,7 +38,7 @@ class UserTaskDetailsActivity : BaseLocalizedActivity() {
         setContentView(R.layout.activity_user_task_details)
 
         /* toolbar */
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar_updates))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         /* ids */

@@ -39,7 +39,7 @@ class ProjectDetailsActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_project_details)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar_project_details))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         textName = findViewById(R.id.text_project_name)

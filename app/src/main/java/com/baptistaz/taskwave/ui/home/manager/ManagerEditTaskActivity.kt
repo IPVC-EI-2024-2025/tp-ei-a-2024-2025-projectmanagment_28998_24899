@@ -39,7 +39,7 @@ class ManagerEditTaskActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_task)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar_edit_task))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Editar Tarefa"
 

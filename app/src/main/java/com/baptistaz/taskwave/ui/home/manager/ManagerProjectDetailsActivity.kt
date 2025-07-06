@@ -36,7 +36,7 @@ class ManagerProjectDetailsActivity : BaseLocalizedActivity() {
         setContentView(R.layout.activity_manager_project_details)
 
         // Toolbar
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_project_details)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.project_name)

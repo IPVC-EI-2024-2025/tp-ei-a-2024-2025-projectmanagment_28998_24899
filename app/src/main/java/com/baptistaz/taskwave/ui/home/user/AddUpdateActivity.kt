@@ -22,7 +22,7 @@ class AddUpdateActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_update)
 
-        setSupportActionBar(findViewById(R.id.toolbar))
+        setSupportActionBar(findViewById(R.id.toolbar_add_update))
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         taskId = intent.getStringExtra("TASK_ID") ?: return finish()

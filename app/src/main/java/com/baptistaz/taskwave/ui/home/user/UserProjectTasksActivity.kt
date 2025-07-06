@@ -33,7 +33,7 @@ class UserProjectTasksActivity : BaseLocalizedActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_project_tasks)
 
-        findViewById<Toolbar>(R.id.toolbar).also {
+        findViewById<Toolbar>(R.id.toolbar_project_tasks).also {
             setSupportActionBar(it)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.title = getString(R.string.tasks)

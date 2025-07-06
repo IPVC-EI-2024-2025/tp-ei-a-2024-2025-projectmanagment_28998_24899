@@ -20,7 +20,7 @@ class UserEvaluationsActivity : BaseLocalizedActivity() {
         setContentView(R.layout.activity_user_evaluations)
 
         // toolbar com título e botão "voltar"
-        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar_user_evaluations)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.title_user_evaluations)
